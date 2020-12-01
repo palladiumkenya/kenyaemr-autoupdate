@@ -41,8 +41,18 @@ fi
 # Dump OpenMRS database and gzip result
 sudo mysqldump -u$dbuser -p$dbpass $dbname | gzip -c > $dumpfile
 
+
 # Check dump was successful
 if [ ${PIPESTATUS[0]} -ne 0 ]; then
 	echo "MySQL dump failed"
 	exit 1
+fi
+
+# Copy the new file to the rollback directory
+rollbackDir=/opt/KenyaEMRAutoupdate/rollback/db
+# Check destination directory exists and is writable
+if [ -d "$rollbackDir" ] &&  [ -w "$rollbackDir" ]; then
+	echo "Copying the backup file to the rollback directory"
+	sudo cp $dumpfile $rollbackDir
+	echo "Successfully copied the backup file to the rollback directory"
 fi

@@ -20,7 +20,6 @@ mysql_base_database="openmrs"
 # Read MySQL password from stdin
 printf "Enter mysql user: "
 read mysql_user
-echo
 
 # Read MySQL password from stdin
 stty -echo
@@ -43,9 +42,13 @@ echo
 export mysql_user
 export mysql_password
 
-echo "Stopping tomcat..."
+echo "Stopping tomcat - skipping this for now..."
 echo
 #sudo service tomcat6 stop
+
+# create a backup of the currently running KenyaEMR and dump the files in the rollback directory
+echo "Backup currently running system"
+sudo bash ${script_dir}/rollback_mechanism_setup.sh
 
 echo "Creating db backup"
 sudo bash ${script_dir}/openmrs-backup-tools/openmrs_backup.sh $mysql_user $mysql_password
