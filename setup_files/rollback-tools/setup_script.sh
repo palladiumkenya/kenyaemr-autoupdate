@@ -50,6 +50,7 @@ sudo cp /opt/KenyaEMRAutoupdate/rollback/webapp/openmrs.war ${tomcat_dir}/
 
 echo "Restore the rollback database"
 
+#
 zcat "$(find /opt/KenyaEMRAutoupdate/rollback/db -iname '*.gz' -print0)" | mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database}
 #gunzip < /path/to/file.sql.gz | mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database}
 

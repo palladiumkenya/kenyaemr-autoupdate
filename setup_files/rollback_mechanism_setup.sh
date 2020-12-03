@@ -25,7 +25,7 @@ sudo mkdir -p "/opt/KenyaEMRAutoupdate/rollback/modules"
 sudo mkdir -p "/opt/KenyaEMRAutoupdate/rollback/db"
 
 sudo chmod -R 755 /opt/KenyaEMRAutoupdate/rollback
-sudo chown -R $USER:$USER /opt/KenyaEMRAutoupdate/rollback
+sudo chown -R $USER:$USER /opt/KenyaEMRAutoupdate/rollback/
 
 
 sudo cp ${modules_dir}/*.omod /opt/KenyaEMRAutoupdate/rollback/modules

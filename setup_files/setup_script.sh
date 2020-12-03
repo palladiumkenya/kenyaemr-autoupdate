@@ -44,7 +44,7 @@ export mysql_password
 
 echo "Stopping tomcat - skipping this for now..."
 echo
-#sudo service tomcat6 stop
+sudo service tomcat6 stop
 
 # create a backup of the currently running KenyaEMR and dump the files in the rollback directory
 echo "Backup currently running system"
@@ -53,6 +53,15 @@ sudo bash ${script_dir}/rollback_mechanism_setup.sh
 echo "Creating db backup"
 sudo bash ${script_dir}/openmrs-backup-tools/openmrs_backup.sh $mysql_user $mysql_password
 
+# upgrade tasks begin here
+# -----------------------------------------------------------------
+
+
+
+
+
+# ----------- end here ---------------------------------------------
+sudo service tomcat6 start
 
 read -p "Press enter to exit terminal" resp
 
