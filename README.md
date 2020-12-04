@@ -7,9 +7,10 @@ Provides a mechanism that works with the auto-update feature in the EMR to perfo
 4. database backup scripts
 
 ### First-time setup
-1. Clone the repository using git
-2. cd to the cloned repository i.e. cd kenyaemr-autoupdate
-3. Run the first_time_setup.sh script using bash first_time_setup.sh. This will create KenyaEMRAutoupdate directory in the opt folder and copies all supporting files to the created directory.
+1. Download the repository files as a zip. (You can use git to clone the repository as well)
+2. Extract the content of the downloaded package to the home directory, or any other preferred location.
+3. Run the first_time_setup.sh script in the extracted directory using bash first_time_setup.sh. 
+This will create KenyaEMRAutoupdate directory in the opt folder and copies all supporting files to the created directory.
 
 ### Usage
 The setup process will provide for a KenyaEMR upgrade launcher on the desktop. 
