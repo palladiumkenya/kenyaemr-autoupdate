@@ -12,7 +12,6 @@ dbuser=$2
 dbpass=$3
 dumpdir=$4
 
-echo "passed details: dbname: $dbname user: $dbuser password: $dbpass dumpdir: $dumpdir"
 # Check destination directory exists and is writable
 if ! [ -d "$dumpdir" ] || ! [ -w "$dumpdir" ]; then
 	echo "Dump directory does not exist or is not writable"
