@@ -1,8 +1,8 @@
 #!/bin/bash
 # Script to backup MySQL databases
 
-modules_dir=/usr/share/tomcat6/.OpenMRS/modules
-tomcat_dir=/var/lib/tomcat6/webapps/
+modules_dir=/var/lib/OpenMRS/modules
+tomcat_dir=/var/lib/tomcat9/webapps/
 
 #script directory
 current_dir=$(pwd)
@@ -44,7 +44,7 @@ export mysql_user
 export mysql_password
 
 
-sudo service tomcat6 stop
+sudo service tomcat9 stop
 sudo rm -R ${tomcat_dir}/openmrs*
 sudo cp /opt/KenyaEMRAutoupdate/rollback/webapp/openmrs.war ${tomcat_dir}/
 
@@ -81,15 +81,15 @@ echo
 echo "Granting read permission to the modules directory: ${modules_dir}."
 sudo chmod --recursive +r ${modules_dir}/*.omod
 
-sudo chown tomcat6:tomcat6  --recursive ${tomcat_dir}/
-sudo chown tomcat6:tomcat6  --recursive ${modules_dir}/*.omod
+sudo chown tomcat9:tomcat9  --recursive ${tomcat_dir}/
+sudo chown tomcat9:tomcat9  --recursive ${modules_dir}/*.omod
 echo "Deleting liquibase entries for ETL module"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like 'kenyaemrChart%';"
 echo
 echo "Starting tomcat..."
 echo
 
-sudo service tomcat6 start
+sudo service tomcat9 start
 
 
 

@@ -28,6 +28,6 @@ In the event a rollback is required after an upgrade process, please use the bel
 ### Points to note
 - Ensure the downloaded package is extracted successfully and the contents copied to /opt/KenyaEMRAutoupdate directory. The desktop launcher has been pre-configured to look into this directory for the process initiation
 - The setup scripts have been pre-configured to work on Ubuntu. Other OS users may need to modify the scripts appropriately
-- The setup scripts have been pre-configured for tomcat6. Setups with other versions of tomcat may need to change the scripts appropriately
+- The setup scripts have been pre-configured for tomcat9. Setups with other versions of tomcat may need to change the scripts appropriately
 
 

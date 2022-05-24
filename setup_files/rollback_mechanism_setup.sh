@@ -1,6 +1,6 @@
 #!/bin/bash
-modules_dir=/usr/share/tomcat6/.OpenMRS/modules
-warfile_dir=/var/lib/tomcat6/webapps
+modules_dir=/var/lib/OpenMRS/modules
+warfile_dir=/var/lib/tomcat9/webapps
 
 #script directory
 current_dir=$(pwd)

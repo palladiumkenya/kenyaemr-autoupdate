@@ -1,7 +1,7 @@
 #!/bin/bash
 # Script to backup MySQL databases
 
-modules_dir=/usr/share/tomcat6/.OpenMRS/modules
+modules_dir=/var/lib/OpenMRS/modules
 
 #script directory
 current_dir=$(pwd)
@@ -44,7 +44,7 @@ export mysql_password
 
 echo "Stopping tomcat - skipping this for now..."
 echo
-sudo service tomcat6 stop
+sudo service tomcat9 stop
 
 # create a backup of the currently running KenyaEMR and dump the files in the rollback directory
 echo "Backup currently running system"
@@ -61,7 +61,7 @@ sudo bash ${script_dir}/openmrs-backup-tools/openmrs_backup.sh $mysql_user $mysq
 
 
 # ----------- end here ---------------------------------------------
-sudo service tomcat6 start
+sudo service tomcat9 start
 
 read -p "Press enter to exit terminal" resp
 
