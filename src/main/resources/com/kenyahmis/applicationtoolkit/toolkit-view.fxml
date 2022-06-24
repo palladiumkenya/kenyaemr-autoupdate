@@ -8,6 +8,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.control.ListView?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.kenyahmis.applicationtoolkit.ToolboxController">
     <top>
@@ -35,28 +36,33 @@
             </right>
         </BorderPane>
     </top>
-    <left>
+<!--    <left>
         <VBox styleClass="sidebar-section">
             <children>
                 <Label text="KenyaEMR"></Label>
             </children>
         </VBox>
-    </left>
+    </left>-->
     <center>
         <VBox styleClass="content-section">
             <children>
                 <Label id="content-header" text="Product description"></Label>
+                <Label  text="KenyaEMR"></Label>
+                <Separator></Separator>
                 <Label id="content">
                     <text>
                         KenyaEMR is an open-source EMR system used for patient management
                     </text>
                 </Label>
                 <Separator></Separator>
-                <Button id="install-emr" text="Upgrade" onAction="#downloadEmrUpgrade">
-
-                </Button>
+                <Separator></Separator>
+                <Label></Label>
+                <Button id="install-emr" fx:id="upgradeButton" text="Upgrade" onAction="#downloadEmrUpgrade"></Button>
+                <Separator></Separator>
+                <Label></Label>
             </children>
-            <TextFlow  fx:id="upgradeProgress"></TextFlow>
+            <!--<TextFlow  fx:id="upgradeProgress"></TextFlow>-->
+            <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" />
         </VBox>
     </center>
     <bottom>
