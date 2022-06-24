@@ -3,25 +3,19 @@ package com.kenyahmis.applicationtoolkit;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 
-import java.net.URL;
-
+/**
+ * Background service for downloading files
+ */
 public class PackageDownloadService extends Service {
-
-    private URL downloadUrl;
-    private String destination;
     private ToolboxServiceConfiguration configuration;
 
     private final ToolboxController controller;
 
-    public PackageDownloadService(URL downloadUrl, String destination, ToolboxController controller) {
-        this.downloadUrl = downloadUrl;
-        this.destination = destination;
+    public PackageDownloadService(ToolboxController controller) {
         this.controller = controller;
     }
 
-    public PackageDownloadService(URL downloadUrl, String destination, ToolboxController controller, ToolboxServiceConfiguration configuration) {
-        this.downloadUrl = downloadUrl;
-        this.destination = destination;
+    public PackageDownloadService(ToolboxController controller, ToolboxServiceConfiguration configuration) {
         this.controller = controller;
         this.configuration = configuration;
     }
@@ -30,23 +24,7 @@ public class PackageDownloadService extends Service {
     protected Task createTask() {
         controller.addMessageToListFlow("Initializing a background download task");
         System.out.println("Initializing a background download task");
-        return new PackageDownloadTask(downloadUrl, destination, controller, configuration);
-    }
-
-    public URL getDownloadUrl() {
-        return downloadUrl;
-    }
-
-    public void setDownloadUrl(URL downloadUrl) {
-        this.downloadUrl = downloadUrl;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
+        return new PackageDownloadTask(controller, configuration);
     }
 
     public ToolboxServiceConfiguration getConfiguration() {

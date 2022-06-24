@@ -9,6 +9,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
+/**
+ * Custom class for masking password text
+ */
 public class PasswordDialog extends Dialog<String> {
     private PasswordField passwordField;
 
@@ -16,7 +19,7 @@ public class PasswordDialog extends Dialog<String> {
         setTitle("Password");
         setHeaderText("Please enter your password.");
 
-        ButtonType passwordButtonType = new ButtonType("Decrypt", ButtonData.OK_DONE);
+        ButtonType passwordButtonType = new ButtonType("OK", ButtonData.OK_DONE);
         getDialogPane().getButtonTypes().addAll(passwordButtonType, ButtonType.CANCEL);
 
         passwordField = new PasswordField();

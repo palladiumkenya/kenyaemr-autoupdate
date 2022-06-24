@@ -1,8 +1,17 @@
 package com.kenyahmis.applicationtoolkit;
 
+import java.net.URL;
+
 public class ToolboxServiceConfiguration {
-    private String userPass;
-    private String mysqlPass;
+    private String userPass; // to execute shell script
+    private String mysqlPass; // mysql password to be used within shell script
+
+    private String baseDir; // where the package is downloaded and unzipped
+
+    private String pathToSetupScript; // a concatenation of baseDir, package name, and setup_script.sh
+
+    private URL packageDownloadUrl;
+    private String packageUnzipDir;
 
     public ToolboxServiceConfiguration(String userPass, String mysqlPass) {
         this.userPass = userPass;
@@ -23,5 +32,37 @@ public class ToolboxServiceConfiguration {
 
     public void setMysqlPass(String mysqlPass) {
         this.mysqlPass = mysqlPass;
+    }
+
+    public String getBaseDir() {
+        return baseDir;
+    }
+
+    public void setBaseDir(String baseDir) {
+        this.baseDir = baseDir;
+    }
+
+    public String getPathToSetupScript() {
+        return pathToSetupScript;
+    }
+
+    public void setPathToSetupScript(String pathToSetupScript) {
+        this.pathToSetupScript = pathToSetupScript;
+    }
+
+    public URL getPackageDownloadUrl() {
+        return packageDownloadUrl;
+    }
+
+    public void setPackageDownloadUrl(URL packageDownloadUrl) {
+        this.packageDownloadUrl = packageDownloadUrl;
+    }
+
+    public String getPackageUnzipDir() {
+        return packageUnzipDir;
+    }
+
+    public void setPackageUnzipDir(String packageUnzipDir) {
+        this.packageUnzipDir = packageUnzipDir;
     }
 }
