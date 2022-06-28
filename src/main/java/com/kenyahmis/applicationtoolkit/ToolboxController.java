@@ -14,13 +14,19 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Handles toolbox events
+ */
 public class ToolboxController implements Initializable {
     @FXML
     private Label welcomeText;
@@ -41,8 +47,8 @@ public class ToolboxController implements Initializable {
     @FXML
     protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
 
-        addMessageToListFlow("Initiating download");
-        String baseDir = "/home/ojwang/Documents/testDownload/";
+        addMessageToListFlow("Prompting for user authentication");
+        String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
 
         String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
 
@@ -50,12 +56,10 @@ public class ToolboxController implements Initializable {
             // exit with message
         }
         URL url = new URL(downloadUrl);
-        System.out.println("running task");
 
         Path fileName = Paths.get(downloadUrl);
         String downloadedFileName = fileName.getFileName().toString() ;
         String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
-        System.out.println("Downloaded filename: " + downloadedFileName);
 
         // user pass
         String token = "";
@@ -84,8 +88,8 @@ public class ToolboxController implements Initializable {
 
 
         if ("".equals(token) || "".equals(mysqlPass)) {
-            addMessageToListFlow("Authorization required to proceed. The system will terminate ");
-            System.out.println("Authorization required to proceed. The system will terminate ");
+            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+            System.out.println("Authorization required to proceed. Please provide details to proceed ");
 
         } else {
             ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
@@ -132,7 +136,32 @@ public class ToolboxController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         msgData = FXCollections.observableArrayList();
         listMsgs.setItems(msgData);
+
+        File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
+        if (folder.exists() && folder.isDirectory()) {
+            addMessageToListFlow("Application initialization completed");
+
+        } else {
+            addMessageToListFlow("App directories not found. Please create them and continue");
+
+            //TODO: create directories on startup
+            /*try {
+                Files.createDirectory(Paths.get(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY),
+                        PosixFilePermissions.asFileAttribute(
+                                PosixFilePermissions.fromString("rwxr-x---")
+                        ));
+                addMessageToListFlow("Successfully created app directory");
+
+            } catch (IOException e) {
+                addMessageToListFlow("An error occurred when creating app directory. Error: " + e.getMessage());
+
+                throw new RuntimeException(e);
+            }*/
+
+        }
+
     }
 }

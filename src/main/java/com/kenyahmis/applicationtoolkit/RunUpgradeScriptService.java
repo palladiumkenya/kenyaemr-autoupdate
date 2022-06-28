@@ -5,6 +5,9 @@ import javafx.concurrent.Task;
 
 import java.net.URL;
 
+/**
+ * Handles a background task that executes a shell setup script
+ */
 public class RunUpgradeScriptService extends Service {
 
     private final ToolboxController controller;

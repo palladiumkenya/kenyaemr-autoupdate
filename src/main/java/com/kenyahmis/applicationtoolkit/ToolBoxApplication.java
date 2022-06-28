@@ -8,6 +8,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Designed to simplify application(s) setup process
+ * Should download from a URL, unzip(if needed), and deploys
+ */
 public class ToolBoxApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {

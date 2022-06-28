@@ -10,6 +10,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A background task that executes a shell setup script
+ */
 public class RunUpgradeScriptTask extends Task {
 
     private final ToolboxController controller;

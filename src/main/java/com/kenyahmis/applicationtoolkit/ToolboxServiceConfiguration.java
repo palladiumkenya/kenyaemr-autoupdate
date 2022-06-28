@@ -2,6 +2,9 @@ package com.kenyahmis.applicationtoolkit;
 
 import java.net.URL;
 
+/**
+ * A configuration model that can be used to pass information between classes/scenes
+ */
 public class ToolboxServiceConfiguration {
     private String userPass; // to execute shell script
     private String mysqlPass; // mysql password to be used within shell script

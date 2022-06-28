@@ -11,6 +11,8 @@ import java.util.zip.ZipInputStream;
  * Util class for common toolbox tasks
  */
 public class ToolkitUtils {
+    public static final String DEFAULT_APPLICATION_BASE_DIRECTORY = "/opt/kehmisApplicationToolbox/";
+    public static final String DEFAULT_DOWNLOAD_DIRECTORY = "Downloads/";
     public static void unzip(String zipFilePath, String destDirt) throws IOException {
         File destDir = new File(destDirt);
 
