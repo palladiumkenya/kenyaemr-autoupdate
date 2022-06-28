@@ -10,6 +10,7 @@ module com.example.applicationtoolkit {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires json.simple;
 
     opens com.kenyahmis.applicationtoolkit to javafx.fxml;
     exports com.kenyahmis.applicationtoolkit;

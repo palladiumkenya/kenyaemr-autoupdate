@@ -26,12 +26,16 @@ public class RunUpgradeScriptTask extends Task {
     @Override
     protected Object call() throws Exception {
 
+
+        //addMessageToTextFlow("\nExecuting shell script...", Color.RED, new Font(15));
+
         // Run a shell command
         List<String> cmdList = new ArrayList<String>();
         // adding command and args to the list
         cmdList.add("sh");
 
-        cmdList.add(configuration.getPathToSetupScript());
+        //cmdList.add("/home/ojwang/Documents/testDownload/KenyaEMR_18.2.1/setup_script.sh");
+        cmdList.add("C:\\Projects\\zipFiles\\echo.bat");
         cmdList.add(configuration.getUserPass());
         cmdList.add(configuration.getMysqlPass());
         ProcessBuilder processBuilder = new ProcessBuilder(cmdList);
@@ -39,8 +43,13 @@ public class RunUpgradeScriptTask extends Task {
         try {
 
             Process process = processBuilder.start();
+
+            StringBuilder output = new StringBuilder();
+
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()));
+
+            //controller.addMessageToListFlow(line);
 
             Platform.runLater(new Runnable() {
                 @Override
@@ -52,6 +61,8 @@ public class RunUpgradeScriptTask extends Task {
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
+                        //addMessageToTextFlow(line + "\n", Color.GREEN, new Font(15));
+
                         controller.addMessageToListFlow(line);
                     }
                 }
@@ -61,8 +72,7 @@ public class RunUpgradeScriptTask extends Task {
             int exitVal = process.waitFor();
 
             if (exitVal == 0) {
-                System.out.println("Successfully executed the setup script");
-                controller.addMessageToListFlow("Successfully executed the setup script");
+                //addMessageToTextFlow("Success!", Color.DARKSLATEBLUE, new Font(15));
             } else {
                 BufferedReader errorReader = new BufferedReader(
                         new InputStreamReader(process.getErrorStream()));

@@ -4,23 +4,28 @@ import javafx.concurrent.Task;
 
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-/**
- * Download task.
- */
 public class PackageDownloadTask extends Task {
+
+    private URL downloadUrl;
+    private String destination;
 
     private ToolboxServiceConfiguration configuration;
 
 
     private final ToolboxController controller;
-    public PackageDownloadTask(ToolboxController controller) {
+    public PackageDownloadTask(URL downloadUrl, String destination, ToolboxController controller) {
+        this.downloadUrl = downloadUrl;
+        this.destination = destination;
         this.controller = controller;
     }
 
-    public PackageDownloadTask(ToolboxController controller, ToolboxServiceConfiguration configuration) {
+    public PackageDownloadTask(URL downloadUrl, String destination, ToolboxController controller, ToolboxServiceConfiguration configuration) {
+        this.downloadUrl = downloadUrl;
+        this.destination = destination;
         this.controller = controller;
         this.configuration = configuration;
     }
@@ -29,9 +34,9 @@ public class PackageDownloadTask extends Task {
     protected Object call() throws Exception {
 
 
-        try (InputStream in = configuration.getPackageDownloadUrl().openStream();
+        try (InputStream in = downloadUrl.openStream();
              ReadableByteChannel rbc = Channels.newChannel(in);
-             FileOutputStream fos = new FileOutputStream(configuration.getPackageUnzipDir())) {
+             FileOutputStream fos = new FileOutputStream(destination)) {
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading ...");
 
@@ -41,8 +46,8 @@ public class PackageDownloadTask extends Task {
         } catch (Exception e) {
             //addMessageToTextFlow("\nThere was an error..." + e.getCause(), Color.RED, new Font(15));
 
-            System.out.println("An error occurred. " + e.getCause());
-            controller.addMessageToListFlow("An error occurred. " + e.getCause());
+            System.out.println("An error occured. " + e.getCause());
+            controller.addMessageToListFlow("An error occured. " + e.getCause());
             e.printStackTrace();
 
         }
@@ -55,7 +60,7 @@ public class PackageDownloadTask extends Task {
         System.out.println("Unzipping started");
 
         controller.addMessageToListFlow("Unzipping started");
-        ToolkitUtils.unzip(configuration.getPackageUnzipDir(), configuration.getBaseDir());
+        ToolkitUtils.unzip(destination, "C:\\Projects\\zipFiles");
 
         System.out.println("Unzipping completed");
         controller.addMessageToListFlow("Unzipping completed");
@@ -69,6 +74,23 @@ public class PackageDownloadTask extends Task {
         //System.out.println("Successfully executed the upgrade script");
 
         return "Success";
+    }
+
+
+    public URL getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public void setDownloadUrl(URL downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public ToolboxServiceConfiguration getConfiguration() {

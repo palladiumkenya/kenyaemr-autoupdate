@@ -1,15 +1,16 @@
 package com.kenyahmis.applicationtoolkit;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-/**
- * Util class for common toolbox tasks
- */
+
 public class ToolkitUtils {
     public static void unzip(String zipFilePath, String destDirt) throws IOException {
         File destDir = new File(destDirt);
@@ -21,7 +22,7 @@ public class ToolkitUtils {
             File newFile = newFile(destDir, zipEntry);
             if (zipEntry.isDirectory()) {
                 if (!newFile.isDirectory() && !newFile.mkdirs()) {
-                    throw new IOException("Failed to create directory " + newFile);
+                    throw new IOException("Failed to create directoryy " + newFile);
                 }
             } else {
                 // fix for Windows-created archives
@@ -45,13 +46,7 @@ public class ToolkitUtils {
 
     }
 
-    /**
-     * Creates new file
-     * @param destinationDir
-     * @param zipEntry
-     * @return
-     * @throws IOException
-     */
+
     public static File newFile(File destinationDir, ZipEntry zipEntry) throws IOException {
         File destFile = new File(destinationDir, zipEntry.getName());
 
@@ -64,4 +59,69 @@ public class ToolkitUtils {
 
         return destFile;
     }
+
+
+    public static void executeShellScript(String unzippedDirectory) {
+
+        /*Text txtInitExecution = new Text("Executing shell ... ");
+        txtInitExecution.setFont(new Font(15));
+        txtInitExecution.setFill(Color.DARKSLATEBLUE);*/
+        System.out.println("Inside the script.....");
+        //addMessageToTextFlow("\nExecuting shell script...", Color.RED, new Font(15));
+
+        // Run a shell command
+        List<String> cmdList = new ArrayList<String>();
+        // adding command and args to the list
+        //echo mypassword | sudo -S
+
+        cmdList.add("echo");
+        cmdList.add("Warrior123#");
+        cmdList.add("\n");
+        cmdList.add("|");
+        cmdList.add("sudo");
+        cmdList.add("-S");
+
+        cmdList.add("/home/ojwang/Documents/testDownload/KenyaEMR_18.2.0.1.2/setup_script.sh");
+        ProcessBuilder processBuilder = new ProcessBuilder(cmdList);
+
+        try {
+
+            Process process = processBuilder.start();
+
+            StringBuilder output = new StringBuilder();
+
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                //addMessageToTextFlow(line + "\n", Color.GREEN, new Font(15));
+
+            }
+
+            int exitVal = process.waitFor();
+            if (exitVal == 0) {
+                //addMessageToTextFlow("Success!", Color.DARKSLATEBLUE, new Font(15));
+                System.exit(0);
+            } else {
+                BufferedReader errorReader = new BufferedReader(
+                        new InputStreamReader(process.getErrorStream()));
+                //addMessageToTextFlow("\nThere was a problem executing the script. Exit code " + exitVal, Color.RED, new Font(15));
+
+                String error;
+                while ((error = errorReader.readLine()) != null) {
+                    //addMessageToTextFlow(error + "\n", Color.DARKRED, new Font(15));
+
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
