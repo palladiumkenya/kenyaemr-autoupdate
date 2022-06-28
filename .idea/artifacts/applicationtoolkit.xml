@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="applicationtoolkit">
+    <output-path>$PROJECT_DIR$/out/artifacts/applicationtoolkit</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="com.example.applicationtoolkit/com.kenyahmis.applicationtoolkit.ToolBoxApplication" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="KenyaHMIS Toolbox" />
+        <option name="vendor" value="KenyaHMIS" />
+        <option name="version" value="0.1" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="applicationtoolkit.jar">
+        <element id="module-output" name="applicationtoolkit" />
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -18,7 +18,7 @@
                     <ImageView fitHeight="70" fitWidth="140"
                                pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@kenyahmislogo.png" />
+                            <Image url="@KeHMIS_Logo-FINAL-2-white.png" />
                         </image>
                     </ImageView>
             </left>
