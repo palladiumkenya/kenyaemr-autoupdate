@@ -30,7 +30,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ToolboxController implements Initializable {
-
+    private boolean isOnline = false;
     @FXML
     private Label welcomeText;
 
@@ -50,53 +50,54 @@ public class ToolboxController implements Initializable {
     }
     @FXML
 
-    protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
-
-        downloadAndUnzip(Config.url,Config.zipFilePath,Config.destDir);
+   protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
 
 
-        // user pass
-        String token = "";
-        PasswordDialog dialog = new PasswordDialog();
-
-        dialog.setTitle("Admin password");
-        dialog.setHeaderText("Enter admin password:");
-        dialog.setContentText("Password:");
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            token = dialog.getPasswordField().getText();
-        }
-
-        String mysqlPass = "";
-        PasswordDialog mysqlDialog = new PasswordDialog();
-
-        mysqlDialog.setTitle("Mysql password");
-        mysqlDialog.setHeaderText("Enter MySQL password:");
-        mysqlDialog.setContentText("Password:");
-
-        Optional<String> mysqlResult = mysqlDialog.showAndWait();
-        if (mysqlResult.isPresent()) {
-            mysqlPass = mysqlDialog.getPasswordField().getText();
-        }
-        System.out.println("Mysql pwd: " + mysqlPass);
-        addMessageToListFlow("Authentication recorded successfully ");
-
-        bashScripting();
-
-
-     //   ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
+        if (checkInternetConnectionStatus()) {
+            isOnline = true;
+            try {
+                downloadAndUnzip(Config.url,Config.zipFilePath,Config.destDir);
+                // user pass
+                String token = "";
+                PasswordDialog dialog = new PasswordDialog();
+                dialog.setTitle("Admin password");
+                dialog.setHeaderText("Enter admin password:");
+                dialog.setContentText("Password:");
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()) {
+                    token = dialog.getPasswordField().getText();
+                }
+                String mysqlPass = "";
+                PasswordDialog mysqlDialog = new PasswordDialog();
+                mysqlDialog.setTitle("Mysql password");
+                mysqlDialog.setHeaderText("Enter MySQL password:");
+                mysqlDialog.setContentText("Password:");
+                Optional<String> mysqlResult = mysqlDialog.showAndWait();
+                if (mysqlResult.isPresent()) {
+                    mysqlPass = mysqlDialog.getPasswordField().getText();
+                }
+                System.out.println("Mysql pwd: " + mysqlPass);
+                addMessageToListFlow("Authentication recorded successfully ");
+                bashScripting();
+                //   ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
 //        String downloadedFileName = fileName.getFileName().toString() ;
 //        final PackageDownloadService service = new PackageDownloadService(url, baseDir + downloadedFileName, this, configuration);
-
-
-        upgradeButton.setDisable(true);
-       // service.start();
+                upgradeButton.setDisable(true);
+                // service.start();
 
         /*Text downloadCompletedTxt = new Text("Download completed");
         downloadCompletedTxt.setFont(new Font(15));
         downloadCompletedTxt.setFill(Color.DARKSLATEBLUE);
         upgradeProgress.getChildren().add(downloadCompletedTxt);*/
+
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
 
     }
 
@@ -205,9 +206,7 @@ public class ToolboxController implements Initializable {
             int exitCode = process.waitFor();
             addMessageToListFlow(""+exitCode);
             System.out.println("Exit code" + exitCode);
-        } catch (IOException e){
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (IOException | ExecutionException e){
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -222,6 +221,22 @@ public class ToolboxController implements Initializable {
         txt.setFont(font);
         txt.setFill(textColor);
         upgradeProgress.getChildren().add(txt);
+    }
+    private boolean checkInternetConnectionStatus() {
+        boolean isConnected = false;
+
+        try {
+            URL url = new URL("https://www.google.com");
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            isConnected = true;
+        } catch (MalformedURLException e) {
+            addMessageToListFlow("Internet is not connected");
+        } catch (IOException e) {
+            addMessageToListFlow("Internet is not connected");
+        }
+
+        return isConnected;
     }
     private static class ProcessReader implements Callable {
         private InputStream inputStream;
