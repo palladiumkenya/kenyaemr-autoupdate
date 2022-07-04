@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import net.synedra.validatorfx.Check;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -20,16 +21,14 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ToolboxController implements Initializable {
+    private int currentVersion = 1800;
     private boolean isOnline = false;
     @FXML
     private Label welcomeText;
@@ -46,7 +45,7 @@ public class ToolboxController implements Initializable {
     private ObservableList<String> msgData;
     @FXML
     protected void onHelloButtonClick() {
-        welcomeText.setText(Config.name);
+        welcomeText.setText("HIMS");
     }
     @FXML
 
@@ -56,49 +55,47 @@ public class ToolboxController implements Initializable {
         if (checkInternetConnectionStatus()) {
             isOnline = true;
             try {
-                downloadAndUnzip(Config.url,Config.zipFilePath,Config.destDir);
-                // user pass
-                String token = "";
-                PasswordDialog dialog = new PasswordDialog();
-                dialog.setTitle("Admin password");
-                dialog.setHeaderText("Enter admin password:");
-                dialog.setContentText("Password:");
-                Optional<String> result = dialog.showAndWait();
-                if (result.isPresent()) {
-                    token = dialog.getPasswordField().getText();
+                if (Config.newVersion != 0 && Config.newVersion > currentVersion) {
+                    downloadAndUnzip(Config.url,Config.zipFilePath,Config.destDir);
+                    // user pass
+                    String token = "";
+                    PasswordDialog dialog = new PasswordDialog();
+                    dialog.setTitle("Admin password");
+                    dialog.setHeaderText("Enter admin password:");
+                    dialog.setContentText("Password:");
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        token = dialog.getPasswordField().getText();
+                    }
+                    String mysqlPass = "";
+                    PasswordDialog mysqlDialog = new PasswordDialog();
+                    mysqlDialog.setTitle("Mysql password");
+                    mysqlDialog.setHeaderText("Enter MySQL password:");
+                    mysqlDialog.setContentText("Password:");
+                    Optional<String> mysqlResult = mysqlDialog.showAndWait();
+                    if (mysqlResult.isPresent()) {
+                        mysqlPass = mysqlDialog.getPasswordField().getText();
+                    }
+                    System.out.println("Mysql pwd: " + mysqlPass);
+                    addMessageToListFlow("Authentication recorded successfully ");
+                    bashScripting();
+                    upgradeButton.setDisable(true);
+                }else{
+                    addMessageToListFlow("Your version is up to date");
                 }
-                String mysqlPass = "";
-                PasswordDialog mysqlDialog = new PasswordDialog();
-                mysqlDialog.setTitle("Mysql password");
-                mysqlDialog.setHeaderText("Enter MySQL password:");
-                mysqlDialog.setContentText("Password:");
-                Optional<String> mysqlResult = mysqlDialog.showAndWait();
-                if (mysqlResult.isPresent()) {
-                    mysqlPass = mysqlDialog.getPasswordField().getText();
-                }
-                System.out.println("Mysql pwd: " + mysqlPass);
-                addMessageToListFlow("Authentication recorded successfully ");
-                bashScripting();
                 //   ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
 //        String downloadedFileName = fileName.getFileName().toString() ;
 //        final PackageDownloadService service = new PackageDownloadService(url, baseDir + downloadedFileName, this, configuration);
-                upgradeButton.setDisable(true);
-                // service.start();
 
+                // service.start();
         /*Text downloadCompletedTxt = new Text("Download completed");
         downloadCompletedTxt.setFont(new Font(15));
         downloadCompletedTxt.setFill(Color.DARKSLATEBLUE);
         upgradeProgress.getChildren().add(downloadCompletedTxt);*/
-
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
-
-
     }
 
 //    public void downloadFile(URL url, String outputFileName) throws IOException
@@ -115,19 +112,16 @@ public class ToolboxController implements Initializable {
         addMessageToListFlow("Initiate Download ...");
         URL destURL = new URL(url);
         URLConnection urlConnection = destURL.openConnection();
-
         ReadableByteChannel zipByteChannel = Channels.newChannel(urlConnection.getInputStream());
         FileOutputStream fos = new FileOutputStream(zipFilePath);
         fos.getChannel().transferFrom(zipByteChannel,0,Long.MAX_VALUE);
         addMessageToListFlow("Download done");
         return unzip(zipFilePath,destDirectory);
-
     }
 
     private List<String> unzip(String zipFilePath, String destDirectory) throws IOException{
         addMessageToListFlow("Start Unzipping ...");
         List<String> unzippedFilesList = new ArrayList<>();
-
         File destDir = new File(destDirectory);
         if (!destDir.exists()) {
             destDir.mkdir();
@@ -238,6 +232,8 @@ public class ToolboxController implements Initializable {
 
         return isConnected;
     }
+
+
     private static class ProcessReader implements Callable {
         private InputStream inputStream;
 
@@ -263,7 +259,15 @@ public class ToolboxController implements Initializable {
         }
 
     }
-
+    protected static Map<String, Object> map(Object... keyValPairs) {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        for (int p = 0; p < keyValPairs.length; p += 2) {
+            String key = (String) keyValPairs[p];
+            Object val = keyValPairs[p + 1];
+            map.put(key, val);
+        }
+        return map;
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         msgData = FXCollections.observableArrayList();
