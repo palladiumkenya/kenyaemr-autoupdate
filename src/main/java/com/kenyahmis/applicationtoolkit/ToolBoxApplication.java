@@ -11,6 +11,7 @@ import java.io.IOException;
 public class ToolBoxApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
         FXMLLoader fxmlLoader = new FXMLLoader(ToolBoxApplication.class.getResource("toolkit-view.fxml"));
         stage.setResizable(false);
         Scene scene = new Scene(fxmlLoader.load(), 450, 700);

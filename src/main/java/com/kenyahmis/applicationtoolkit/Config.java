@@ -9,46 +9,16 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Config {
+
     public static String zipFilePath = "C:\\Users\\User\\Downloads\\KenyaEMR_18.2.1.zip";
     public static String destDir = "C:\\Projects\\zipFiles";
     public static String batFileDestination ="C:\\Projects\\zipFiles\\echo.bat";
-    public static String shFileDestination ="/home/ojwang/Documents/testDownload/KenyaEMR_18.2.1/setup_script.sh";
-    public static JSONParser jsonParser = new JSONParser();
-    public static FileReader reader;
-
-    static {
-        try {
-            reader = new FileReader("C:\\Projects\\zipFiles\\jsonfiles\\data.json");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Object obj;
-
-    static {
-        try {
-            obj = jsonParser.parse(reader);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static JSONObject dataJsonobj = (JSONObject)obj;
-    public static  String name = (String) dataJsonobj.get("name");
-   // public static  String name = "HMIS";
-    public static  String version = (String) dataJsonobj.get("version");
-    public static String url = (String) dataJsonobj.get("url");
-
+    public static String shFileDestination ="/opt/tmp/toolbox/bbb/KenyaEMR_18.2.1/setup_script.sh";
+    public static  String name = "HMIS";
+    public static String url = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
     ///Trim to get version number
     public static String firstVersion = url.replace("https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_","").trim();
     public static String secondVersion = firstVersion.replace("zip","").trim();
     public static int newVersion = Integer.parseInt(secondVersion.replace(".","").trim());
     //public static String url = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
-
-
-    public Config() throws IOException, ParseException {
-    }
 }

@@ -16,7 +16,7 @@ public class PasswordDialog extends Dialog<String> {
         setTitle("Password");
         setHeaderText("Please enter your password.");
 
-        ButtonType passwordButtonType = new ButtonType("Decrypt", ButtonData.OK_DONE);
+        ButtonType passwordButtonType = new ButtonType("Ok", ButtonData.OK_DONE);
         getDialogPane().getButtonTypes().addAll(passwordButtonType, ButtonType.CANCEL);
 
         passwordField = new PasswordField();

@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
+
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.text.TextFlow?>
-<?import javafx.scene.control.ListView?>
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.kenyahmis.applicationtoolkit.ToolboxController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="com.kenyahmis.applicationtoolkit.ToolboxController">
     <top>
         <BorderPane styleClass="header-section">
             <left>
-                <Label id="header-text" text="Application Header"></Label>
-                    <ImageView fitHeight="70" fitWidth="140"
-                               pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@kenyahmislogo.png" />
-                        </image>
-                    </ImageView>
+                <Label id="header-text" text="Application Header" />
+                <ImageView fitHeight="70" fitWidth="140" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@kenyahmislogo.png" />
+                    </image>
+                </ImageView>
             </left>
             <right>
                 <Button id="settings" text="Settings">
                     <graphic>
-                        <ImageView fitHeight="24" fitWidth="24"
-                                   pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="24" fitWidth="24" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@settings.jpeg" />
                             </image>
@@ -36,30 +34,31 @@
             </right>
         </BorderPane>
     </top>
-<!--    <left>
-        <VBox styleClass="sidebar-section">
-            <children>
-                <Label text="KenyaEMR"></Label>
-            </children>
-        </VBox>
-    </left>-->
+    <!--    <left>
+            <VBox styleClass="sidebar-section">
+                <children>
+                    <Label text="KenyaEMR"></Label>
+                </children>
+            </VBox>
+        </left>-->
     <center>
         <VBox styleClass="content-section">
             <children>
-                <Label id="content-header" text="Product description"></Label>
-                <Label  text="KenyaEMR"></Label>
-                <Separator></Separator>
+                <Label id="content-header" text="Product description" />
+                <Label text="KenyaEMR" />
+                <Separator />
                 <Label id="content">
                     <text>
                         KenyaEMR is an open-source EMR system used for patient management
                     </text>
                 </Label>
-                <Separator></Separator>
-                <Separator></Separator>
-                <Label></Label>
-                <Button id="install-emr" fx:id="upgradeButton" text="Upgrade" onAction="#downloadEmrUpgrade"></Button>
-                <Separator></Separator>
-                <Label></Label>
+                <Separator />
+                <Separator />
+                <Label />
+                <Button visible="false" id="install-emr" fx:id="upgradeButton" onAction="#downloadEmrUpgrade" text="Upgrade" />
+                <Button id="install-emr" fx:id="checkButton"  onAction="#checkUpgrade"  text="Check upgrade" />
+                <Separator />
+                <Label />
             </children>
             <!--<TextFlow  fx:id="upgradeProgress"></TextFlow>-->
             <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" />
@@ -68,7 +67,7 @@
     <bottom>
         <HBox id="footer-section">
             <children>
-                <Label text="Copyright 2022 KenyaHMIS"></Label>
+                <Label text="Copyright 2022 KenyaHMIS" />
             </children>
         </HBox>
     </bottom>
