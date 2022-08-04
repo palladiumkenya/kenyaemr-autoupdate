@@ -9,6 +9,12 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.kenyahmis.applicationtoolkit.ToolboxController">
     <top>
@@ -22,6 +28,18 @@
                         </image>
                     </ImageView>
             </left>
+            <center>
+                <Button id="backup" text="Database Backup">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24"
+                                   pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@backup.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </center>
             <right>
                 <Button id="settings" text="Settings">
                     <graphic>
@@ -44,26 +62,72 @@
         </VBox>
     </left>-->
     <center>
+        <ScrollPane fx:id="sasd">
         <VBox styleClass="content-section">
-            <children>
-                <Label id="content-header" text="Product description"></Label>
-                <Label  text="KenyaEMR"></Label>
-                <Separator></Separator>
-                <Label id="content">
-                    <text>
-                        KenyaEMR is an open-source EMR system used for patient management
-                    </text>
-                </Label>
-                <Separator></Separator>
-                <Separator></Separator>
-                <Label></Label>
-                <Button id="install-emr" fx:id="upgradeButton" text="Upgrade" onAction="#downloadEmrUpgrade"></Button>
-                <Separator></Separator>
-                <Label></Label>
-            </children>
+            <TabPane fx:id="viewpanel" maxWidth="410" >
+                <tabs>
+                    <Tab fx:id="updateTab" text="Updates" styleClass="post-container">
+                        <VBox>
+                        <children>
+                            <ImageView fitHeight="70" fitWidth="140"
+                                       pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@kenyaemr.png" />
+                                </image>
+                            </ImageView>
+                            <Label id="content-header" text="KenyaEMR"></Label> <Hyperlink onAction="#downloadEmrUpgrade" text="Update"/>
+
+                            <Label  text="KenyaEMR"></Label>
+                            <Separator></Separator>
+                            <Label id="content">
+                                <text>
+                                    KenyaEMR is an open-source EMR system used for patient management
+                                </text>
+                            </Label>
+                            <Separator></Separator>
+                            <Separator></Separator>
+                            <Label></Label>
+                            <Button id="install-emr" fx:id="upgradeButton" text="Upgrade" onAction="#downloadEmrUpgrade"></Button>
+                            <Separator></Separator>
+                            <Label></Label>
+                        </children>
+                        <children>
+                            <ImageView fitHeight="70" fitWidth="140"
+                                       pickOnBounds="true" preserveRatio="true">
+                                <image>
+                                    <Image url="@dwapi.png" />
+                                </image>
+                            </ImageView>
+                            <Label id="content-header" text="AfyaStat"></Label>
+                            <Label  text="AfyaStat"></Label>
+                            <Separator></Separator>
+                            <Label id="content" wrapText="true">
+                                e-HTS Plantform, e-HTS Plantform. e-HTS Plantform
+                            </Label>
+                            <Separator></Separator>
+                            <Separator></Separator>
+                            <Label></Label>
+                            <Button id="install-emr" fx:id="upgradeButtonmn" text="Up to date" onAction="#downloadEmrUpgrade"></Button>
+                            <Separator></Separator>
+                            <Label></Label>
+                        </children>
+
+
+                        </VBox>
+
+                    </Tab>
+                    <Tab fx:id="progressTab" text="Progress">
+                        <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" />
+
+                    </Tab>
+                </tabs>
+            </TabPane>
+
+
             <!--<TextFlow  fx:id="upgradeProgress"></TextFlow>-->
-            <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" />
+        <!--    <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" /> -->
         </VBox>
+        </ScrollPane>
     </center>
     <bottom>
         <HBox id="footer-section">

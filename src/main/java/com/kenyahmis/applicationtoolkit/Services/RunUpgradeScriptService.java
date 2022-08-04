@@ -1,9 +1,10 @@
-package com.kenyahmis.applicationtoolkit;
+package com.kenyahmis.applicationtoolkit.Services;
 
+import com.kenyahmis.applicationtoolkit.Task.RunUpgradeScriptTask;
+import com.kenyahmis.applicationtoolkit.ToolboxController;
+import com.kenyahmis.applicationtoolkit.ToolboxServiceConfiguration;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-
-import java.net.URL;
 
 /**
  * Handles a background task that executes a shell setup script
@@ -29,6 +30,8 @@ public class RunUpgradeScriptService extends Service {
         controller.addMessageToListFlow("running upgrade service");
         return new RunUpgradeScriptTask(controller, configuration);
     }
+
+
 
     public ToolboxServiceConfiguration getConfiguration() {
         return configuration;

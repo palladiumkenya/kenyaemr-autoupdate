@@ -1,5 +1,8 @@
 package com.kenyahmis.applicationtoolkit;
 
+import com.kenyahmis.applicationtoolkit.Services.PackageBackupService;
+import com.kenyahmis.applicationtoolkit.Services.PackageDownloadService;
+import com.kenyahmis.applicationtoolkit.Services.RunRollBackService;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,10 +20,8 @@ import javafx.scene.text.TextFlow;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -39,6 +40,10 @@ public class ToolboxController implements Initializable {
     @FXML
     private ListView listMsgs;
 
+   // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
+   ClassLoader resource = getClass().getClassLoader();
+
+
     private ObservableList<String> msgData;
     @FXML
     protected void onHelloButtonClick() {
@@ -50,7 +55,10 @@ public class ToolboxController implements Initializable {
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
 
-        String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
+        String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-releases/releases/download/v51/KenyaEMR_18.2.0.zip";
+
+      //  String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
+       // String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-releases/releases/latest";
 
         if (baseDir.equals("") || downloadUrl.equals("")) {
             // exit with message
@@ -96,12 +104,36 @@ public class ToolboxController implements Initializable {
             configuration.setPackageDownloadUrl(url);
             configuration.setPackageUnzipDir(baseDir + downloadedFileName);
             configuration.setBaseDir(baseDir);
-            configuration.setPathToSetupScript(baseDir + fileNameWithoutExtension + "/setup_script.sh");
+            //Do Backup
+            String openmrsBackup = "openmrs-backup-tools/openmrs_backup.sh";
+            URL resources = getClass().getClassLoader().getResource(openmrsBackup);
+            if (resource == null) {
+                throw new IllegalArgumentException("file not found!");
+            } else {
+                configuration.setPathToBackupScript(resources.getPath());
+                final PackageBackupService backupService = new PackageBackupService(this, configuration);
+                upgradeButton.setDisable(true);
+                backupService.start();
+            }
 
+            //Do Upgrade
+            configuration.setPathToSetupScript(baseDir + fileNameWithoutExtension + "/rollback_script.sh");
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
-
             upgradeButton.setDisable(true);
             service.start();
+            //Do Rollback
+            String rollbacksurl = "rollback-tools/rollback_script.sh";
+            URL rollbackresources = getClass().getClassLoader().getResource(rollbacksurl);
+            if (resource == null) {
+                throw new IllegalArgumentException("file not found!");
+            } else {
+                configuration.setPathToRollbackScript(rollbackresources.getPath());
+                final RunRollBackService runRollBackService = new RunRollBackService(this, configuration);
+                upgradeButton.setDisable(true);
+                runRollBackService.start();
+            }
+
+
         }
     }
 

@@ -13,4 +13,8 @@ module com.example.applicationtoolkit {
 
     opens com.kenyahmis.applicationtoolkit to javafx.fxml;
     exports com.kenyahmis.applicationtoolkit;
+    exports com.kenyahmis.applicationtoolkit.Services;
+    opens com.kenyahmis.applicationtoolkit.Services to javafx.fxml;
+    exports com.kenyahmis.applicationtoolkit.Task;
+    opens com.kenyahmis.applicationtoolkit.Task to javafx.fxml;
 }

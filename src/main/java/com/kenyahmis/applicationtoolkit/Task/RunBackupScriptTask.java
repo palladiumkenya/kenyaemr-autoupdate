@@ -1,28 +1,26 @@
-package com.kenyahmis.applicationtoolkit;
+package com.kenyahmis.applicationtoolkit.Task;
 
+import com.kenyahmis.applicationtoolkit.ToolboxController;
+import com.kenyahmis.applicationtoolkit.ToolboxServiceConfiguration;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A background task that executes a shell setup script
- */
-public class RunUpgradeScriptTask extends Task {
+public class RunBackupScriptTask extends Task {
 
     private final ToolboxController controller;
     private ToolboxServiceConfiguration configuration;
 
-    public RunUpgradeScriptTask(ToolboxController controller) {
+    public RunBackupScriptTask(ToolboxController controller) {
         this.controller = controller;
     }
 
-    public RunUpgradeScriptTask(ToolboxController controller, ToolboxServiceConfiguration configuration) {
+    public RunBackupScriptTask(ToolboxController controller, ToolboxServiceConfiguration configuration) {
         this.controller = controller;
         this.configuration = configuration;
     }
@@ -32,12 +30,15 @@ public class RunUpgradeScriptTask extends Task {
         // Run a shell command
         List<String> cmdList = new ArrayList<String>();
         // adding command and args to the list
-        cmdList.add("sh");
+        cmdList.add("bash");
 
-        cmdList.add(configuration.getPathToSetupScript());
+        cmdList.add(configuration.getPathToBackupScript());
         cmdList.add(configuration.getUserPass());
         cmdList.add(configuration.getMysqlPass());
-        ProcessBuilder processBuilder = new ProcessBuilder(cmdList);
+
+       ProcessBuilder processBuilder = new ProcessBuilder(cmdList);
+     // String[] cmdScript = new String[]{"bash", configuration.getPathToBackupScript()};
+     //  ProcessBuilder processBuilder = new ProcessBuilder(cmdScript);
 
         try {
 
@@ -64,8 +65,8 @@ public class RunUpgradeScriptTask extends Task {
             int exitVal = process.waitFor();
 
             if (exitVal == 0) {
-                System.out.println("Successfully executed the setup script");
-                controller.addMessageToListFlow("Successfully executed the setup script");
+                System.out.println("Successfully executed the Backup script");
+                controller.addMessageToListFlow("Successfully executed the Backup script");
             } else {
                 BufferedReader errorReader = new BufferedReader(
                         new InputStreamReader(process.getErrorStream()));
@@ -89,8 +90,8 @@ public class RunUpgradeScriptTask extends Task {
             e.printStackTrace();
         }
 
-        System.out.println("Completed executing script");
-        controller.addMessageToListFlow("Service restarted. Give it a few minutes");
+        System.out.println("Completed executing Backup script");
+        controller.addMessageToListFlow("Give it a few minutes. Downloading Upgrade packages");
 
         return "success";
     }
@@ -102,4 +103,5 @@ public class RunUpgradeScriptTask extends Task {
     public void setConfiguration(ToolboxServiceConfiguration configuration) {
         this.configuration = configuration;
     }
+
 }
