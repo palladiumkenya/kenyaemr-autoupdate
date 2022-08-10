@@ -2,6 +2,7 @@
 
 sudo apt update
 sudo apt install ansible
+sudo apt-get install openjdk-11-jdk
 sudo apt install-y openjfx
 sudo mkdir /opt/kehmisApplicationToolbox/
 sudo mkdir /opt/kehmisApplicationToolbox/Downloads

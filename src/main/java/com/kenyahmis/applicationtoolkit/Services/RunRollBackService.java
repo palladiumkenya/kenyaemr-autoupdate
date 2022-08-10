@@ -1,6 +1,7 @@
 package com.kenyahmis.applicationtoolkit.Services;
 
 import com.kenyahmis.applicationtoolkit.Task.RunBackupScriptTask;
+import com.kenyahmis.applicationtoolkit.Task.RunRollBackTask;
 import com.kenyahmis.applicationtoolkit.ToolboxController;
 import com.kenyahmis.applicationtoolkit.ToolboxServiceConfiguration;
 import javafx.concurrent.Service;
@@ -24,7 +25,12 @@ public class RunRollBackService extends Service {
     protected Task createTask() {
         controller.addMessageToListFlow("Initializing a background KenyaEMR Rollback task");
         System.out.println("Initializing a background KenyaEMR Rollback task");
-        return new RunBackupScriptTask(controller, configuration);
+        //controller.addMessageToListFlow("Initializing a background KenyaEMR Rollback task");
+        //Restoring DB
+        // Coping Modules
+        // Restarting Tomcat9
+
+        return new RunRollBackTask(controller, configuration);
     }
 
     public ToolboxServiceConfiguration getConfiguration() {

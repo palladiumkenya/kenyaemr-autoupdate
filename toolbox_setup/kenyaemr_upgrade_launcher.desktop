@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=gnome-terminal -e "sh /home/rugute/palladium/devRugute/kenyaemr-autoupdate/setup_script.sh" 
+Name=KenyaEMR Upgrade launcher
+Comment=KenyaEMR upgrade launcher
+Icon=/home/rugute/palladium/devRugute/kenyaemr-autoupdate/upgrade_image.jpeg

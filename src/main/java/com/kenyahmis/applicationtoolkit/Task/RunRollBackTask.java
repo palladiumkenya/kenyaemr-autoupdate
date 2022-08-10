@@ -61,8 +61,8 @@ public class RunRollBackTask extends Task {
             int exitVal = process.waitFor();
 
             if (exitVal == 0) {
-                System.out.println("Successfully executed the Backup script");
-                controller.addMessageToListFlow("Successfully executed the Backup script");
+                System.out.println("Successfully executed the rollback script");
+                controller.addMessageToListFlow("Successfully executed the rollback script");
             } else {
                 BufferedReader errorReader = new BufferedReader(
                         new InputStreamReader(process.getErrorStream()));
@@ -86,8 +86,8 @@ public class RunRollBackTask extends Task {
             e.printStackTrace();
         }
 
-        System.out.println("Completed executing Backup script");
-        controller.addMessageToListFlow("Give it a few minutes. Downloading Upgrade packages");
+        System.out.println("Completed executing Rollback script");
+        controller.addMessageToListFlow("Give it a few minutes. Then check your browser");
 
         return "success";
     }

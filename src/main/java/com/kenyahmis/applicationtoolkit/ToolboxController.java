@@ -40,6 +40,8 @@ public class ToolboxController implements Initializable {
     @FXML
     private ListView listMsgs;
 
+   // @Value("${toolkit.emrurl}")
+    public String trascriptpath;
    // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
    ClassLoader resource = getClass().getClassLoader();
 
@@ -51,6 +53,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
+
 
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
@@ -104,6 +107,7 @@ public class ToolboxController implements Initializable {
             configuration.setPackageDownloadUrl(url);
             configuration.setPackageUnzipDir(baseDir + downloadedFileName);
             configuration.setBaseDir(baseDir);
+
             //Do Backup
             String openmrsBackup = "openmrs-backup-tools/openmrs_backup.sh";
             URL resources = getClass().getClassLoader().getResource(openmrsBackup);
@@ -112,16 +116,111 @@ public class ToolboxController implements Initializable {
             } else {
                 configuration.setPathToBackupScript(resources.getPath());
                 final PackageBackupService backupService = new PackageBackupService(this, configuration);
-                upgradeButton.setDisable(true);
+              //  upgradeButton.setDisable(true);
                 backupService.start();
             }
 
             //Do Upgrade
             configuration.setPathToSetupScript(baseDir + fileNameWithoutExtension + "/rollback_script.sh");
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
-            upgradeButton.setDisable(true);
+            //upgradeButton.setDisable(true);
             service.start();
-            //Do Rollback
+
+
+
+        }
+    }
+    @FXML
+    protected void backupEMR(ActionEvent actionEvent) throws IOException {
+
+        addMessageToListFlow("Prompting for user authentication");
+        String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+        // user pass
+        String token = "";
+        PasswordDialog dialog = new PasswordDialog();
+
+        dialog.setTitle("Admin password");
+        dialog.setHeaderText("Enter admin password:");
+        dialog.setContentText("Password:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            token = dialog.getPasswordField().getText();
+        }
+
+        String mysqlPass = "";
+        PasswordDialog mysqlDialog = new PasswordDialog();
+
+        mysqlDialog.setTitle("Mysql password");
+        mysqlDialog.setHeaderText("Enter MySQL password:");
+        mysqlDialog.setContentText("Password:");
+
+        Optional<String> mysqlResult = mysqlDialog.showAndWait();
+        if (mysqlResult.isPresent()) {
+            mysqlPass = mysqlDialog.getPasswordField().getText();
+        }
+
+
+        if ("".equals(token) || "".equals(mysqlPass)) {
+            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+            System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+        } else {
+            ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
+
+            //Do Backup
+            String openmrsBackup = "openmrs-backup-tools/openmrs_backup.sh";
+            URL resources = getClass().getClassLoader().getResource(openmrsBackup);
+            if (resource == null) {
+                throw new IllegalArgumentException("file not found!");
+            } else {
+                configuration.setPathToBackupScript(resources.getPath());
+                final PackageBackupService backupService = new PackageBackupService(this, configuration);
+                //upgradeButton.setDisable(true);
+                backupService.start();
+            }
+
+
+        }
+    }
+    @FXML
+    protected void rollbackEMR(ActionEvent actionEvent) throws IOException {
+
+        addMessageToListFlow("Prompting for user authentication");
+        String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+        // user pass
+        String token = "";
+        PasswordDialog dialog = new PasswordDialog();
+
+        dialog.setTitle("Admin password");
+        dialog.setHeaderText("Enter admin password:");
+        dialog.setContentText("Password:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            token = dialog.getPasswordField().getText();
+        }
+
+        String mysqlPass = "";
+        PasswordDialog mysqlDialog = new PasswordDialog();
+
+        mysqlDialog.setTitle("Mysql password");
+        mysqlDialog.setHeaderText("Enter MySQL password:");
+        mysqlDialog.setContentText("Password:");
+
+        Optional<String> mysqlResult = mysqlDialog.showAndWait();
+        if (mysqlResult.isPresent()) {
+            mysqlPass = mysqlDialog.getPasswordField().getText();
+        }
+
+
+        if ("".equals(token) || "".equals(mysqlPass)) {
+            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+            System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+        } else {
+            ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
+
             String rollbacksurl = "rollback-tools/rollback_script.sh";
             URL rollbackresources = getClass().getClassLoader().getResource(rollbacksurl);
             if (resource == null) {
@@ -129,14 +228,14 @@ public class ToolboxController implements Initializable {
             } else {
                 configuration.setPathToRollbackScript(rollbackresources.getPath());
                 final RunRollBackService runRollBackService = new RunRollBackService(this, configuration);
-                upgradeButton.setDisable(true);
+                //upgradeButton.setDisable(true);
                 runRollBackService.start();
             }
 
 
+
         }
     }
-
     /**
      *
      * @param text

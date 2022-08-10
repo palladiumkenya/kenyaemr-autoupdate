@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.example</groupId>
+    <groupId>com.kenyahmis</groupId>
     <artifactId>applicationtoolkit</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>applicationtoolkit</name>
     <packaging>jar</packaging>
 
-    <properties>
+     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
     </properties>
@@ -108,7 +108,6 @@
             <scope>test</scope>
         </dependency>
 
-
     </dependencies>
 
     <build>
@@ -131,6 +130,7 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+
            <!-- <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
