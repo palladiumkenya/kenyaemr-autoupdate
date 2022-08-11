@@ -49,6 +49,17 @@ public class ToolboxController implements Initializable {
 
     @FXML
     private ListView listMsgs;
+    @FXML
+    private Label lblFooter;
+    @FXML
+    private Label lblEMR;
+
+    String deploymentdir ="";
+    String remoteprops ="";
+    String tookitversion="";
+    String remoteurl="";
+    String emrversion="";
+    String remoteproperties="";
 
     public String emrurl="";
    // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
@@ -69,6 +80,7 @@ public class ToolboxController implements Initializable {
         prop.load(propresources.openStream());
         System.out.println(prop.getProperty("toolkit.emrurl"));
         System.out.println(prop.getProperty("toolkit.ehtsurl"));
+        System.out.println(prop.getProperty("toolkit.kenyaveron"));
         /*URL fxmlLocation = getClass().getResource("/hello-view.fxml");
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
         loader.load();*/
@@ -93,7 +105,7 @@ public class ToolboxController implements Initializable {
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
 
-        String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-releases/releases/download/v51/KenyaEMR_18.2.0.zip";
+        String downloadUrl = emrurl;// "https://github.com/palladiumkenya/kenyahmis-releases/releases/download/v51/KenyaEMR_18.2.0.zip";
 
       //  String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
        // String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-releases/releases/latest";
@@ -302,9 +314,46 @@ public class ToolboxController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Check remote application.properties
+        URL propresources = getClass().getClassLoader().getResource("application.properties");
+        Properties prop=new Properties();
+        try {
+            prop.load(propresources.openStream());
+
+        deploymentdir = prop.getProperty("toolkit.deploymentdir");
+        remoteprops =prop.getProperty("toolkit.localproperties");
+        tookitversion=prop.getProperty("toolkit.version");
+        remoteurl=prop.getProperty("toolkit.emrurl");
+        emrversion=prop.getProperty("toolkit.emrversion");
+        remoteproperties=prop.getProperty("toolkit.remoteproperties");
+
+        //lblFooter.setText("Rugutes");
+
+        System.out.println(prop.getProperty("toolkit.emrurl"));
+        System.out.println(prop.getProperty("toolkit.emrurl"));
+
+        File f = new File(deploymentdir);
+        if(f.exists() && f.isFile()) {
+            System.out.println("Iko hapa sasa");
+            //compare the two files
+            //
+        }else{
+            System.out.println("hakuna hapa sasa");
+            File theDir = new File(deploymentdir);
+            if (!theDir.exists()){
+                theDir.mkdirs();
+            }
+
+        }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //End of check
 
         msgData = FXCollections.observableArrayList();
         listMsgs.setItems(msgData);
+        lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);
+        lblEMR.setText("KenyaEMR Version ("+ emrversion +")");
 
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
         if (folder.exists() && folder.isDirectory()) {
