@@ -92,3 +92,13 @@
     -fx-fill: white;
     -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
 }
+.post-container{
+margin:20px 20px 0 0;
+overflow:auto
+}
+.myLink{
+   -fx-text-fill: blue;
+       }
+.myLink:hover{
+   -fx-text-fill: #606060;
+        }

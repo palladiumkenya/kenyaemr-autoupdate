@@ -1,0 +1,134 @@
+{
+  "form:contact": {
+    "cht.hmislocal.org/medic": "IY2g0CIAu/DHsSVcRSkraw==",
+    "surveillance-covid19.health.go.ke/medic": "IY2g0CIAu/DHsSVcRSkraw=="
+  },
+  "form:contact_follow_up": {
+    "cht.hmislocal.org/medic": "a7Ws/XxVY/HYcsHkhdyhDg==",
+    "surveillance-covid19.health.go.ke/medic": "a7Ws/XxVY/HYcsHkhdyhDg=="
+  },
+  "form:hiv_treatment_verification": {
+    "cht.hmislocal.org/medic": "gRVXrO3+Yk+z62o6dDx2OQ==",
+    "surveillance-covid19.health.go.ke/medic": "gRVXrO3+Yk+z62o6dDx2OQ=="
+  },
+  "form:hts_client_tracing": {
+    "cht.hmislocal.org/medic": "YFkl009EjBIPCwhXuy4GHQ==",
+    "surveillance-covid19.health.go.ke/medic": "YFkl009EjBIPCwhXuy4GHQ=="
+  },
+  "form:hts_initial_test": {
+    "cht.hmislocal.org/medic": "9btcGLbHTdalEOhKhNpSYQ==",
+    "surveillance-covid19.health.go.ke/medic": "9btcGLbHTdalEOhKhNpSYQ=="
+  },
+  "form:hts_linkage": {
+    "cht.hmislocal.org/medic": "7lG7qYrZimIz+nKgLbTtGQ==",
+    "surveillance-covid19.health.go.ke/medic": "7lG7qYrZimIz+nKgLbTtGQ=="
+  },
+  "form:hts_referral": {
+    "cht.hmislocal.org/medic": "m+h/6S3dNVwv/0uYVJlhTw==",
+    "surveillance-covid19.health.go.ke/medic": "m+h/6S3dNVwv/0uYVJlhTw=="
+  },
+  "form:hts_retest_test": {
+    "cht.hmislocal.org/medic": "YQ6sbOYuT/VZ6Q8+lMMS1w==",
+    "surveillance-covid19.health.go.ke/medic": "YQ6sbOYuT/VZ6Q8+lMMS1w=="
+  },
+  "form:hts_screening": {
+    "cht.hmislocal.org/medic": "WWCJz5EK16zkRfWRQcH1wg==",
+    "surveillance-covid19.health.go.ke/medic": "WWCJz5EK16zkRfWRQcH1wg=="
+  },
+  "form:peer_calendar": {
+    "cht.hmislocal.org/medic": "mVoPDqJJUeNgOEHOQu2akQ==",
+    "surveillance-covid19.health.go.ke/medic": "mVoPDqJJUeNgOEHOQu2akQ=="
+  },
+  "form:prep_treatment_verification": {
+    "cht.hmislocal.org/medic": "EV3Do34ug1caazBFkAkqHg==",
+    "surveillance-covid19.health.go.ke/medic": "EV3Do34ug1caazBFkAkqHg=="
+  },
+  "form:tracking": {
+    "cht.hmislocal.org/medic": "HC2GLPpiJD5hgBZ4M3F/pw==",
+    "surveillance-covid19.health.go.ke/medic": "HC2GLPpiJD5hgBZ4M3F/pw=="
+  },
+  "form:contact:clinic:create": {
+    "cht.hmislocal.org/medic": "8vjM0gGFtqmkpK6Mn2ccNw==",
+    "surveillance-covid19.health.go.ke/medic": "8vjM0gGFtqmkpK6Mn2ccNw=="
+  },
+  "form:contact:clinic:edit": {
+    "cht.hmislocal.org/medic": "UYMvLEf3YOcalAwMkD92QQ==",
+    "surveillance-covid19.health.go.ke/medic": "UYMvLEf3YOcalAwMkD92QQ=="
+  },
+  "form:contact:district_hospital:create": {
+    "cht.hmislocal.org/medic": "ikU8+2NkA/H6Fd/xd5GqkQ==",
+    "surveillance-covid19.health.go.ke/medic": "ikU8+2NkA/H6Fd/xd5GqkQ=="
+  },
+  "form:contact:district_hospital:edit": {
+    "cht.hmislocal.org/medic": "3fVFZRNK3g1ula2xTzp3jA==",
+    "surveillance-covid19.health.go.ke/medic": "3fVFZRNK3g1ula2xTzp3jA=="
+  },
+  "form:contact:facility_employee:create": {
+    "cht.hmislocal.org/medic": "lSvNgP+Sojn2NJ/TszMuiw==",
+    "surveillance-covid19.health.go.ke/medic": "lSvNgP+Sojn2NJ/TszMuiw=="
+  },
+  "form:contact:facility_employee:edit": {
+    "cht.hmislocal.org/medic": "lSvNgP+Sojn2NJ/TszMuiw==",
+    "surveillance-covid19.health.go.ke/medic": "lSvNgP+Sojn2NJ/TszMuiw=="
+  },
+  "form:contact:health_center:create": {
+    "cht.hmislocal.org/medic": "pug3Pt/dJkpM0K9fXCs52Q==",
+    "surveillance-covid19.health.go.ke/medic": "pug3Pt/dJkpM0K9fXCs52Q=="
+  },
+  "form:contact:health_center:edit": {
+    "cht.hmislocal.org/medic": "5jCMocpeA9Oa6hXlcwtzPQ==",
+    "surveillance-covid19.health.go.ke/medic": "5jCMocpeA9Oa6hXlcwtzPQ=="
+  },
+  "form:contact:health_facility:create": {
+    "cht.hmislocal.org/medic": "8mOb1pLNHod8qQzWPj06pg==",
+    "surveillance-covid19.health.go.ke/medic": "8mOb1pLNHod8qQzWPj06pg=="
+  },
+  "form:contact:health_facility:edit": {
+    "cht.hmislocal.org/medic": "xhLaRgYS686AjTrkrCIUgA==",
+    "surveillance-covid19.health.go.ke/medic": "xhLaRgYS686AjTrkrCIUgA=="
+  },
+  "form:contact:patient_contact:create": {
+    "cht.hmislocal.org/medic": "o94esNqKTo0DYnlqoPv7bA==",
+    "surveillance-covid19.health.go.ke/medic": "o94esNqKTo0DYnlqoPv7bA=="
+  },
+  "form:contact:patient_contact:edit": {
+    "cht.hmislocal.org/medic": "VelQtupsjQ+MRfG7lOyjOw==",
+    "surveillance-covid19.health.go.ke/medic": "VelQtupsjQ+MRfG7lOyjOw=="
+  },
+  "form:contact:patient_support_group:create": {
+    "cht.hmislocal.org/medic": "IbKSrf+iE1OuvHDYCU2vcQ==",
+    "surveillance-covid19.health.go.ke/medic": "IbKSrf+iE1OuvHDYCU2vcQ=="
+  },
+  "form:contact:patient_support_group:edit": {
+    "cht.hmislocal.org/medic": "Ki2Y/nOIBeO3LEkyTpV8hA==",
+    "surveillance-covid19.health.go.ke/medic": "Ki2Y/nOIBeO3LEkyTpV8hA=="
+  },
+  "form:contact:person:create": {
+    "cht.hmislocal.org/medic": "vuG0TBj1ZTl1aNxv3B1GSg==",
+    "surveillance-covid19.health.go.ke/medic": "vuG0TBj1ZTl1aNxv3B1GSg=="
+  },
+  "form:contact:person:edit": {
+    "cht.hmislocal.org/medic": "hGRV1rpuqli7YXGB95XwpA==",
+    "surveillance-covid19.health.go.ke/medic": "hGRV1rpuqli7YXGB95XwpA=="
+  },
+  "form:contact:universal_client:create": {
+    "cht.hmislocal.org/medic": "UdwOAi+i2yv43tk1ylbOPw==",
+    "surveillance-covid19.health.go.ke/medic": "UdwOAi+i2yv43tk1ylbOPw=="
+  },
+  "form:contact:universal_client:edit": {
+    "cht.hmislocal.org/medic": "fG37SYJ4RtaQoFiIN75V8g==",
+    "surveillance-covid19.health.go.ke/medic": "fG37SYJ4RtaQoFiIN75V8g=="
+  },
+  "form:contact:universal_client_3.10.x:create": {
+    "cht.hmislocal.org/medic": "E7AEB+wbt+baklmH9pai0g==",
+    "surveillance-covid19.health.go.ke/medic": "E7AEB+wbt+baklmH9pai0g=="
+  },
+  "resources": {
+    "cht.hmislocal.org/medic": "7pXnv/RsNHzKRbR62LRIwg==",
+    "surveillance-covid19.health.go.ke/medic": "7pXnv/RsNHzKRbR62LRIwg=="
+  },
+  "messages-en": {
+    "cht.hmislocal.org/medic": "YRG5mS0eF2Kyaw2d8IQ4Tg==",
+    "surveillance-covid19.health.go.ke/medic": "YRG5mS0eF2Kyaw2d8IQ4Tg=="
+  }
+}
