@@ -1,9 +1,9 @@
 package com.kenyahmis.applicationtoolkit.Task;
 
 import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
-import com.kenyahmis.applicationtoolkit.ToolboxController;
-import com.kenyahmis.applicationtoolkit.ToolboxServiceConfiguration;
-import com.kenyahmis.applicationtoolkit.ToolkitUtils;
+import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
+import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
 import javafx.concurrent.Task;
 
 import java.io.FileOutputStream;

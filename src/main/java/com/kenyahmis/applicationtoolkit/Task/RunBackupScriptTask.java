@@ -1,7 +1,7 @@
 package com.kenyahmis.applicationtoolkit.Task;
 
-import com.kenyahmis.applicationtoolkit.ToolboxController;
-import com.kenyahmis.applicationtoolkit.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
+import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 

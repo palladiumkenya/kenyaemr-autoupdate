@@ -5,7 +5,6 @@ module com.kenyahmis.applicationtoolkit {
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
-    requires validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
@@ -17,4 +16,8 @@ module com.kenyahmis.applicationtoolkit {
     opens com.kenyahmis.applicationtoolkit.Services to javafx.fxml;
     exports com.kenyahmis.applicationtoolkit.Task;
     opens com.kenyahmis.applicationtoolkit.Task to javafx.fxml;
+    exports com.kenyahmis.applicationtoolkit.utils;
+    opens com.kenyahmis.applicationtoolkit.utils to javafx.fxml;
+    exports com.kenyahmis.applicationtoolkit.controllers;
+    opens com.kenyahmis.applicationtoolkit.controllers to javafx.fxml;
 }

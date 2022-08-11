@@ -1,14 +1,20 @@
-package com.kenyahmis.applicationtoolkit;
+package com.kenyahmis.applicationtoolkit.controllers;
 
+import com.kenyahmis.applicationtoolkit.utils.PasswordDialog;
 import com.kenyahmis.applicationtoolkit.Services.PackageBackupService;
 import com.kenyahmis.applicationtoolkit.Services.PackageDownloadService;
 import com.kenyahmis.applicationtoolkit.Services.RunRollBackService;
+import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -16,6 +22,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +32,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 /**
@@ -40,8 +50,7 @@ public class ToolboxController implements Initializable {
     @FXML
     private ListView listMsgs;
 
-   // @Value("${toolkit.emrurl}")
-    public String trascriptpath;
+    public String emrurl="";
    // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
    ClassLoader resource = getClass().getClassLoader();
 
@@ -52,7 +61,33 @@ public class ToolboxController implements Initializable {
         welcomeText.setText("HMIS Application Toolkit");
     }
     @FXML
+    protected void downloadurls(ActionEvent actionEvent) throws IOException {
+
+
+        URL propresources = getClass().getClassLoader().getResource("application.properties");
+        Properties prop = new Properties();
+        prop.load(propresources.openStream());
+        System.out.println(prop.getProperty("toolkit.emrurl"));
+        System.out.println(prop.getProperty("toolkit.ehtsurl"));
+        /*URL fxmlLocation = getClass().getResource("/hello-view.fxml");
+        FXMLLoader loader = new FXMLLoader(fxmlLocation);
+        loader.load();*/
+
+
+     //   ToolboxPropsController toolboxPropsController = new ToolboxPropsController();
+      //  toolboxPropsController.start();
+    }
+
+    @FXML
     protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
+
+        URL propresources = getClass().getClassLoader().getResource("application.properties");
+        Properties prop=new Properties();
+        prop.load(propresources.openStream());
+
+        System.out.println(prop.getProperty("toolkit.emrurl"));
+        System.out.println(prop.getProperty("toolkit.emrurl"));
+
 
 
         addMessageToListFlow("Prompting for user authentication");

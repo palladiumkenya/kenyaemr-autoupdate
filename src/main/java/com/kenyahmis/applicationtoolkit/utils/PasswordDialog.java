@@ -1,4 +1,4 @@
-package com.kenyahmis.applicationtoolkit;
+package com.kenyahmis.applicationtoolkit.utils;
 
 import javafx.application.Platform;
 import javafx.scene.control.ButtonType;

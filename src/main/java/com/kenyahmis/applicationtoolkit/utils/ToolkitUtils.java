@@ -1,4 +1,4 @@
-package com.kenyahmis.applicationtoolkit;
+package com.kenyahmis.applicationtoolkit.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

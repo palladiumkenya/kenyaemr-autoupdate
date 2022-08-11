@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="530.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kenyahmis.applicationtoolkit.ToolboxController">
+<AnchorPane prefHeight="530.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kenyahmis.applicationtoolkit.controllers.ToolboxController">
    <children>
       <SplitPane layoutX="14.0" layoutY="130.0" prefHeight="200.0" prefWidth="240.0" />
       <ImageView fitHeight="70" fitWidth="140" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">

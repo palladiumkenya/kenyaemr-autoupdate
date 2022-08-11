@@ -1,14 +1,13 @@
 package com.kenyahmis.applicationtoolkit.Task;
 
-import com.kenyahmis.applicationtoolkit.ToolboxController;
-import com.kenyahmis.applicationtoolkit.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
+import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
