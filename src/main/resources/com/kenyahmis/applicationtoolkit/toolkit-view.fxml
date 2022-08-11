@@ -68,16 +68,14 @@
 
                             <Separator />
                               <HBox>
-
                                 <Separator />
                                 <Label />
                                   <Hyperlink onAction="#backupEMR" text="Backup"/>
-
                                <!--   <Button id="install-emr" fx:id="backButton" onAction="#backupEMR" text="Backup" />-->
                                 <Separator />
                                 <Separator />
                                 <Label />
-                                 <Hyperlink onAction="#downloadEmrUpgrade" text="Upgrade" styleClass="myLink"/>
+                                 <Hyperlink onAction="#downloadEmrUpgrade" text="Upgrade" /> <!--styleClass="myLink"-->
                                 <!--  <Button id="install-emr" fx:id="upgradeButton" onAction="#downloadEmrUpgrade" text="Upgrade" />-->
                                 <Separator />
                                 <Separator />
@@ -91,9 +89,6 @@
                         </VBox>
 
                         <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" />
-
-
-
             <!--<TextFlow  fx:id="upgradeProgress"></TextFlow>-->
         <!--    <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" /> -->
         </VBox>
