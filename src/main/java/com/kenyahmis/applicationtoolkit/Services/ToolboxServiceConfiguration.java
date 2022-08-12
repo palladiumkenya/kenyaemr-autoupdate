@@ -18,6 +18,8 @@ public class ToolboxServiceConfiguration {
 
     private String pathToRollsetupScript; // a concatenation of BaseDire,Resources, and openmrs_backup.sh
 
+    private  String remoteproperties;
+
     private URL packageDownloadUrl;
     private String packageUnzipDir;
 
@@ -96,5 +98,13 @@ public class ToolboxServiceConfiguration {
 
     public void setPathToRollsetupScript(String pathToRollsetupScript) {
         this.pathToRollsetupScript = pathToRollsetupScript;
+    }
+
+    public String getRemoteproperties() {
+        return remoteproperties;
+    }
+
+    public void setRemoteproperties(String remoteproperties) {
+        this.remoteproperties = remoteproperties;
     }
 }

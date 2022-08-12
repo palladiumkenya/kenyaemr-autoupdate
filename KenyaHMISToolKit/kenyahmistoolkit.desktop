@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=KenyaHMIS Toolkit
+Comment=KenyaHMIS
+Exec=/usr/local/bin
+Icon=/usr/share/kenyahmistoolkit/kenyahmistoolkit.jpeg
+Terminal=false
+Type=Application
+Categories=Game
+StartupNotify=true

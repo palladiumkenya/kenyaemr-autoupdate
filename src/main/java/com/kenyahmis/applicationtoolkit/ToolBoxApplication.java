@@ -2,6 +2,7 @@ package com.kenyahmis.applicationtoolkit;
 
 import com.kenyahmis.applicationtoolkit.Services.PackageBackupService;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.Task.UpdateScheduler;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
+import java.util.Timer;
 
 /**
  * Designed to simplify application(s) setup process
@@ -41,7 +43,13 @@ public class ToolBoxApplication extends Application {
         stage.show();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        Timer t = new Timer();
+        UpdateScheduler updateScheduler = new UpdateScheduler();
+        // This task is scheduled to run every 10 seconds
+
+        t.scheduleAtFixedRate(updateScheduler, 0, 10000);
         launch();
     }
 }

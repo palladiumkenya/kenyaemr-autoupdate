@@ -58,7 +58,7 @@ public class ToolboxController implements Initializable {
     String tookitversion="";
     String remoteurl="";
     String emrversion="";
-    String remoteproperties="";
+   // String remoteproperties="";
 
    // public String emrurl="";
    // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
@@ -71,24 +71,10 @@ public class ToolboxController implements Initializable {
         welcomeText.setText("HMIS Application Toolkit");
     }
     @FXML
-    protected void downloadurls(ActionEvent actionEvent) throws IOException {
-
-        URL propresources = getClass().getClassLoader().getResource("application.properties");
-        Properties prop = new Properties();
-        prop.load(propresources.openStream());
-        System.out.println(prop.getProperty("toolkit.emrurl"));
-        System.out.println(prop.getProperty("toolkit.ehtsurl"));
-        System.out.println(prop.getProperty("toolkit.kenyaveron"));
-
-    }
-
-    @FXML
     protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-        String downloadUrl = remoteurl;//  "https://github.com/palladiumkenya/kenyahmis-releases/releases/download/v51/KenyaEMR_18.2.0.zip";
-       //  String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
-       // String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-releases/releases/latest";
+        String downloadUrl = remoteurl;
 
         if (baseDir.equals("") || downloadUrl.equals("")) {
             // exit with message
@@ -151,8 +137,6 @@ public class ToolboxController implements Initializable {
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
             //upgradeButton.setDisable(true);
             service.start();
-
-
 
         }
     }
@@ -294,6 +278,8 @@ public class ToolboxController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Check remote application.properties
+        ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration("","");
+
         URL propresources = getClass().getClassLoader().getResource("application.properties");
         Properties prop=new Properties();
 
@@ -308,10 +294,9 @@ public class ToolboxController implements Initializable {
         tookitversion=prop.getProperty("toolkit.version");
         remoteurl=prop.getProperty("toolkit.emrurl");
         emrversion=prop.getProperty("toolkit.emrversion");
-        remoteproperties=prop.getProperty("toolkit.remoteproperties");
+        configuration.setRemoteproperties(prop.getProperty("toolkit.remoteproperties"));
 
-        System.out.println(prop.getProperty("toolkit.emrurl"));
-        System.out.println(prop.getProperty("toolkit.emrurl"));
+        System.out.println("Valuess "+configuration.getRemoteproperties());
 
         File f = new File(deploymentdir);
         if(f.exists() && f.isFile()) {
@@ -336,12 +321,11 @@ public class ToolboxController implements Initializable {
                         props.setProperty("toolkit.version",tookitversion);
                         props.setProperty("toolkit.emrurl",remoteurl);
                         props.setProperty("toolkit.emrversion",emrversion);
-                        props.setProperty("toolkit.remoteproperties",remoteproperties);
+                        props.setProperty("toolkit.remoteproperties",configuration.getRemoteproperties());
 
                         // save properties to project root folder
                         props.store(output, null);
 
-                        System.out.println(prop+" Done");
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     } catch (IOException e) {

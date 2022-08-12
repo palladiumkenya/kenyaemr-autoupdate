@@ -27,7 +27,7 @@
                     </ImageView>
             </left>
             <right>
-                <Button id="settings" text="Settings" onAction="#downloadurls" >
+                <Button id="settings" text="Settings">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24" pickOnBounds="true" preserveRatio="true">
                             <image >
