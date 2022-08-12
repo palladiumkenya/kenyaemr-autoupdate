@@ -16,6 +16,8 @@ public class ToolboxServiceConfiguration {
     private String pathToBackupScript; // a concatenation of BaseDire,Resources, and openmrs_backup.sh
     private String pathToRollbackScript; // a concatenation of BaseDire,Resources, and openmrs_backup.sh
 
+    private String pathToRollsetupScript; // a concatenation of BaseDire,Resources, and openmrs_backup.sh
+
     private URL packageDownloadUrl;
     private String packageUnzipDir;
 
@@ -86,5 +88,13 @@ public class ToolboxServiceConfiguration {
 
     public void setPathToRollbackScript(String pathToRollbackScript) {
         this.pathToRollbackScript = pathToRollbackScript;
+    }
+
+    public String getPathToRollsetupScript() {
+        return pathToRollsetupScript;
+    }
+
+    public void setPathToRollsetupScript(String pathToRollsetupScript) {
+        this.pathToRollsetupScript = pathToRollsetupScript;
     }
 }

@@ -26,8 +26,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,8 +48,19 @@ public class ToolboxController implements Initializable {
 
     @FXML
     private ListView listMsgs;
+    @FXML
+    private Label lblFooter;
+    @FXML
+    private Label lblEMR;
 
-    public String emrurl="";
+    String deploymentdir ="";
+    String localproperties ="";
+    String tookitversion="";
+    String remoteurl="";
+    String emrversion="";
+    String remoteproperties="";
+
+   // public String emrurl="";
    // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
    ClassLoader resource = getClass().getClassLoader();
 
@@ -63,46 +73,27 @@ public class ToolboxController implements Initializable {
     @FXML
     protected void downloadurls(ActionEvent actionEvent) throws IOException {
 
-
         URL propresources = getClass().getClassLoader().getResource("application.properties");
         Properties prop = new Properties();
         prop.load(propresources.openStream());
         System.out.println(prop.getProperty("toolkit.emrurl"));
         System.out.println(prop.getProperty("toolkit.ehtsurl"));
-        /*URL fxmlLocation = getClass().getResource("/hello-view.fxml");
-        FXMLLoader loader = new FXMLLoader(fxmlLocation);
-        loader.load();*/
+        System.out.println(prop.getProperty("toolkit.kenyaveron"));
 
-
-     //   ToolboxPropsController toolboxPropsController = new ToolboxPropsController();
-      //  toolboxPropsController.start();
     }
 
     @FXML
     protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
-
-        URL propresources = getClass().getClassLoader().getResource("application.properties");
-        Properties prop=new Properties();
-        prop.load(propresources.openStream());
-
-        System.out.println(prop.getProperty("toolkit.emrurl"));
-        System.out.println(prop.getProperty("toolkit.emrurl"));
-
-
-
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-
-        String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-releases/releases/download/v51/KenyaEMR_18.2.0.zip";
-
-      //  String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
+        String downloadUrl = remoteurl;//  "https://github.com/palladiumkenya/kenyahmis-releases/releases/download/v51/KenyaEMR_18.2.0.zip";
+       //  String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
        // String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-releases/releases/latest";
 
         if (baseDir.equals("") || downloadUrl.equals("")) {
             // exit with message
         }
         URL url = new URL(downloadUrl);
-
         Path fileName = Paths.get(downloadUrl);
         String downloadedFileName = fileName.getFileName().toString() ;
         String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
@@ -302,9 +293,70 @@ public class ToolboxController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Check remote application.properties
+        URL propresources = getClass().getClassLoader().getResource("application.properties");
+        Properties prop=new Properties();
+
+        try {
+            prop.load(propresources.openStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        deploymentdir = prop.getProperty("toolkit.deploymentdir");
+        localproperties =prop.getProperty("toolkit.localproperties");
+        tookitversion=prop.getProperty("toolkit.version");
+        remoteurl=prop.getProperty("toolkit.emrurl");
+        emrversion=prop.getProperty("toolkit.emrversion");
+        remoteproperties=prop.getProperty("toolkit.remoteproperties");
+
+        System.out.println(prop.getProperty("toolkit.emrurl"));
+        System.out.println(prop.getProperty("toolkit.emrurl"));
+
+        File f = new File(deploymentdir);
+        if(f.exists() && f.isFile()) {
+            System.out.println("Iko hapa sasa");
+            //compare the two files
+            //
+        }else{
+            System.out.println("hakuna hapa sasa");
+            File theDir = new File(deploymentdir);
+            if (!theDir.exists()){
+                theDir.mkdirs();
+            }
+            else{
+                File propsfile = new File(localproperties);
+                if (!propsfile.exists()){
+                    OutputStream output = null;
+                    try {
+                        output = new FileOutputStream(localproperties);
+                        Properties props = new Properties();
+                        // set the properties value
+                        props.setProperty("toolkit.localproperties",localproperties);
+                        props.setProperty("toolkit.version",tookitversion);
+                        props.setProperty("toolkit.emrurl",remoteurl);
+                        props.setProperty("toolkit.emrversion",emrversion);
+                        props.setProperty("toolkit.remoteproperties",remoteproperties);
+
+                        // save properties to project root folder
+                        props.store(output, null);
+
+                        System.out.println(prop+" Done");
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+
+            }
+        //End of check
 
         msgData = FXCollections.observableArrayList();
         listMsgs.setItems(msgData);
+        lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);
+        lblEMR.setText("KenyaEMR Version ("+ emrversion +")");
 
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
         if (folder.exists() && folder.isDirectory()) {
@@ -313,21 +365,7 @@ public class ToolboxController implements Initializable {
         } else {
             addMessageToListFlow("App directories not found. Please create them and continue");
 
-            //TODO: create directories on startup
-            /*try {
-                Files.createDirectory(Paths.get(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY),
-                        PosixFilePermissions.asFileAttribute(
-                                PosixFilePermissions.fromString("rwxr-x---")
-                        ));
-                addMessageToListFlow("Successfully created app directory");
-
-            } catch (IOException e) {
-                addMessageToListFlow("An error occurred when creating app directory. Error: " + e.getMessage());
-
-                throw new RuntimeException(e);
-            }*/
-
         }
-
+        }
     }
 }
