@@ -2,6 +2,7 @@ package com.kenyahmis.applicationtoolkit.Task;
 
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
+import com.kenyahmis.applicationtoolkit.utils.InfoAlerts;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class UpdateScheduler extends TimerTask {
         }
         configuration.setRemoteproperties(props.getProperty("toolkit.remoteproperties"));
         String propFileName = configuration.getRemoteproperties();
-
+        //
 
         //Check Remote application.properties
         System.out.println("Remote props "+propFileName);
@@ -46,6 +47,11 @@ public class UpdateScheduler extends TimerTask {
         }
         System.out.println("Local Version "+ localversion+" remote version "+remoteVersion);
         //Some stuffs
+
+        InfoAlerts infoAlerts = new InfoAlerts();
+       // infoAlerts.showAlertWithHeaderText();
+
+        //Check the data
     }
 
     @Override

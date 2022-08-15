@@ -49,7 +49,7 @@
     <center>
         <ScrollPane fx:id="sasd">
         <VBox styleClass="content-section">
-                    <VBox>
+                    <VBox maxWidth="390">
                         <children>
                             <ImageView fitHeight="70" fitWidth="140" pickOnBounds="true" preserveRatio="true">
                                 <image>
@@ -59,8 +59,8 @@
                             <Label id="content-header" text="KenyaEMR Version (1.8.2)"  fx:id="lblEMR"/>
                             <Label text="KenyaEMR" />
                             <Separator />
-                            <Label id="content">
-                                <text>
+                            <Label id="content" fx:id="txtdes" wrapText="true">
+                                <text >
                                     KenyaEMR is an open-source EMR system used for patient management
                                 </text>
                             </Label>
