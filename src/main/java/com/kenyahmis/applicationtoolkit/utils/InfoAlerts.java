@@ -13,7 +13,13 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class InfoAlerts {
+public class InfoAlerts extends Alert{
+
+    public InfoAlerts(AlertType alertType, String s, ButtonType... buttonTypes) {
+        super(alertType, s, buttonTypes);
+    }
+
+
 
     // Show a Information Alert with header Text
     public void showAlertWithHeaderText() {

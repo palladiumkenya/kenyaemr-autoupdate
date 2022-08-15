@@ -19,36 +19,35 @@ public class UpdateScheduler extends TimerTask {
     public UpdateScheduler() throws IOException {
         ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration("","");
         URL propresources = getClass().getClassLoader().getResource("application.properties");
-
         //Check local application.properties
         Properties props=new Properties();
         try {
             props.load(propresources.openStream());
             localversion= props.getProperty("toolkit.emrversion");
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         configuration.setRemoteproperties(props.getProperty("toolkit.remoteproperties"));
         String propFileName = configuration.getRemoteproperties();
-        //
-
         //Check Remote application.properties
         System.out.println("Remote props "+propFileName);
         URL u = new URL(propFileName);
         InputStream inputStream = u.openStream();
+
         Properties prop=new Properties();
         if (inputStream != null) {
-            prop.load(inputStream);
-            remoteVersion = prop.getProperty("toolkit.emrversion");
 
+            prop.load(inputStream);
+            System.out.println(prop);
+
+            remoteVersion = prop.getProperty("toolkit.emrversion");
         } else {
             throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
         }
         System.out.println("Local Version "+ localversion+" remote version "+remoteVersion);
         //Some stuffs
 
-        InfoAlerts infoAlerts = new InfoAlerts();
+       // InfoAlerts infoAlerts = new InfoAlerts();
        // infoAlerts.showAlertWithHeaderText();
 
         //Check the data
