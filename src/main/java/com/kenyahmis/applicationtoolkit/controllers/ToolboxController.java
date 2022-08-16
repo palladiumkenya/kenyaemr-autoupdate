@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,37 +59,21 @@ public class ToolboxController implements Initializable {
     String tookitversion="";
     String remoteurl="";
     String emrversion="";
-    String remoteproperties="";
-
+   // String remoteproperties="";
    // public String emrurl="";
    // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
    ClassLoader resource = getClass().getClassLoader();
-
-
     private ObservableList<String> msgData;
     @FXML
     protected void onHelloButtonClick() {
         welcomeText.setText("HMIS Application Toolkit");
     }
     @FXML
-    protected void downloadurls(ActionEvent actionEvent) throws IOException {
-
-        URL propresources = getClass().getClassLoader().getResource("application.properties");
-        Properties prop = new Properties();
-        prop.load(propresources.openStream());
-        System.out.println(prop.getProperty("toolkit.emrurl"));
-        System.out.println(prop.getProperty("toolkit.ehtsurl"));
-        System.out.println(prop.getProperty("toolkit.kenyaveron"));
-
-    }
-
-    @FXML
     protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-        String downloadUrl = remoteurl;//  "https://github.com/palladiumkenya/kenyahmis-releases/releases/download/v51/KenyaEMR_18.2.0.zip";
-       //  String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-kenyaemr-autoupdate/releases/download/v18.2.1/KenyaEMR_18.2.1.zip";
-       // String downloadUrl = "https://github.com/palladiumkenya/kenyahmis-releases/releases/latest";
+   //Add here
+        String downloadUrl = remoteurl;
 
         if (baseDir.equals("") || downloadUrl.equals("")) {
             // exit with message
@@ -122,8 +107,6 @@ public class ToolboxController implements Initializable {
         if (mysqlResult.isPresent()) {
             mysqlPass = mysqlDialog.getPasswordField().getText();
         }
-
-
         if ("".equals(token) || "".equals(mysqlPass)) {
             addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
             System.out.println("Authorization required to proceed. Please provide details to proceed ");
@@ -133,7 +116,6 @@ public class ToolboxController implements Initializable {
             configuration.setPackageDownloadUrl(url);
             configuration.setPackageUnzipDir(baseDir + downloadedFileName);
             configuration.setBaseDir(baseDir);
-
             //Do Backup
             String openmrsBackup = "openmrs-backup-tools/openmrs_backup.sh";
             URL resources = getClass().getClassLoader().getResource(openmrsBackup);
@@ -151,8 +133,6 @@ public class ToolboxController implements Initializable {
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
             //upgradeButton.setDisable(true);
             service.start();
-
-
 
         }
     }
@@ -173,10 +153,8 @@ public class ToolboxController implements Initializable {
         if (result.isPresent()) {
             token = dialog.getPasswordField().getText();
         }
-
         String mysqlPass = "";
         PasswordDialog mysqlDialog = new PasswordDialog();
-
         mysqlDialog.setTitle("Mysql password");
         mysqlDialog.setHeaderText("Enter MySQL password:");
         mysqlDialog.setContentText("Password:");
@@ -185,15 +163,12 @@ public class ToolboxController implements Initializable {
         if (mysqlResult.isPresent()) {
             mysqlPass = mysqlDialog.getPasswordField().getText();
         }
-
-
         if ("".equals(token) || "".equals(mysqlPass)) {
             addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
             System.out.println("Authorization required to proceed. Please provide details to proceed ");
 
         } else {
             ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
-
             //Do Backup
             String openmrsBackup = "openmrs-backup-tools/openmrs_backup.sh";
             URL resources = getClass().getClassLoader().getResource(openmrsBackup);
@@ -205,8 +180,6 @@ public class ToolboxController implements Initializable {
                 //upgradeButton.setDisable(true);
                 backupService.start();
             }
-
-
         }
     }
     @FXML
@@ -238,15 +211,12 @@ public class ToolboxController implements Initializable {
         if (mysqlResult.isPresent()) {
             mysqlPass = mysqlDialog.getPasswordField().getText();
         }
-
-
         if ("".equals(token) || "".equals(mysqlPass)) {
             addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
             System.out.println("Authorization required to proceed. Please provide details to proceed ");
 
         } else {
             ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
-
             String rollbacksurl = "rollback-tools/rollback_script.sh";
             URL rollbackresources = getClass().getClassLoader().getResource(rollbacksurl);
             if (resource == null) {
@@ -257,9 +227,6 @@ public class ToolboxController implements Initializable {
                 //upgradeButton.setDisable(true);
                 runRollBackService.start();
             }
-
-
-
         }
     }
     /**
@@ -290,36 +257,64 @@ public class ToolboxController implements Initializable {
         }
 
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Check remote application.properties
+        ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration("","");
+        //Remote Properties
+
+
+
+        //Local Properties
         URL propresources = getClass().getClassLoader().getResource("application.properties");
         Properties prop=new Properties();
-
         try {
             prop.load(propresources.openStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
         deploymentdir = prop.getProperty("toolkit.deploymentdir");
         localproperties =prop.getProperty("toolkit.localproperties");
         tookitversion=prop.getProperty("toolkit.version");
-        remoteurl=prop.getProperty("toolkit.emrurl");
+       // remoteurl=prop.getProperty("toolkit.emrurl");
         emrversion=prop.getProperty("toolkit.emrversion");
-        remoteproperties=prop.getProperty("toolkit.remoteproperties");
+        configuration.setRemoteproperties(prop.getProperty("toolkit.remoteproperties"));
+      //  System.out.println("Valuess "+configuration.getRemoteproperties());
+        //Remote Properties
+        String propFileName = configuration.getRemoteproperties();
 
-        System.out.println(prop.getProperty("toolkit.emrurl"));
-        System.out.println(prop.getProperty("toolkit.emrurl"));
+        //Check Remote application.properties
+        System.out.println("Remote props "+propFileName);
+        URL u = null;
+        try {
+            u = new URL(propFileName);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        InputStream inputStream = null;
+        try {
+            inputStream = u.openStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Properties remoteprop=new Properties();
+        if (inputStream != null) {
+            try {
+                remoteprop.load(inputStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(prop);
+            remoteurl = remoteprop.getProperty("toolkit.remoteemrurl");
+        }
+        //End of Properties
 
         File f = new File(deploymentdir);
         if(f.exists() && f.isFile()) {
-            System.out.println("Iko hapa sasa");
+           // System.out.println("Iko hapa sasa");
             //compare the two files
-            //
         }else{
-            System.out.println("hakuna hapa sasa");
+           // System.out.println("hakuna hapa sasa");
             File theDir = new File(deploymentdir);
             if (!theDir.exists()){
                 theDir.mkdirs();
@@ -336,12 +331,10 @@ public class ToolboxController implements Initializable {
                         props.setProperty("toolkit.version",tookitversion);
                         props.setProperty("toolkit.emrurl",remoteurl);
                         props.setProperty("toolkit.emrversion",emrversion);
-                        props.setProperty("toolkit.remoteproperties",remoteproperties);
-
+                        props.setProperty("toolkit.remoteproperties",configuration.getRemoteproperties());
                         // save properties to project root folder
                         props.store(output, null);
 
-                        System.out.println(prop+" Done");
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     } catch (IOException e) {
@@ -351,8 +344,8 @@ public class ToolboxController implements Initializable {
                 }
 
             }
+            //End of Local Repository
         //End of check
-
         msgData = FXCollections.observableArrayList();
         listMsgs.setItems(msgData);
         lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);

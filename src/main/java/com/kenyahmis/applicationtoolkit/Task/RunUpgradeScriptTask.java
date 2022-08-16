@@ -71,7 +71,6 @@ public class RunUpgradeScriptTask extends Task {
                 BufferedReader errorReader = new BufferedReader(
                         new InputStreamReader(process.getErrorStream()));
                 //addMessageToTextFlow("\nThere was a problem executing the script. Exit code " + exitVal, Color.RED, new Font(15));
-
                 String error;
                 while ((error = errorReader.readLine()) != null) {
                     //addMessageToTextFlow(error + "\n", Color.DARKRED, new Font(15));
