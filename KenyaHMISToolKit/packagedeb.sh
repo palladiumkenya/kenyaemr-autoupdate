@@ -32,8 +32,8 @@ echo "  * Rebuild" >> changelog
 echo " -- Serge Helfrich <helfrich@xs4all.nl>  `date -R`" >> changelog
 gzip -9c changelog > $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/changelog.gz
  
-cp *.jpeg $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
-chmod 0644 $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/*jpeg
+cp *.png $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
+chmod 0644 $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/*png
  
 PACKAGE_SIZE=`du -bs $TEMP_DIR/debian | cut -f 1`
 PACKAGE_SIZE=$((PACKAGE_SIZE/1024))

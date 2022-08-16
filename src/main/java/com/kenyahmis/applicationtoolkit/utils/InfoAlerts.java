@@ -14,20 +14,14 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class InfoAlerts extends Alert{
-
     public InfoAlerts(AlertType alertType, String s, ButtonType... buttonTypes) {
         super(alertType, s, buttonTypes);
     }
-
-
-
-    // Show a Information Alert with header Text
-    public void showAlertWithHeaderText() {
+    public void EMRUpdate(String version) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Test Connection");
-        alert.setHeaderText("Results:");
-        alert.setContentText("Connect to the database successfully!");
-
+        alert.setTitle("KenyaEMR Upgrade Available");
+        alert.setHeaderText("KenyaEMR Version "+ version +" Upgrade is available:");
+        alert.setContentText("Do you want to upgrade now?");
         alert.showAndWait();
     }
 

@@ -51,11 +51,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
-          <dependency>
+        <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
             <version>12.3.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.aerse.maven/deb-maven-plugin -->
+        <dependency>
+            <groupId>com.aerse.maven</groupId>
+            <artifactId>deb-maven-plugin</artifactId>
+            <version>1.16</version>
+        </dependency>
+
         <dependency>
             <groupId>org.kordamp.bootstrapfx</groupId>
             <artifactId>bootstrapfx-core</artifactId>
@@ -95,7 +102,7 @@
             </plugins>
         </pluginManagement>
         <plugins>
-           <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
@@ -131,19 +138,31 @@
                     </execution>
                 </executions>
             </plugin>
-             <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
-                 <artifactId>maven-jar-plugin</artifactId>
-                 <version>2.4</version>
-                 <configuration>
-                     <archive>
-                         <manifest>
-                             <mainClass>com.kenyahmis.applicationtoolkit.ToolBoxApplication</mainClass>
-                         </manifest>
-                     </archive>
-                 </configuration>
 
-             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.kenyahmis.applicationtoolkit.ToolBoxApplication</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+
+            </plugin>
+            <plugin>
+                <groupId>com.github.fracpete</groupId>
+                <artifactId>debian-maven-plugin</artifactId>
+                <version>1.0.20</version>
+                <configuration>
+
+                    <packageName>my-package</packageName>
+                    <packageVersion>1.0.0</packageVersion>
+
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

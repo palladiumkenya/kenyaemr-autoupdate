@@ -1,4 +1,4 @@
-module com.kenyahmis.applicationtoolkit {
+module applicationtoolkit {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;

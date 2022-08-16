@@ -20,13 +20,13 @@
         <BorderPane styleClass="header-section">
             <left>
                 <Label id="header-text" text="Application Header" />
-                    <ImageView fitHeight="70" fitWidth="140" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="70" fitWidth="170" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@KeHMIS_Logo-FINAL-2-white.png" />
+                            <Image url="@kennyahmisnewlogo.png" />
                         </image>
                     </ImageView>
             </left>
-            <right>
+            <!--<right>
                 <Button id="settings" text="Settings">
                     <graphic>
                         <ImageView fitHeight="24" fitWidth="24" pickOnBounds="true" preserveRatio="true">
@@ -36,7 +36,7 @@
                         </ImageView>
                     </graphic>
                 </Button>
-            </right>
+            </right>-->
         </BorderPane>
     </top>
 <!--    <left>
@@ -51,7 +51,7 @@
         <VBox styleClass="content-section">
                     <VBox maxWidth="390">
                         <children>
-                            <ImageView fitHeight="70" fitWidth="140" pickOnBounds="true" preserveRatio="true">
+                            <ImageView fitHeight="70" fitWidth="170" pickOnBounds="true" preserveRatio="true">
                                 <image>
                                     <Image url="@kenyaemr.png" />
                                 </image>
@@ -65,7 +65,9 @@
                                 </text>
                             </Label>
                             <Separator />
-
+                            <Separator />
+                            <Label fx:id="lblUpdates" text="KenayEMR 18.2.2 is Available !!!" alignment="CENTER"/>
+                            <Separator />
                             <Separator />
                               <HBox>
                                 <Separator />
@@ -83,6 +85,11 @@
                                    <Hyperlink onAction="#rollbackEMR" text="RollBack"/>
                                   <!--<Button id="install-emr" fx:id="rollButton" onAction="#downloadEmrUpgrade" text="RollBack" />-->
                                 <Separator />
+                                 <!-- <Separator />
+                                  <Label />
+                                  <Hyperlink onAction="#rollbackEMR" text="Export Logs"/>
+                                  &lt;!&ndash; Prompt save as logs in text file" />&ndash;&gt;
+                                  <Separator />-->
                             </HBox>
                         </children>
 

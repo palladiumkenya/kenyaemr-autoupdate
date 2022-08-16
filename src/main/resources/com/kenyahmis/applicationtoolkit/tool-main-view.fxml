@@ -11,7 +11,7 @@
       <SplitPane layoutX="14.0" layoutY="130.0" prefHeight="200.0" prefWidth="240.0" />
       <ImageView fitHeight="70" fitWidth="140" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@KeHMIS_Logo-FINAL-2-white.png" />
+            <Image url="@kennyahmisnewlogo.png" />
          </image>
       </ImageView>
       <ListView id="listMsgs" layoutX="337.0" layoutY="122.0" prefHeight="200.0" prefWidth="200.0" />

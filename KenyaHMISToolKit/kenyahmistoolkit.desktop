@@ -1,10 +1,9 @@
 [Desktop Entry]
-Encoding=UTF-8
+Version=1.0
 Name=KenyaHMIS Toolkit
-Comment=KenyaHMIS
-Exec=/usr/local/bin
-Icon=/usr/share/kenyahmistoolkit/kenyahmistoolkit.jpeg
+Comment=Test the terminal running a command inside it
+Exec= /usr/lib/jvm/java-1.11.0-openjdk-amd64/bin/java --module-path /usr/share/openjfx/lib --add-modules ALL-MODULE-PATH -jar /usr/share/kenyahmistoolkit/kenyahmistoolkit.jar 
+Icon=/usr/share/kenyahmistoolkit/kenyahmistoolkit.png
 Terminal=false
 Type=Application
-Categories=Game
-StartupNotify=true
+Categories=Application;

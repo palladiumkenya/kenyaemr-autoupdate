@@ -21,21 +21,15 @@ public class RunUpgradeScriptService extends Service {
         this.controller = controller;
         this.configuration = configuration;
     }
-
-
     @Override
     protected Task createTask() {
         System.out.println("running upgrade service");
         controller.addMessageToListFlow("running upgrade service");
         return new RunUpgradeScriptTask(controller, configuration);
     }
-
-
-
     public ToolboxServiceConfiguration getConfiguration() {
         return configuration;
     }
-
     public void setConfiguration(ToolboxServiceConfiguration configuration) {
         this.configuration = configuration;
     }
