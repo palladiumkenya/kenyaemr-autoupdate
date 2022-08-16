@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.paint.Color;
@@ -55,13 +56,20 @@ public class ToolboxController implements Initializable {
     private Label lblEMR;
     @FXML
     private Label lblUpdates;
+    @FXML
+    private Hyperlink cmdbackup;
+    @FXML
+    private Hyperlink cmdupgrade;
+    @FXML
+    private Hyperlink cmdrollback;
+
 
     String deploymentdir ="";
     String localproperties ="";
     String tookitversion="";
     String remoteurl="";
     String emrversion="";
-    String remoteemrv="";
+    String remoteemrversion="";
    // String remoteproperties="";
    // public String emrurl="";
    // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
@@ -309,7 +317,7 @@ public class ToolboxController implements Initializable {
             }
             System.out.println(prop);
             remoteurl = remoteprop.getProperty("toolkit.remoteemrurl");
-            remoteemrv = remoteprop.getProperty("toolkit.emrversion");
+            remoteemrversion = remoteprop.getProperty("toolkit.emrversion");
         }
         //End of Properties
 
@@ -354,10 +362,47 @@ public class ToolboxController implements Initializable {
         listMsgs.setItems(msgData);
         lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);
         lblEMR.setText("KenyaEMR Version ("+ emrversion +")");
-        lblUpdates.setText("KenayEMR "+ remoteemrv +" is Available !!!");
-        lblUpdates.setTextFill(Color.web("#5c0617"));
-            final double MAX_FONT_SIZE = 20.0; // define max font size you need
-            lblUpdates.setFont(new Font(MAX_FONT_SIZE));
+
+            //Check local and remote version to alert update available
+            String[] localV = emrversion.split("[.]");
+            String[] remoteV = remoteemrversion.split("[.]");
+             Double local = Double.parseDouble(localV[1]+"."+localV[2]);
+             Double remote = Double.parseDouble(remoteV[1]+"."+remoteV[2]);
+
+
+            for (String a : localV)
+                System.out.println(a);
+
+           System.out.println(remoteV[0]);
+           //Mainversion
+           if(Integer.parseInt(remoteV[0])>Integer.parseInt(localV[0])){
+               lblUpdates.setText("KenyaEMR "+ remoteemrversion +" is Available !!!");
+               lblUpdates.setTextFill(Color.web("#5c0617"));
+               final double MAX_FONT_SIZE = 18.0; // define max font size you need
+               lblUpdates.setFont(new Font(MAX_FONT_SIZE));
+
+           }else{
+               //subversion
+               if(remote>local){
+                   lblUpdates.setText("KenyaEMR "+ remoteemrversion +" is Available !!!");
+                   lblUpdates.setTextFill(Color.web("#5c0617"));
+                   final double MAX_FONT_SIZE = 18.0; // define max font size you need
+                   lblUpdates.setFont(new Font(MAX_FONT_SIZE));
+               }
+               else{
+                   lblUpdates.setText("No Update Available !!!");
+                   lblUpdates.setTextFill(Color.web("#5c0617"));
+                   final double MAX_FONT_SIZE = 18.0; // define max font size you need
+                   lblUpdates.setFont(new Font(MAX_FONT_SIZE));
+
+                  // cmdupgrade.isDisabled();
+                  // cmdbackup.setMaxWidth(0);
+                  // cmdbackup.isDisabled();
+
+               }
+           }
+
+         //  System.out.println(Integer.parseInt(localV[0]));
 
 
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);

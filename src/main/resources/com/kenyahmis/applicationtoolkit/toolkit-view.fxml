@@ -72,17 +72,17 @@
                               <HBox>
                                 <Separator />
                                 <Label />
-                                  <Hyperlink onAction="#backupEMR" text="Backup"/>
+                                  <Hyperlink fx:id="cmdbackup" onAction="#backupEMR" text="Backup"/>
                                <!--   <Button id="install-emr" fx:id="backButton" onAction="#backupEMR" text="Backup" />-->
                                 <Separator />
                                 <Separator />
                                 <Label />
-                                 <Hyperlink onAction="#downloadEmrUpgrade" text="Upgrade" /> <!--styleClass="myLink"-->
+                                 <Hyperlink  fx:id="cmdupgrade" onAction="#downloadEmrUpgrade" text="Upgrade" /> <!--styleClass="myLink"-->
                                 <!--  <Button id="install-emr" fx:id="upgradeButton" onAction="#downloadEmrUpgrade" text="Upgrade" />-->
                                 <Separator />
                                 <Separator />
                                 <Label />
-                                   <Hyperlink onAction="#rollbackEMR" text="RollBack"/>
+                                   <Hyperlink fx:id="cmdrollback" onAction="#rollbackEMR" text="RollBack"/>
                                   <!--<Button id="install-emr" fx:id="rollButton" onAction="#downloadEmrUpgrade" text="RollBack" />-->
                                 <Separator />
                                  <!-- <Separator />
