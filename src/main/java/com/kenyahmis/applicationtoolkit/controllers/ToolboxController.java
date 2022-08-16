@@ -53,12 +53,15 @@ public class ToolboxController implements Initializable {
     private Label lblFooter;
     @FXML
     private Label lblEMR;
+    @FXML
+    private Label lblUpdates;
 
     String deploymentdir ="";
     String localproperties ="";
     String tookitversion="";
     String remoteurl="";
     String emrversion="";
+    String remoteemrv="";
    // String remoteproperties="";
    // public String emrurl="";
    // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
@@ -306,6 +309,7 @@ public class ToolboxController implements Initializable {
             }
             System.out.println(prop);
             remoteurl = remoteprop.getProperty("toolkit.remoteemrurl");
+            remoteemrv = remoteprop.getProperty("toolkit.emrversion");
         }
         //End of Properties
 
@@ -350,6 +354,11 @@ public class ToolboxController implements Initializable {
         listMsgs.setItems(msgData);
         lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);
         lblEMR.setText("KenyaEMR Version ("+ emrversion +")");
+        lblUpdates.setText("KenayEMR "+ remoteemrv +" is Available !!!");
+        lblUpdates.setTextFill(Color.web("#5c0617"));
+            final double MAX_FONT_SIZE = 20.0; // define max font size you need
+            lblUpdates.setFont(new Font(MAX_FONT_SIZE));
+
 
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
         if (folder.exists() && folder.isDirectory()) {
