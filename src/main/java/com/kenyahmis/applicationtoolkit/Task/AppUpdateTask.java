@@ -46,7 +46,7 @@ public class AppUpdateTask extends Task {
         } catch (Exception e) {
             //addMessageToTextFlow("\nThere was an error..." + e.getCause(), Color.RED, new Font(15));
 
-            System.out.println("An error occurred. Hapa  " + e.getCause());
+            System.out.println("An error occurred.  " + e.getCause());
             controller.addMessageToListFlow("An error occurred. " + e.getCause());
             e.printStackTrace();
 
@@ -57,22 +57,10 @@ public class AppUpdateTask extends Task {
 
         controller.addMessageToListFlow("Download completed");
 
-        System.out.println("Unzipping started");
+        System.out.println("Restarting the KenyaHMISToolKit. Please wait ...");
 
-        controller.addMessageToListFlow("Unzipping started");
+        controller.addMessageToListFlow("Restarting KenyaHMISToolKit. Please wait ...");
 
-        ToolkitUtils.unzip(configuration.getPackageUnzipDir(), configuration.getBaseDir());
-
-        System.out.println("Unzipping completed");
-        controller.addMessageToListFlow("Unzipping completed");
-
-        System.out.println("Executing upgrade script");
-        controller.addMessageToListFlow("Executing upgrade script");
-
-       /* RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
-        service.start();*/
-
-        //System.out.println("Successfully executed the upgrade script");
 
         return "Success";
     }
