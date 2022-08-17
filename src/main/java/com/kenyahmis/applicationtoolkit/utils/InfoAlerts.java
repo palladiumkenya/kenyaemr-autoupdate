@@ -24,6 +24,13 @@ public class InfoAlerts extends Alert{
         alert.setContentText("Do you want to upgrade now?");
         alert.showAndWait();
     }
+    public void NoConnection(String  smg) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("KenyaHMIS Toolkit. No Internet Connection Available");
+        alert.setHeaderText("Please ensure you are connected to a good internet connection");
+       // alert.setContentText("Details "+smg);
+        alert.showAndWait();
+    }
 
 
 }

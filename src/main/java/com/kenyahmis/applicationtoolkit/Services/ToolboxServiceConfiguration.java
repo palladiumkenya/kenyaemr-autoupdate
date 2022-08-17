@@ -23,6 +23,10 @@ public class ToolboxServiceConfiguration {
     private URL packageDownloadUrl;
     private String packageUnzipDir;
 
+    private String apppackageDir;
+
+    private URL appulr;
+
     public ToolboxServiceConfiguration(String userPass, String mysqlPass) {
         this.userPass = userPass;
         this.mysqlPass = mysqlPass;
@@ -106,5 +110,21 @@ public class ToolboxServiceConfiguration {
 
     public void setRemoteproperties(String remoteproperties) {
         this.remoteproperties = remoteproperties;
+    }
+
+    public String getApppackageDir() {
+        return apppackageDir;
+    }
+
+    public void setApppackageDir(String apppackageDir) {
+        this.apppackageDir = apppackageDir;
+    }
+
+    public URL getAppulr() {
+        return appulr;
+    }
+
+    public void setAppulr(URL appulr) {
+        this.appulr = appulr;
     }
 }

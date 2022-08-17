@@ -34,7 +34,7 @@ public class ToolBoxApplication extends Application {
         stage.setResizable(false);
         Scene scene = new Scene(fxmlLoader.load(), 450, 700);
         scene.getStylesheets().add(getClass().getResource("toolkit.css").toExternalForm());
-        stage.setTitle("KenyaHMIS Application Toolbox");
+        stage.setTitle("KenyaHMIS Application Toolkit");
         stage.getIcons().add(
                 new Image(
                         getClass().getResourceAsStream( "testIcon.png" )));
@@ -44,8 +44,7 @@ public class ToolBoxApplication extends Application {
     }
 
     public static void main(String[] args) throws IOException {
-
-       /* Timer t = new Timer();
+      /* Timer t = new Timer();
         UpdateScheduler updateScheduler = new UpdateScheduler();
         // This task is scheduled to run every 30 seconds
       //  t.scheduleAtFixedRate(updateScheduler, 0, 30000);*/
