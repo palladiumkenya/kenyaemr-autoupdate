@@ -379,7 +379,7 @@ public class ToolboxController implements Initializable {
                 System.out.println(a);
 
            System.out.println(remoteV[0]);
-           //Mainversion
+           //Main version
            if(Integer.parseInt(remoteV[0])>Integer.parseInt(localV[0])){
                lblUpdates.setText("KenyaEMR "+ remoteemrversion +" is Available !!!");
                lblUpdates.setTextFill(Color.web("#5c0617"));
@@ -387,7 +387,7 @@ public class ToolboxController implements Initializable {
                lblUpdates.setFont(new Font(MAX_FONT_SIZE));
 
            }else{
-               //subversion
+               //sub version
                if(remote>local){
                    lblUpdates.setText("KenyaEMR "+ remoteemrversion +" is Available !!!");
                    lblUpdates.setTextFill(Color.web("#5c0617"));
@@ -400,9 +400,11 @@ public class ToolboxController implements Initializable {
                    final double MAX_FONT_SIZE = 18.0; // define max font size you need
                    lblUpdates.setFont(new Font(MAX_FONT_SIZE));
 
-                   cmdupgrade.isDisable();
+                   //cmdupgrade.isDisable();
+                   cmdupgrade.setDisable(true);
+                  // cmdbackup.setDisable(true);
+                   cmdrollback.setDisable(true);
                    //cmdupgrade.setPadding(new Insets(4, 0, 4, 0));
-
                   // cmdupgrade.isDisabled();
                   // cmdbackup.setMaxWidth(0);
                   // cmdbackup.isDisabled();
@@ -410,42 +412,31 @@ public class ToolboxController implements Initializable {
                }
            }
             //Check application version
-            if(Double.parseDouble(appversion)>=Double.parseDouble(localappversion)){
 
-              //  System.out.println("Application version "+appversion);
-              //  ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
-                //Do Backup
-              //  String openmrsBackup = "openmrs-backup-tools/openmrs_backup.sh";
+            if(Double.parseDouble(appversion) > Double.parseDouble(localappversion)){
 
-
-                    System.out.println(appurl);
-                System.out.println(appdir);
                 URL apdurl = null;
                 try {
                     apdurl = new URL(appurl);
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println("App URL ndo hii "+apdurl);
                 String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
                 configuration.setAppulr(apdurl);
                 configuration.setApppackageDir(appdir);
                 Path fileName = Paths.get(appurl);
                 String downloadedFileName = fileName.getFileName().toString() ;
                 String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
-             //   configuration.setPackageDownloadUrl(url);
-                configuration.setApppackageDir(baseDir + downloadedFileName);
+               configuration.setApppackageDir(baseDir + downloadedFileName);
                 configuration.setBaseDir(baseDir);
 
                 final AppUpdateService appUpdateService = new AppUpdateService(this, configuration);
                     appUpdateService.start();
 
-
-
             }
 
             //End of application version
-         //  System.out.println(Integer.parseInt(localV[0]));
+
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
         if (folder.exists() && folder.isDirectory()) {
             addMessageToListFlow("Application initialization completed");

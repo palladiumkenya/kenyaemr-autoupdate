@@ -60,6 +60,9 @@ public class AppUpdateTask extends Task {
         System.out.println("Restarting the KenyaHMISToolKit. Please wait ...");
 
         controller.addMessageToListFlow("Restarting KenyaHMISToolKit. Please wait ...");
+        // Restart
+        //
+
 
 
         return "Success";
