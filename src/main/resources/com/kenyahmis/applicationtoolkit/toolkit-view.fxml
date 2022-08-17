@@ -22,7 +22,7 @@
                 <Label id="header-text" text="Application Header" />
                     <ImageView fitHeight="70" fitWidth="170" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@kennyahmisnewlogo.png" />
+                            <Image url="@biggerlogo.png" />
                         </image>
                     </ImageView>
             </left>
@@ -57,7 +57,7 @@
                                 </image>
                             </ImageView>
                             <Label id="content-header" text="KenyaEMR Version (1.8.2)"  fx:id="lblEMR"/>
-                            <Label text="KenyaEMR" />
+                           <!-- <Label text="KenyaEMR" />-->
                             <Separator />
                             <Label id="content" fx:id="txtdes" wrapText="true">
                                 <text >

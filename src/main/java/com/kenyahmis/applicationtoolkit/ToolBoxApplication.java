@@ -44,8 +44,7 @@ public class ToolBoxApplication extends Application {
     }
 
     public static void main(String[] args) throws IOException {
-
-       /* Timer t = new Timer();
+      /* Timer t = new Timer();
         UpdateScheduler updateScheduler = new UpdateScheduler();
         // This task is scheduled to run every 30 seconds
       //  t.scheduleAtFixedRate(updateScheduler, 0, 30000);*/
