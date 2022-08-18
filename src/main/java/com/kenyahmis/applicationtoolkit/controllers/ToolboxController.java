@@ -288,7 +288,7 @@ public class ToolboxController implements Initializable {
         tookitversion=prop.getProperty("toolkit.version");
         localappversion=prop.getProperty("toolkit.version");
         emrversion=prop.getProperty("toolkit.emrversion");
-        appurl =prop.getProperty("toolkit.appurl");
+       // appurl =prop.getProperty("toolkit.appurl");
         appdir =prop.getProperty("toolkit.appdir");
         configuration.setRemoteproperties(prop.getProperty("toolkit.remoteproperties"));
       //  System.out.println("Valuess "+configuration.getRemoteproperties());
@@ -323,8 +323,8 @@ public class ToolboxController implements Initializable {
             remoteurl = remoteprop.getProperty("toolkit.remoteemrurl");
             remoteemrversion = remoteprop.getProperty("toolkit.emrversion");
             appversion=remoteprop.getProperty("toolkit.version");
-            /*appurl =remoteprop.getProperty("toolkit.appurl");
-            appdir =remoteprop.getProperty("toolkit.appdir");*/
+            appurl =remoteprop.getProperty("toolkit.appurl");
+            //appdir =remoteprop.getProperty("toolkit.appdir");*/
         }
         //End of Properties
         File f = new File(deploymentdir);
