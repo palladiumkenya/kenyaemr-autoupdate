@@ -22,7 +22,7 @@
                 <Label id="header-text" text="Application Header" />
                     <ImageView fitHeight="70" fitWidth="170" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@biggerlogo.png" />
+                            <Image url="@KeHMIS_Logo.png" />
                         </image>
                     </ImageView>
             </left>
