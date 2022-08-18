@@ -421,17 +421,17 @@ public class ToolboxController implements Initializable {
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-                String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-                configuration.setAppulr(apdurl);
-                configuration.setApppackageDir(appdir);
+                /*configuration.setAppulr(apdurl);
+                configuration.setApppackageDir(appdir);*/
                 Path fileName = Paths.get(appurl);
                 String downloadedFileName = fileName.getFileName().toString() ;
-                String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
-               configuration.setApppackageDir(baseDir + downloadedFileName);
-                configuration.setBaseDir(baseDir);
-
+               // configuration.setApppackageDir(appdir + downloadedFileName);
                 final AppUpdateService appUpdateService = new AppUpdateService(this, configuration);
-                    appUpdateService.start();
+                appUpdateService.start();
+               /* String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+                String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
+                configuration.setBaseDir(baseDir);
+                */
 
             }
 
