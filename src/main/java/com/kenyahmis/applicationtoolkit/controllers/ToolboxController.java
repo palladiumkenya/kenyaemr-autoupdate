@@ -421,11 +421,12 @@ public class ToolboxController implements Initializable {
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-                /*configuration.setAppulr(apdurl);
-                configuration.setApppackageDir(appdir);*/
+                /*;*/
+               // configuration.setApppackageDir(appdir);
+                configuration.setAppulr(apdurl);
                 Path fileName = Paths.get(appurl);
                 String downloadedFileName = fileName.getFileName().toString() ;
-               // configuration.setApppackageDir(appdir + downloadedFileName);
+                configuration.setApppackageDir(appdir + downloadedFileName);
                 final AppUpdateService appUpdateService = new AppUpdateService(this, configuration);
                 appUpdateService.start();
                /* String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;

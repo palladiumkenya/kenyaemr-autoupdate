@@ -33,15 +33,11 @@ public class AppUpdateTask extends Task {
              FileOutputStream fos = new FileOutputStream(configuration.getApppackageDir())) {
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading ...");
-            /*int read;
-            byte[] bytes = new byte[1024];
 
-            while ((read = in.read(bytes)) != -1) {
-                fos.write(bytes, 0, read);
-            }*/
-            //addMessageToTextFlow("\nDownload started...", Color.GREEN, new Font(15));
             fos.flush(); //fos.write(rbc);
+
            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+
             fos.close();
         } catch (Exception e) {
             //addMessageToTextFlow("\nThere was an error..." + e.getCause(), Color.RED, new Font(15));
