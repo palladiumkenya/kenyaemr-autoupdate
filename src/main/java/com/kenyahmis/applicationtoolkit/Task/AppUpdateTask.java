@@ -30,13 +30,17 @@ public class AppUpdateTask extends Task {
     protected Object call() throws Exception {
         try (InputStream in = configuration.getAppulr().openStream();
              ReadableByteChannel rbc = Channels.newChannel(in);
+
              FileOutputStream fos = new FileOutputStream(configuration.getApppackageDir())) {
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading ...");
 
-            fos.flush(); //fos.write(rbc);
-
-           fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            // fos.flush(); //fos.write(rbc);
+            //fos.setReadable(true, false);
+            //file.setExecutable(true, false);
+            //file.setWritable(true, false);
+            fos.write(in.readAllBytes());
+           //fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
             fos.close();
         } catch (Exception e) {

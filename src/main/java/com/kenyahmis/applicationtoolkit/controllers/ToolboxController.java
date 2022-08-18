@@ -428,7 +428,7 @@ public class ToolboxController implements Initializable {
                 String downloadedFileName = fileName.getFileName().toString() ;
                 configuration.setApppackageDir(appdir + downloadedFileName);
                 final AppUpdateService appUpdateService = new AppUpdateService(this, configuration);
-                appUpdateService.start();
+              //  appUpdateService.start();
                /* String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
                 String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
                 configuration.setBaseDir(baseDir);
