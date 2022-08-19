@@ -28,25 +28,18 @@ public class AppUpdateTask extends Task {
 
     @Override
     protected Object call() throws Exception {
+
         try (InputStream in = configuration.getAppulr().openStream();
              ReadableByteChannel rbc = Channels.newChannel(in);
-
-             FileOutputStream fos = new FileOutputStream(configuration.getApppackageDir())) {
+             FileOutputStream fos = new FileOutputStream(configuration.getApppackageUnzipDir())) {
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading ...");
-
-            // fos.flush(); //fos.write(rbc);
-            //fos.setReadable(true, false);
-            //file.setExecutable(true, false);
-            //file.setWritable(true, false);
-            fos.write(in.readAllBytes());
-           //fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-
-            fos.close();
+            //addMessageToTextFlow("\nDownload started...", Color.GREEN, new Font(15));
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         } catch (Exception e) {
             //addMessageToTextFlow("\nThere was an error..." + e.getCause(), Color.RED, new Font(15));
 
-            System.out.println("An error occurred.  " + e.getCause());
+            System.out.println("An error occurred. " + e.getCause());
             controller.addMessageToListFlow("An error occurred. " + e.getCause());
             e.printStackTrace();
 
@@ -57,13 +50,13 @@ public class AppUpdateTask extends Task {
 
         controller.addMessageToListFlow("Download completed");
 
-        System.out.println("Restarting the KenyaHMISToolKit. Please wait ...");
+        System.out.println("Unzipping started");
 
-        controller.addMessageToListFlow("Restarting KenyaHMISToolKit. Please wait ...");
-        // Restart
-        //
+        controller.addMessageToListFlow("Unzipping started");
+        ToolkitUtils.unzip(configuration.getApppackageUnzipDir(), configuration.getBaseDir());
 
-
+        System.out.println("Unzipping completed");
+        controller.addMessageToListFlow("Unzipping completed");
 
         return "Success";
     }

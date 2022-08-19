@@ -1,8 +1,8 @@
 package com.kenyahmis.applicationtoolkit.Task;
 
 import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
-import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
 import javafx.concurrent.Task;
 
@@ -11,31 +11,26 @@ import java.io.InputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-/**
- * Download task.
- */
-public class PackageDownloadTask extends Task {
+public class DownloadScriptTask  extends Task {
 
     private ToolboxServiceConfiguration configuration;
 
 
     private final ToolboxController controller;
-    public PackageDownloadTask(ToolboxController controller) {
+    public DownloadScriptTask(ToolboxController controller) {
         this.controller = controller;
     }
 
-    public PackageDownloadTask(ToolboxController controller, ToolboxServiceConfiguration configuration) {
+    public DownloadScriptTask(ToolboxController controller, ToolboxServiceConfiguration configuration) {
         this.controller = controller;
         this.configuration = configuration;
     }
 
     @Override
     protected Object call() throws Exception {
-
-
-        try (InputStream in = configuration.getPackageDownloadUrl().openStream();
+        try (InputStream in = configuration.getScriptsurl().openStream();
              ReadableByteChannel rbc = Channels.newChannel(in);
-             FileOutputStream fos = new FileOutputStream(configuration.getPackageUnzipDir())) {
+             FileOutputStream fos = new FileOutputStream(configuration.getScriptpackageUnzipDir())) {
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading ...");
             //addMessageToTextFlow("\nDownload started...", Color.GREEN, new Font(15));
@@ -57,18 +52,13 @@ public class PackageDownloadTask extends Task {
         System.out.println("Unzipping started");
 
         controller.addMessageToListFlow("Unzipping started");
-        ToolkitUtils.unzip(configuration.getPackageUnzipDir(), configuration.getBaseDir());
+        ToolkitUtils.unzip(configuration.getScriptpackageUnzipDir(), configuration.getBaseDir());
 
         System.out.println("Unzipping completed");
         controller.addMessageToListFlow("Unzipping completed");
 
         System.out.println("Executing upgrade script");
-        controller.addMessageToListFlow("Executing upgrade script");
-
-        RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
-        service.start();
-
-        //System.out.println("Successfully executed the upgrade script");
+        controller.addMessageToListFlow("Done you can now perform other operation");
 
         return "Success";
     }

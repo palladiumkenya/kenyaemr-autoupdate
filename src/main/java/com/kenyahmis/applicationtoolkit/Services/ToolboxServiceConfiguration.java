@@ -26,6 +26,9 @@ public class ToolboxServiceConfiguration {
     private String apppackageDir;
 
     private URL appulr;
+    private URL scriptsurl;
+    private String scriptpackageUnzipDir;
+    private String apppackageUnzipDir;
 
     public ToolboxServiceConfiguration(String userPass, String mysqlPass) {
         this.userPass = userPass;
@@ -126,5 +129,29 @@ public class ToolboxServiceConfiguration {
 
     public void setAppulr(URL appulr) {
         this.appulr = appulr;
+    }
+
+    public URL getScriptsurl() {
+        return scriptsurl;
+    }
+
+    public void setScriptsurl(URL scriptsurl) {
+        this.scriptsurl = scriptsurl;
+    }
+
+    public String getScriptpackageUnzipDir() {
+        return scriptpackageUnzipDir;
+    }
+
+    public void setScriptpackageUnzipDir(String scriptpackageUnzipDir) {
+        this.scriptpackageUnzipDir = scriptpackageUnzipDir;
+    }
+
+    public String getApppackageUnzipDir() {
+        return apppackageUnzipDir;
+    }
+
+    public void setApppackageUnzipDir(String apppackageUnzipDir) {
+        this.apppackageUnzipDir = apppackageUnzipDir;
     }
 }
