@@ -35,6 +35,8 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.*;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 /**
  * Handles toolbox events
@@ -145,10 +147,19 @@ public class ToolboxController implements Initializable {
                 backupService.start();
 
             //Do Upgrade
-            configuration.setPathToSetupScript(baseDir + fileNameWithoutExtension + "/toolkit_setup_script.shgit");
+            configuration.setPathToSetupScript(baseDir + fileNameWithoutExtension + "/toolkit_setup_script.sh");
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
             //upgradeButton.setDisable(true);
             service.start();
+
+            PropertiesConfiguration wdirprop = null;
+            try {
+                wdirprop = new PropertiesConfiguration(localproperties);
+                wdirprop.setProperty("toolkit.emrversion",remoteemrversion);
+                wdirprop.save();
+            } catch (ConfigurationException e) {
+                throw new RuntimeException(e);
+            }
 
         }
     }
@@ -306,7 +317,6 @@ public class ToolboxController implements Initializable {
               InfoAlerts infoAlerts = new InfoAlerts(Alert.AlertType.INFORMATION,"Updates Available", ButtonType.APPLY);
               infoAlerts.NoConnection(e.getMessage());
            // throw new RuntimeException(e);
-
         }
         Properties remoteprop=new Properties();
         if (inputStream != null) {
@@ -345,7 +355,23 @@ public class ToolboxController implements Initializable {
                         props.setProperty("toolkit.emrurl",remoteurl);
                         props.setProperty("toolkit.emrversion",emrversion);
                         props.setProperty("toolkit.remoteproperties",configuration.getRemoteproperties());
+                        props.setProperty("toolkit.scriptversion",scriptversion);
+                        props.setProperty("toolkit.version",localappversion);
                         props.store(output, null);
+                    } catch (FileNotFoundException e) {
+                        throw new RuntimeException(e);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else{
+                    try {
+                        FileInputStream ip= new FileInputStream(localproperties);
+                        Properties wdirprop=new Properties();
+                        wdirprop.load(ip);
+                        tookitversion=wdirprop.getProperty("toolkit.version");
+                        localappversion=wdirprop.getProperty("toolkit.version");
+                        emrversion=wdirprop.getProperty("toolkit.emrversion");
+                        scriptversion=wdirprop.getProperty("toolkit.scriptversion");
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
                     } catch (IOException e) {
@@ -355,6 +381,8 @@ public class ToolboxController implements Initializable {
             }
         //End of Local Repository
         //End of check
+        //Read proprerties from working directory
+        //End of proprerties from working directory
         msgData = FXCollections.observableArrayList();
         listMsgs.setItems(msgData);
         lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);
@@ -393,8 +421,8 @@ public class ToolboxController implements Initializable {
                    cmdrollback.setDisable(true);
                }
            }
-            //Check application version
 
+            //Check application version
             if(Double.parseDouble(appversion) > Double.parseDouble(localappversion)){
 
                 String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
@@ -408,7 +436,7 @@ public class ToolboxController implements Initializable {
                // configuration.setApppackageDir(appdir);
                 configuration.setAppulr(apdurl);
                 Path fileName = Paths.get(appurl);
-               String downloadedFileName = fileName.getFileName().toString() ;
+                String downloadedFileName = fileName.getFileName().toString() ;
                 configuration.setAppulr(apdurl);
                 configuration.setApppackageUnzipDir(baseDir + downloadedFileName);
                 configuration.setBaseDir(baseDir);
@@ -422,65 +450,24 @@ public class ToolboxController implements Initializable {
                 }
                 final AppUpdateService appUpdateService = new AppUpdateService(this, configuration);
                 appUpdateService.start();
-
-
                 Path sour = Paths.get("/opt/kehmisApplicationToolbox/Downloads/kenyahmistoolkit.jar");
                 Path Dest = Paths.get("/usr/share/kenyahmistoolkit/kenyahmistoolkit.jar");
-                System.out.println("Start to copy file");
-              //  String perm = "rwxrwx---";// in octal = 770
-
-                    /*Set<PosixFilePermission> perms = new HashSet<>();
-                    perms.add(PosixFilePermission.OWNER_READ);
-                    perms.add(PosixFilePermission.OWNER_WRITE);
-                    Files.setPosixFilePermissions(Dest, perms);*/
+                System.out.println("Updating Toolkit package");
                 try {
                     SeekableByteChannel destFileChannel = Files.newByteChannel(Dest);
-                    destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
-                    Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException e) {
+                    destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
+                    //Update workingDir Application Properties
+                    PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
+                      wdirprop.setProperty("toolkit.version",appversion);
+                      wdirprop.save();
+                      //Update workingDir Application Properties
+                } catch (IOException | ConfigurationException e) {
                     throw new RuntimeException(e);
                 }
-
-
-
-                /*ProcessBuilder processBuilder = new ProcessBuilder("/opt/kehmisApplicationToolbox/Downloads/Scripts/updater/updates.sh");
-                processBuilder.inheritIO();
-                Process process = null;
-                try {
-                    process = processBuilder.start();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
-                    throw new RuntimeException(e);
-                }
-
-                int exitValue = 0;
-                try {
-                    exitValue = process.waitFor();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                if (exitValue != 0) {
-                    // check for errors
-                    new BufferedInputStream(process.getErrorStream());
-                    throw new RuntimeException("execution of script failed!");
-                }
-
-                 */
-
-
-
-               /* String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-                String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
-                configuration.setBaseDir(baseDir);
-                */
-
             }
-
-            //check if
-
             //End of application version
             //Check if Script verion are the same
-           if(Double.parseDouble(remotescriptversion) >= Double.parseDouble(scriptversion)){
+           if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
                //Download Scripts
                String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
                URL remotescrp = null;
@@ -504,7 +491,17 @@ public class ToolboxController implements Initializable {
                }
                final DownloadScriptService service = new DownloadScriptService(this, configuration);
                service.start();
+               //Update workingDir Application Properties
+               PropertiesConfiguration wdirprop = null;
+               try {
+                   wdirprop = new PropertiesConfiguration(localproperties);
+                   wdirprop.setProperty("toolkit.scriptversion",remotescriptversion);
+                   wdirprop.save();
+               } catch (ConfigurationException e) {
+                   throw new RuntimeException(e);
+               }
 
+               //Update workingDir Application Properties
            }
             //End of check Script
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);

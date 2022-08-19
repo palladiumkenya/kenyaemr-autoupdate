@@ -33,7 +33,7 @@ public class AppUpdateTask extends Task {
              ReadableByteChannel rbc = Channels.newChannel(in);
              FileOutputStream fos = new FileOutputStream(configuration.getApppackageUnzipDir())) {
             System.out.println("Downloading ...");
-            controller.addMessageToListFlow("Downloading ...");
+            controller.addMessageToListFlow("Downloading Toolkit Update ...");
             //addMessageToTextFlow("\nDownload started...", Color.GREEN, new Font(15));
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         } catch (Exception e) {
@@ -48,15 +48,15 @@ public class AppUpdateTask extends Task {
 
         System.out.println("Download completed");
 
-        controller.addMessageToListFlow("Download completed");
+        controller.addMessageToListFlow("Toolkit Download completed");
 
         System.out.println("Unzipping started");
 
-        controller.addMessageToListFlow("Unzipping started");
+        controller.addMessageToListFlow("Unzipping Toolkit started");
         ToolkitUtils.unzip(configuration.getApppackageUnzipDir(), configuration.getBaseDir());
 
         System.out.println("Unzipping completed");
-        controller.addMessageToListFlow("Unzipping completed");
+        controller.addMessageToListFlow("Unzipping Toolkit completed");
 
         return "Success";
     }

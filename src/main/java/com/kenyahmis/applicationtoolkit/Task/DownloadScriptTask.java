@@ -32,7 +32,7 @@ public class DownloadScriptTask  extends Task {
              ReadableByteChannel rbc = Channels.newChannel(in);
              FileOutputStream fos = new FileOutputStream(configuration.getScriptpackageUnzipDir())) {
             System.out.println("Downloading ...");
-            controller.addMessageToListFlow("Downloading ...");
+            controller.addMessageToListFlow("Downloading Scripts ...");
             //addMessageToTextFlow("\nDownload started...", Color.GREEN, new Font(15));
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         } catch (Exception e) {
@@ -45,17 +45,17 @@ public class DownloadScriptTask  extends Task {
         }
         //addMessageToTextFlow("\nDownload completed...", Color.GREEN, new Font(15));
 
-        System.out.println("Download completed");
+        System.out.println("Scripts Download completed");
 
         controller.addMessageToListFlow("Download completed");
 
         System.out.println("Unzipping started");
 
-        controller.addMessageToListFlow("Unzipping started");
+        controller.addMessageToListFlow("Unzipping scripts started");
         ToolkitUtils.unzip(configuration.getScriptpackageUnzipDir(), configuration.getBaseDir());
 
         System.out.println("Unzipping completed");
-        controller.addMessageToListFlow("Unzipping completed");
+        controller.addMessageToListFlow("Scripts Unzipping completed");
 
         System.out.println("Executing upgrade script");
         controller.addMessageToListFlow("Done you can now perform other operation");

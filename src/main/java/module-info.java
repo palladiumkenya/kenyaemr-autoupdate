@@ -9,6 +9,7 @@ module applicationtoolkit {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires commons.configuration;
 
     opens com.kenyahmis.applicationtoolkit to javafx.fxml;
     exports com.kenyahmis.applicationtoolkit;
