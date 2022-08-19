@@ -76,7 +76,6 @@ public class RunUpgradeScriptTask extends Task {
                     //addMessageToTextFlow(error + "\n", Color.DARKRED, new Font(15));
                     System.out.println("An error occured" + error);
                     controller.addMessageToListFlow(error);
-
                 }
             }
 
