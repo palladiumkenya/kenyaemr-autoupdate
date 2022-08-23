@@ -22,7 +22,7 @@
                 <Label id="header-text" text="Application Header" />
                     <ImageView fitHeight="70" fitWidth="170" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@biggerlogo.png" />
+                            <Image url="@KeHMIS_Logo.png" />
                         </image>
                     </ImageView>
             </left>
@@ -85,11 +85,10 @@
                                    <Hyperlink fx:id="cmdrollback" onAction="#rollbackEMR" text="RollBack"/>
                                   <!--<Button id="install-emr" fx:id="rollButton" onAction="#downloadEmrUpgrade" text="RollBack" />-->
                                 <Separator />
-                                 <!-- <Separator />
+                                 <Separator />
                                   <Label />
-                                  <Hyperlink onAction="#rollbackEMR" text="Export Logs"/>
-                                  &lt;!&ndash; Prompt save as logs in text file" />&ndash;&gt;
-                                  <Separator />-->
+                                  <Hyperlink onAction="#upgradeEMR" text="Export Logs"/>
+                                  <Separator />
                             </HBox>
                         </children>
 

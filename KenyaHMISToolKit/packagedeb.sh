@@ -1,7 +1,7 @@
 #!/bin/sh
  
 PACKAGE_NAME="kenyahmistoolkit"
-PACKAGE_VERSION="1.1.1"
+PACKAGE_VERSION="1.1.3"
 SOURCE_DIR=$PWD
 TEMP_DIR="/tmp"
  
@@ -26,6 +26,8 @@ chmod 0644 $TEMP_DIR/debian/usr/share/common-licenses/$PACKAGE_NAME/
  
 cp *.jar $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
 cp $PACKAGE_NAME $TEMP_DIR/debian/usr/games/
+
+cp -r toolkitdependecies $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
  
 echo "$PACKAGE_NAME ($PACKAGE_VERSION) trusty; urgency=low" > changelog
 echo "  * Rebuild" >> changelog

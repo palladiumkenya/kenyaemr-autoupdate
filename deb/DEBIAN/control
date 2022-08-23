@@ -1,9 +1,0 @@
-Package: KenyaHMISToolkit 
-Section: misc
-Priority: optional
-Version:1.1
-Architecture: all
-Maintainer: Rugut Kibet <enock.rugut@thepalladiumgroup.com>
-Description: KenyaHMIS Toolkit used to update KenyaEMR and KenyaHMIS products
- This tool to update KenyaHMIS products. KenyaEMR, AfyaStat and others coming over.
-Depends: openjdk-11-jdk | openjfx | ansible | jarwrapper
