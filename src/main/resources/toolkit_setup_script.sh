@@ -107,7 +107,11 @@ echo ${authorization} | sudo -S chmod --recursive +r ${modules_dir}/*.omod
 echo ${authorization} | sudo -S chown tomcat:tomcat  --recursive ${modules_dir}/*.omod
 
 echo
+<<<<<<< HEAD
 echo "Starting tomcat...."
+=======
+echo "Starting tomcat..."
+>>>>>>> d8dff6b0dc9524b066d406e2ce83d6b908328570
 echo
 
 echo ${authorization} | sudo -S service tomcat9 start

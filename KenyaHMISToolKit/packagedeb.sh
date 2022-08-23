@@ -1,7 +1,11 @@
 #!/bin/sh
  
 PACKAGE_NAME="kenyahmistoolkit"
+<<<<<<< HEAD
 PACKAGE_VERSION="1.1.3"
+=======
+PACKAGE_VERSION="1.1.2"
+>>>>>>> d8dff6b0dc9524b066d406e2ce83d6b908328570
 SOURCE_DIR=$PWD
 TEMP_DIR="/tmp"
  
