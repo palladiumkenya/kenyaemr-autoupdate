@@ -1,6 +1,7 @@
 package com.kenyahmis.applicationtoolkit.controllers;
 
 import com.kenyahmis.applicationtoolkit.Services.*;
+import com.kenyahmis.applicationtoolkit.ToolBoxApplication;
 import com.kenyahmis.applicationtoolkit.utils.InfoAlerts;
 import com.kenyahmis.applicationtoolkit.utils.PasswordDialog;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
@@ -321,6 +322,16 @@ public class ToolboxController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //Check remote application.properties
+      //Creating Directories if not exists
+        File ntheDirs = new File("/opt/kehmisApplicationToolbox");
+        File ntheDird = new File("/opt/kehmisApplicationToolbox/Downloads");
+        if (!ntheDirs.exists()){
+            ntheDirs.mkdirs();
+        }
+        if (!ntheDird.exists()){
+            ntheDird.mkdirs();
+        }
+        //End creating Directories
 
         ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration("","");
         //Local Properties
@@ -553,7 +564,12 @@ public class ToolboxController implements Initializable {
             addMessageToListFlow("Application initialization completed");
 
         } else {
+
             addMessageToListFlow("App directories not found. Please create them and continue");
+
+            addMessageToListFlow("Please wait creating directories");
+
+
 
         }
         }
