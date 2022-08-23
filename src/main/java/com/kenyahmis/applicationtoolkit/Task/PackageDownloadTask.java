@@ -34,7 +34,6 @@ public class PackageDownloadTask extends Task {
     protected Object call() throws Exception {
         boolean downloaded =false;
 
-        boolean downloaded =false;
         try (InputStream in = configuration.getPackageDownloadUrl().openStream();
              ReadableByteChannel rbc = Channels.newChannel(in);
              FileOutputStream fos = new FileOutputStream(configuration.getPackageUnzipDir())) {
@@ -45,11 +44,8 @@ public class PackageDownloadTask extends Task {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             downloaded=true;
             fos.close();
-<<<<<<< HEAD
-=======
 
 
->>>>>>> d8dff6b0dc9524b066d406e2ce83d6b908328570
         } catch (Exception e) {
             System.out.println("An error occurred. " + e.getCause());
             controller.addMessageToListFlow("An error occurred. " + e.getCause());
@@ -58,12 +54,7 @@ public class PackageDownloadTask extends Task {
         }
         System.out.println("KenyaEMR Download completed");
 
-<<<<<<< HEAD
-=======
-        System.out.println("KenyaEMR Download completed");
-
->>>>>>> d8dff6b0dc9524b066d406e2ce83d6b908328570
-        controller.addMessageToListFlow("KenyaEMR Download completed");
+               controller.addMessageToListFlow("KenyaEMR Download completed");
 
         System.out.println("Unzipping started");
 
@@ -75,15 +66,13 @@ public class PackageDownloadTask extends Task {
 
         System.out.println("Executing upgrade script");
         controller.addMessageToListFlow("Executing KenyaEMR upgrade script");
-<<<<<<< HEAD
-=======
+
 
         if(downloaded==true) {
 
             RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
             service.start();
         }
->>>>>>> d8dff6b0dc9524b066d406e2ce83d6b908328570
 
         if(downloaded==true) {
             RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);

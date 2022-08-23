@@ -85,10 +85,10 @@
                                    <Hyperlink fx:id="cmdrollback" onAction="#rollbackEMR" text="RollBack"/>
                                   <!--<Button id="install-emr" fx:id="rollButton" onAction="#downloadEmrUpgrade" text="RollBack" />-->
                                 <Separator />
-                                 <Separator />
+                                <!-- <Separator />
                                   <Label />
                                   <Hyperlink onAction="#upgradeEMR" text="Export Logs"/>
-                                  <Separator />
+                                  <Separator />-->
                             </HBox>
                         </children>
 
