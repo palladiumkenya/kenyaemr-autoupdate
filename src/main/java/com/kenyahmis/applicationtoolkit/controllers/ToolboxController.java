@@ -247,6 +247,49 @@ public class ToolboxController implements Initializable {
 
         }
     }
+    @FXML
+    protected void upgradeEMR(ActionEvent actionEvent) throws IOException {
+
+        addMessageToListFlow("Prompting for user authentication");
+        String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+        // user pass
+        String token = "";
+        PasswordDialog dialog = new PasswordDialog();
+
+        dialog.setTitle("Admin password");
+        dialog.setHeaderText("Enter admin password:");
+        dialog.setContentText("Password:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            token = dialog.getPasswordField().getText();
+        }
+
+        String mysqlPass = "";
+        PasswordDialog mysqlDialog = new PasswordDialog();
+
+        mysqlDialog.setTitle("Mysql password");
+        mysqlDialog.setHeaderText("Enter MySQL password:");
+        mysqlDialog.setContentText("Password:");
+
+        Optional<String> mysqlResult = mysqlDialog.showAndWait();
+        if (mysqlResult.isPresent()) {
+            mysqlPass = mysqlDialog.getPasswordField().getText();
+        }
+        if ("".equals(token) || "".equals(mysqlPass)) {
+            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+            System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+        } else {
+            ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
+            String rollbacksurl = "/opt/kehmisApplicationToolbox/Downloads/Scripts/rollback-tools/rollback_script.sh";
+            configuration.setPathToRollbackScript(rollbacksurl);
+            final RunUpgradeScriptService runRollBackService = new RunUpgradeScriptService(this, configuration);
+            runRollBackService.start();
+
+        }
+    }
+
     /**
      *
      * @param text
@@ -329,8 +372,8 @@ public class ToolboxController implements Initializable {
             remoteemrversion = remoteprop.getProperty("toolkit.emrversion");
             appversion=remoteprop.getProperty("toolkit.version");
            // appurl =remoteprop.getProperty("toolkit.appurl");
-            remotescriptversion=prop.getProperty("toolkit.scriptversion");
-            remoteseripturl=prop.getProperty("toolkit.scriptsurl");
+            remotescriptversion=remoteprop.getProperty("toolkit.scriptversion");
+            remoteseripturl=remoteprop.getProperty("toolkit.scriptsurl");
             //appdir =remoteprop.getProperty("toolkit.appdir");*/
         }
         //End of Properties
@@ -455,7 +498,8 @@ public class ToolboxController implements Initializable {
                 System.out.println("Updating Toolkit package");
                 try {
                     SeekableByteChannel destFileChannel = Files.newByteChannel(Dest);
-                    destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
+                    destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
+                    // Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
                     //Update workingDir Application Properties
                     PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
                       wdirprop.setProperty("toolkit.version",appversion);

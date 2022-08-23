@@ -6,6 +6,7 @@ import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
 import javafx.concurrent.Task;
 
+import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.channels.Channels;
@@ -31,15 +32,21 @@ public class PackageDownloadTask extends Task {
 
     @Override
     protected Object call() throws Exception {
+        boolean downloaded =false;
 
 
         try (InputStream in = configuration.getPackageDownloadUrl().openStream();
              ReadableByteChannel rbc = Channels.newChannel(in);
              FileOutputStream fos = new FileOutputStream(configuration.getPackageUnzipDir())) {
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading KenyaEMR update...");
             //addMessageToTextFlow("\nDownload started...", Color.GREEN, new Font(15));
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            downloaded=true;
+            fos.close();
+
+
         } catch (Exception e) {
             //addMessageToTextFlow("\nThere was an error..." + e.getCause(), Color.RED, new Font(15));
 
@@ -65,8 +72,11 @@ public class PackageDownloadTask extends Task {
         System.out.println("Executing upgrade script");
         controller.addMessageToListFlow("Executing KenyaEMR upgrade script");
 
-        RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
-        service.start();
+        if(downloaded==true) {
+
+            RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
+            service.start();
+        }
 
         //System.out.println("Successfully executed the upgrade script");
 

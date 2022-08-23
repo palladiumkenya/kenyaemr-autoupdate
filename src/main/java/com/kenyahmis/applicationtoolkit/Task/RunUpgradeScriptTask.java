@@ -33,8 +33,8 @@ public class RunUpgradeScriptTask extends Task {
         // Run a shell command
         List<String> cmdList = new ArrayList<String>();
         // adding command and args to the list
+        System.out.println("My path is this one "+configuration.getPathToSetupScript());
         cmdList.add("sh");
-
         cmdList.add(configuration.getPathToSetupScript());
         cmdList.add(configuration.getUserPass());
         cmdList.add(configuration.getMysqlPass());
@@ -61,7 +61,6 @@ public class RunUpgradeScriptTask extends Task {
                 }
             });
 
-
             int exitVal = process.waitFor();
 
             if (exitVal == 0) {
@@ -69,7 +68,7 @@ public class RunUpgradeScriptTask extends Task {
                 controller.addMessageToListFlow("Successfully executed the setup script");
             } else {
                 BufferedReader errorReader = new BufferedReader(
-                        new InputStreamReader(process.getErrorStream()));
+                       new InputStreamReader(process.getErrorStream()));
                 //addMessageToTextFlow("\nThere was a problem executing the script. Exit code " + exitVal, Color.RED, new Font(15));
                 String error;
                 while ((error = errorReader.readLine()) != null) {
