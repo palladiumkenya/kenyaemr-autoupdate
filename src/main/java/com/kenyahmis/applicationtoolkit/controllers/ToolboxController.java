@@ -1,7 +1,12 @@
 package com.kenyahmis.applicationtoolkit.controllers;
 
-import com.kenyahmis.applicationtoolkit.Services.*;
-import com.kenyahmis.applicationtoolkit.ToolBoxApplication;
+import com.kenyahmis.applicationtoolkit.Services.AppUpdateService;
+import com.kenyahmis.applicationtoolkit.Services.DownloadScriptService;
+import com.kenyahmis.applicationtoolkit.Services.PackageBackupService;
+import com.kenyahmis.applicationtoolkit.Services.PackageDownloadService;
+import com.kenyahmis.applicationtoolkit.Services.RunRollBackService;
+import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
+import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import com.kenyahmis.applicationtoolkit.utils.InfoAlerts;
 import com.kenyahmis.applicationtoolkit.utils.PasswordDialog;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
@@ -10,13 +15,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.Border;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
