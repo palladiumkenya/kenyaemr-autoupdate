@@ -33,17 +33,14 @@ public class DownloadScriptTask  extends Task {
              FileOutputStream fos = new FileOutputStream(configuration.getScriptpackageUnzipDir())) {
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading Scripts ...");
-            //addMessageToTextFlow("\nDownload started...", Color.GREEN, new Font(15));
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         } catch (Exception e) {
-            //addMessageToTextFlow("\nThere was an error..." + e.getCause(), Color.RED, new Font(15));
 
             System.out.println("An error occurred. " + e.getCause());
             controller.addMessageToListFlow("An error occurred. " + e.getCause());
             e.printStackTrace();
 
         }
-        //addMessageToTextFlow("\nDownload completed...", Color.GREEN, new Font(15));
 
         System.out.println("Scripts Download completed");
 

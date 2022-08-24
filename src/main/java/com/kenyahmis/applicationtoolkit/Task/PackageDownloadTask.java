@@ -40,7 +40,6 @@ public class PackageDownloadTask extends Task {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading KenyaEMR update...");
-            //addMessageToTextFlow("\nDownload started...", Color.GREEN, new Font(15));
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             downloaded=true;
             fos.close();
