@@ -48,7 +48,6 @@ public class UpdateScheduler extends TimerTask {
             throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
         }
         System.out.println("Local Version "+ localversion+" remote version "+remoteVersion);
-        //Some stuffs
         if(localversion.equals(remoteVersion)){
            // System.out.println("No Update is Available");
         }else{
@@ -60,7 +59,6 @@ public class UpdateScheduler extends TimerTask {
                 }
             });
         }
-        //Check the data
     }
     @Override
     public void run() {

@@ -366,10 +366,9 @@ public class ToolboxController implements Initializable {
             remoteurl = remoteprop.getProperty("toolkit.remoteemrurl");
             remoteemrversion = remoteprop.getProperty("toolkit.emrversion");
             appversion=remoteprop.getProperty("toolkit.version");
-           // appurl =remoteprop.getProperty("toolkit.appurl");
             remotescriptversion=remoteprop.getProperty("toolkit.scriptversion");
             remoteseripturl=remoteprop.getProperty("toolkit.scriptsurl");
-            //appdir =remoteprop.getProperty("toolkit.appdir");*/
+
         }
         File f = new File(deploymentdir);
         if(f.exists() && f.isFile()) {
@@ -486,18 +485,17 @@ public class ToolboxController implements Initializable {
                     SeekableByteChannel destFileChannel = Files.newByteChannel(Dest);
                     destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
                     // Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
-                    //Update workingDir Application Properties
                       PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
                       wdirprop.setProperty("toolkit.version",appversion);
                       wdirprop.save();
-                      //Update workingDir Application Properties
+
                 } catch (IOException | ConfigurationException e) {
                     throw new RuntimeException(e);
                 }
             }
 
            if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
-               //Download Scripts
+
                String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
                URL remotescrp = null;
                try {

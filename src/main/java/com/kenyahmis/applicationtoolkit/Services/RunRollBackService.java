@@ -23,10 +23,7 @@ public class RunRollBackService extends Service {
     protected Task createTask() {
         controller.addMessageToListFlow("Initializing a background KenyaEMR Rollback task");
         System.out.println("Initializing a background KenyaEMR Rollback task");
-        //controller.addMessageToListFlow("Initializing a background KenyaEMR Rollback task");
-        //Restoring DB
-        // Coping Modules
-        // Restarting Tomcat9
+
 
         return new RunRollBackTask(controller, configuration);
     }

@@ -27,18 +27,13 @@ public class RunBackupScriptTask extends Task {
     @Override
     protected Object call() throws Exception {
 
-        // Run a shell command
         List<String> cmdList = new ArrayList<String>();
-        // adding command and args to the list
         cmdList.add("bash");
-
         cmdList.add(configuration.getPathToBackupScript());
         cmdList.add(configuration.getUserPass());
         cmdList.add(configuration.getMysqlPass());
 
        ProcessBuilder processBuilder = new ProcessBuilder(cmdList);
-     // String[] cmdScript = new String[]{"bash", configuration.getPathToBackupScript()};
-     //  ProcessBuilder processBuilder = new ProcessBuilder(cmdScript);
 
         try {
 
@@ -70,11 +65,9 @@ public class RunBackupScriptTask extends Task {
             } else {
                 BufferedReader errorReader = new BufferedReader(
                         new InputStreamReader(process.getErrorStream()));
-                //addMessageToTextFlow("\nThere was a problem executing the script. Exit code " + exitVal, Color.RED, new Font(15));
 
                 String error;
                 while ((error = errorReader.readLine()) != null) {
-                    //addMessageToTextFlow(error + "\n", Color.DARKRED, new Font(15));
                     System.out.println("An error occured" + error);
                     controller.addMessageToListFlow(error);
 
