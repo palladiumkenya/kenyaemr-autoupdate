@@ -21,9 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -32,9 +29,6 @@ import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.PosixFilePermission;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.util.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -83,10 +77,7 @@ public class ToolboxController implements Initializable {
 
     String remoteseripturl="";
 
-   // String remoteproperties="";
-   // public String emrurl="";
-   // URL resource = getClass().getClassLoader().getResource("/opennmrs_backup_tools/opennmrs_backup.sh");
-   ClassLoader resource = getClass().getClassLoader();
+    ClassLoader resource = getClass().getClassLoader();
     private ObservableList<String> msgData;
     @FXML
     protected void onHelloButtonClick() {
@@ -144,13 +135,11 @@ public class ToolboxController implements Initializable {
             String openmrsBackup = "/opt/kehmisApplicationToolbox/Downloads/Scripts/openmrs-backup-tools/openmrs_backup.sh";
                 configuration.setPathToBackupScript(openmrsBackup);
                 final PackageBackupService backupService = new PackageBackupService(this, configuration);
-              //  upgradeButton.setDisable(true);
                 backupService.start();
 
             //Do Upgrade
             configuration.setPathToSetupScript(baseDir + fileNameWithoutExtension + "/toolkit_setup_script.sh");
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
-            //upgradeButton.setDisable(true);
             service.start();
 
             PropertiesConfiguration wdirprop = null;
@@ -321,8 +310,7 @@ public class ToolboxController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //Check remote application.properties
-      //Creating Directories if not exists
+
         File ntheDirs = new File("/opt/kehmisApplicationToolbox");
         File ntheDird = new File("/opt/kehmisApplicationToolbox/Downloads");
         if (!ntheDirs.exists()){
@@ -331,10 +319,8 @@ public class ToolboxController implements Initializable {
         if (!ntheDird.exists()){
             ntheDird.mkdirs();
         }
-        //End creating Directories
 
         ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration("","");
-        //Local Properties
         URL propresources = getClass().getClassLoader().getResource("application.properties");
         Properties prop=new Properties();
         try {
@@ -353,9 +339,7 @@ public class ToolboxController implements Initializable {
         remoteseripturl=prop.getProperty("toolkit.scriptsurl");
         configuration.setRemoteproperties(prop.getProperty("toolkit.remoteproperties"));
 
-        //Remote Properties
         String propFileName = configuration.getRemoteproperties();
-        //Check Remote application.properties
         System.out.println("Remote props "+propFileName);
         URL u = null;
         try {
@@ -387,12 +371,10 @@ public class ToolboxController implements Initializable {
             remoteseripturl=remoteprop.getProperty("toolkit.scriptsurl");
             //appdir =remoteprop.getProperty("toolkit.appdir");*/
         }
-        //End of Properties
         File f = new File(deploymentdir);
         if(f.exists() && f.isFile()) {
-            //compare the two files
+
         }else{
-           // System.out.println("hakuna hapa sasa");
             File theDir = new File(deploymentdir);
             if (!theDir.exists()){
                 theDir.mkdirs();
@@ -433,16 +415,11 @@ public class ToolboxController implements Initializable {
                     }
                 }
             }
-        //End of Local Repository
-        //End of check
-        //Read proprerties from working directory
-        //End of proprerties from working directory
         msgData = FXCollections.observableArrayList();
         listMsgs.setItems(msgData);
         lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);
         lblEMR.setText("KenyaEMR Version ("+ emrversion +")");
 
-            //Check local and remote version to alert update available
             String[] localV = emrversion.split("[.]");
             String[] remoteV = remoteemrversion.split("[.]");
              Double local = Double.parseDouble(localV[1]+"."+localV[2]);
@@ -486,8 +463,6 @@ public class ToolboxController implements Initializable {
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-                /*;*/
-               // configuration.setApppackageDir(appdir);
                 configuration.setAppulr(apdurl);
                 Path fileName = Paths.get(appurl);
                 String downloadedFileName = fileName.getFileName().toString() ;
@@ -512,7 +487,7 @@ public class ToolboxController implements Initializable {
                     destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
                     // Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
                     //Update workingDir Application Properties
-                    PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
+                      PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
                       wdirprop.setProperty("toolkit.version",appversion);
                       wdirprop.save();
                       //Update workingDir Application Properties
@@ -520,8 +495,7 @@ public class ToolboxController implements Initializable {
                     throw new RuntimeException(e);
                 }
             }
-            //End of application version
-            //Check if Script verion are the same
+
            if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
                //Download Scripts
                String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
@@ -546,7 +520,6 @@ public class ToolboxController implements Initializable {
                }
                final DownloadScriptService service = new DownloadScriptService(this, configuration);
                service.start();
-               //Update workingDir Application Properties
                PropertiesConfiguration wdirprop = null;
                try {
                    wdirprop = new PropertiesConfiguration(localproperties);
@@ -556,9 +529,8 @@ public class ToolboxController implements Initializable {
                    throw new RuntimeException(e);
                }
 
-               //Update workingDir Application Properties
            }
-            //End of check Script
+
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
         if (folder.exists() && folder.isDirectory()) {
             addMessageToListFlow("Application initialization completed");
@@ -566,10 +538,6 @@ public class ToolboxController implements Initializable {
         } else {
 
             addMessageToListFlow("App directories not found. Please create them and continue");
-
-            addMessageToListFlow("Please wait creating directories");
-
-
 
         }
         }
