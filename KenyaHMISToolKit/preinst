@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
 echo "Installing Dependecies please wait"
-grep -q JAVA_HOME /etc/environment || echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/"' >> /etc/environment
+grep -q JAVA_HOME /etc/environment || echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"' >> /etc/environment
 . /etc/environment
 echo $JAVA_HOME

@@ -377,7 +377,6 @@ public class ToolboxController implements Initializable {
             appversion=remoteprop.getProperty("toolkit.version");
             remotescriptversion=remoteprop.getProperty("toolkit.scriptversion");
             remoteseripturl=remoteprop.getProperty("toolkit.scriptsurl");
-
         }
         File f = new File(deploymentdir);
         if(f.exists() && f.isFile()) {
@@ -387,8 +386,7 @@ public class ToolboxController implements Initializable {
             if (!theDir.exists()){
                 theDir.mkdirs();
             }
-            else{
-                File propsfile = new File(localproperties);
+            File propsfile = new File(localproperties);
                 if (!propsfile.exists()){
                     OutputStream output = null;
                     try {
@@ -404,6 +402,8 @@ public class ToolboxController implements Initializable {
                         props.store(output, null);
                     } catch (FileNotFoundException e) {
                         throw new RuntimeException(e);
+
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -422,7 +422,6 @@ public class ToolboxController implements Initializable {
                         throw new RuntimeException(e);
                     }
                 }
-            }
         msgData = FXCollections.observableArrayList();
         listMsgs.setItems(msgData);
         lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);
@@ -434,8 +433,7 @@ public class ToolboxController implements Initializable {
              Double remote = Double.parseDouble(remoteV[1]+"."+remoteV[2]);
 
             for (String a : localV)
-                System.out.println(a);
-
+               // System.out.println(a);
          //Main version
            if(Integer.parseInt(remoteV[0])>Integer.parseInt(localV[0])){
                lblUpdates.setText("KenyaEMR "+ remoteemrversion +" is Available !!!");
@@ -461,6 +459,43 @@ public class ToolboxController implements Initializable {
                }
            }
 
+            // Download Scripts
+            if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
+
+                String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+                URL remotescrp = null;
+                try {
+                    remotescrp = new URL(remoteseripturl);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+                Path fileName = Paths.get(remoteseripturl);
+                String downloadedFileName = fileName.getFileName().toString() ;
+                configuration.setScriptsurl(remotescrp);
+                configuration.setScriptpackageUnzipDir(baseDir + downloadedFileName);
+                configuration.setBaseDir(baseDir);
+                File theDirs = new File("/opt/kehmisApplicationToolbox");
+                File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
+                if (!theDirs.exists()){
+                    theDirs.mkdirs();
+                }
+                if (!theDird.exists()){
+                    theDird.mkdirs();
+                }
+                final DownloadScriptService service = new DownloadScriptService(this, configuration);
+                service.start();
+                PropertiesConfiguration wdirprop = null;
+                try {
+                    wdirprop = new PropertiesConfiguration(localproperties);
+                    wdirprop.setProperty("toolkit.scriptversion",remotescriptversion);
+                    wdirprop.save();
+                } catch (ConfigurationException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            // end Download Scrips
+
             //Check application version
             if(Double.parseDouble(appversion) > Double.parseDouble(localappversion)){
 
@@ -477,6 +512,8 @@ public class ToolboxController implements Initializable {
                 configuration.setAppulr(apdurl);
                 configuration.setApppackageUnzipDir(baseDir + downloadedFileName);
                 configuration.setBaseDir(baseDir);
+                String toolupgradesripts = "/opt/kehmisApplicationToolbox/Downloads/Scripts/toolkit/upgrade.sh";
+                configuration.setPathToolkitUpgradeScript(toolupgradesripts);
                 File theDirs = new File("/opt/kehmisApplicationToolbox");
                 File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
                 if (!theDirs.exists()){
@@ -485,6 +522,7 @@ public class ToolboxController implements Initializable {
                 if (!theDird.exists()){
                     theDird.mkdirs();
                 }
+
                 final AppUpdateService appUpdateService = new AppUpdateService(this, configuration);
                 appUpdateService.start();
                 Path sour = Paths.get("/opt/kehmisApplicationToolbox/Downloads/kenyahmistoolkit.jar");
@@ -492,7 +530,7 @@ public class ToolboxController implements Initializable {
                 System.out.println("Updating Toolkit package");
                 try {
                     SeekableByteChannel destFileChannel = Files.newByteChannel(Dest);
-                    destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
+                    // destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
                     // Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
                       PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
                       wdirprop.setProperty("toolkit.version",appversion);
@@ -503,40 +541,7 @@ public class ToolboxController implements Initializable {
                 }
             }
 
-           if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
 
-               String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-               URL remotescrp = null;
-               try {
-                   remotescrp = new URL(remoteseripturl);
-               } catch (MalformedURLException e) {
-                   throw new RuntimeException(e);
-               }
-               Path fileName = Paths.get(remoteseripturl);
-               String downloadedFileName = fileName.getFileName().toString() ;
-               configuration.setScriptsurl(remotescrp);
-               configuration.setScriptpackageUnzipDir(baseDir + downloadedFileName);
-               configuration.setBaseDir(baseDir);
-               File theDirs = new File("/opt/kehmisApplicationToolbox");
-               File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
-               if (!theDirs.exists()){
-                   theDirs.mkdirs();
-               }
-               if (!theDird.exists()){
-                   theDird.mkdirs();
-               }
-               final DownloadScriptService service = new DownloadScriptService(this, configuration);
-               service.start();
-               PropertiesConfiguration wdirprop = null;
-               try {
-                   wdirprop = new PropertiesConfiguration(localproperties);
-                   wdirprop.setProperty("toolkit.scriptversion",remotescriptversion);
-                   wdirprop.save();
-               } catch (ConfigurationException e) {
-                   throw new RuntimeException(e);
-               }
-
-           }
 
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
         if (folder.exists() && folder.isDirectory()) {

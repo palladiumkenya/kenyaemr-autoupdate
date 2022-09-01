@@ -31,7 +31,7 @@ chmod 0775 $TEMP_DIR/debian/DEBIAN/postinst
 cp *.jar $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
 cp $PACKAGE_NAME $TEMP_DIR/debian/usr/games/
 
-cp -r toolkitdependecies $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
+#cp -r toolkitdependecies $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
  
 echo "$PACKAGE_NAME ($PACKAGE_VERSION) trusty; urgency=low" > changelog
 echo "  * Rebuild" >> changelog

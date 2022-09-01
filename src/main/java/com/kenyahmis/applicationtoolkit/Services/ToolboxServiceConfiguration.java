@@ -30,6 +30,8 @@ public class ToolboxServiceConfiguration {
     private String scriptpackageUnzipDir;
     private String apppackageUnzipDir;
 
+    private String pathToolkitUpgradeScript;
+
     public ToolboxServiceConfiguration(String userPass, String mysqlPass) {
         this.userPass = userPass;
         this.mysqlPass = mysqlPass;
@@ -153,5 +155,13 @@ public class ToolboxServiceConfiguration {
 
     public void setApppackageUnzipDir(String apppackageUnzipDir) {
         this.apppackageUnzipDir = apppackageUnzipDir;
+    }
+
+    public String getPathToolkitUpgradeScript() {
+        return pathToolkitUpgradeScript;
+    }
+
+    public void setPathToolkitUpgradeScript(String pathToolkitUpgradeScript) {
+        this.pathToolkitUpgradeScript = pathToolkitUpgradeScript;
     }
 }

@@ -2,6 +2,7 @@ package com.kenyahmis.applicationtoolkit.Task;
 
 import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.Services.UpgradeToolkitService;
 import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
 import javafx.concurrent.Task;
@@ -52,6 +53,12 @@ public class AppUpdateTask extends Task {
 
         System.out.println("Unzipping completed");
         controller.addMessageToListFlow("Unzipping Toolkit completed");
+
+        //Update the file
+        UpgradeToolkitService service = new UpgradeToolkitService(controller, configuration);
+        service.start();
+        System.exit(1);
+        //End of Update the file
 
         return "Success";
     }

@@ -73,11 +73,6 @@ public class PackageDownloadTask extends Task {
             service.start();
         }
 
-        if(downloaded==true) {
-            RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
-            service.start();
-        }
-
         return "Success";
     }
 
