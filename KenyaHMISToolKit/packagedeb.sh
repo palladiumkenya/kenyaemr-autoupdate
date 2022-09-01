@@ -17,7 +17,7 @@ echo "Package: $PACKAGE_NAME" > $TEMP_DIR/debian/DEBIAN/control
 echo "Version: $PACKAGE_VERSION" >> $TEMP_DIR/debian/DEBIAN/control
 cat control >> $TEMP_DIR/debian/DEBIAN/control
 cat preinst >> $TEMP_DIR/debian/DEBIAN/preinst
-#cat postinst >> $TEMP_DIR/debian/DEBIAN/postinst
+cat postinst >> $TEMP_DIR/debian/DEBIAN/postinst
  
 cp *.desktop $TEMP_DIR/debian/usr/share/applications/
 cp copyright $TEMP_DIR/debian/usr/share/common-licenses/$PACKAGE_NAME/ # results in no copyright warning
@@ -26,7 +26,7 @@ cp copyright $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/ # results in obsolete
 chmod 0644 $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/
 chmod 0644 $TEMP_DIR/debian/usr/share/common-licenses/$PACKAGE_NAME/
 chmod 0775 $TEMP_DIR/debian/DEBIAN/preinst
-#chmod 0775 $TEMP_DIR/debian/DEBIAN/postinst
+chmod 0775 $TEMP_DIR/debian/DEBIAN/postinst
  
 cp *.jar $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
 cp $PACKAGE_NAME $TEMP_DIR/debian/usr/games/
@@ -39,7 +39,7 @@ echo " -- Serge Helfrich <helfrich@xs4all.nl>  `date -R`" >> changelog
 gzip -9c changelog > $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/changelog.gz
  
 cp *.png $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
-chmod 0644 $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/*png
+chmod 0644 $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/*.png
  
 PACKAGE_SIZE=`du -bs $TEMP_DIR/debian | cut -f 1`
 PACKAGE_SIZE=$((PACKAGE_SIZE/1024))
