@@ -1,7 +1,9 @@
 package com.kenyahmis.applicationtoolkit.controllers;
 
+
 import com.kenyahmis.applicationtoolkit.Services.AppUpdateService;
 import com.kenyahmis.applicationtoolkit.Services.DownloadScriptService;
+import com.kenyahmis.applicationtoolkit.Services.OfflineUpgradeService;
 import com.kenyahmis.applicationtoolkit.Services.PackageBackupService;
 import com.kenyahmis.applicationtoolkit.Services.PackageDownloadService;
 import com.kenyahmis.applicationtoolkit.Services.RunRollBackService;
@@ -16,11 +18,20 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,9 +49,6 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 
 /**
  * Handles toolbox events
@@ -288,6 +296,59 @@ public class ToolboxController implements Initializable {
 
         }
     }
+    @FXML
+    protected void offliceupgrade(){
+        String token = "";
+        PasswordDialog dialog = new PasswordDialog();
+
+        dialog.setTitle("Admin password");
+        dialog.setHeaderText("Enter admin password:");
+        dialog.setContentText("Password:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            token = dialog.getPasswordField().getText();
+        }
+        String mysqlPass = "";
+        PasswordDialog mysqlDialog = new PasswordDialog();
+        mysqlDialog.setTitle("Mysql password");
+        mysqlDialog.setHeaderText("Enter MySQL password:");
+        mysqlDialog.setContentText("Password:");
+
+        Optional<String> mysqlResult = mysqlDialog.showAndWait();
+        if (mysqlResult.isPresent()) {
+            mysqlPass = mysqlDialog.getPasswordField().getText();
+        }
+        if ("".equals(token) || "".equals(mysqlPass)) {
+            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+            System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+        } else {
+            final FileChooser fc = new FileChooser();
+            Stage stage = new Stage();
+            //stage.setTitle("File Chooser Sample");
+
+            File file = fc.showOpenDialog(stage);
+            if (file != null) {
+                // openFile(file);
+                String fpath = file.getAbsolutePath();
+                String fname = file.getName();
+                System.out.println("File name " + fpath);
+                System.out.println("File name " + fname);
+                ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
+                configuration.setPathToOfflineScript(fpath);
+                //configuration.setPackageUnzipDir("/opt/kehmisApplicationToolbox/Downloads/"+fname);
+                configuration.setBaseDir("/opt/kehmisApplicationToolbox/Downloads/");
+                String fileNameWithoutExtension = fname.substring(0, fname.lastIndexOf('.'));
+                configuration.setPathToSetupScript(configuration.getBaseDir() + fileNameWithoutExtension + "/toolkit_setup_script.sh"); //toolkit_setup_script
+                // configuration.setPathToSetupScript();
+                final OfflineUpgradeService offlineUpgradeService = new OfflineUpgradeService(this, configuration);
+                offlineUpgradeService.start();
+
+            }
+        }
+
+    }
 
     /**
      *
@@ -319,7 +380,32 @@ public class ToolboxController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        String token = "";
+        PasswordDialog dialog = new PasswordDialog();
 
+        dialog.setTitle("Admin password");
+        dialog.setHeaderText("Enter admin password:");
+        dialog.setContentText("Password:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            token = dialog.getPasswordField().getText();
+        }
+        String mysqlPass = "";
+        PasswordDialog mysqlDialog = new PasswordDialog();
+        mysqlDialog.setTitle("Mysql password");
+        mysqlDialog.setHeaderText("Enter MySQL password:");
+        mysqlDialog.setContentText("Password:");
+
+        Optional<String> mysqlResult = mysqlDialog.showAndWait();
+        if (mysqlResult.isPresent()) {
+            mysqlPass = mysqlDialog.getPasswordField().getText();
+        }
+        if ("".equals(token) || "".equals(mysqlPass)) {
+            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+            System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+        }
         File ntheDirs = new File("/opt/kehmisApplicationToolbox");
         File ntheDird = new File("/opt/kehmisApplicationToolbox/Downloads");
         if (!ntheDirs.exists()){
@@ -329,7 +415,7 @@ public class ToolboxController implements Initializable {
             ntheDird.mkdirs();
         }
 
-        ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration("","");
+        ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token,mysqlPass);
         URL propresources = getClass().getClassLoader().getResource("application.properties");
         Properties prop=new Properties();
         try {

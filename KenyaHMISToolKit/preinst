@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 echo "Installing Dependecies please wait"
+sudo mkdir /opt/kehmisApplicationToolbox/
+sudo mkdir /opt/kehmisApplicationToolbox/Downloads
+sudo chmod 777 -R /opt/kehmisApplicationToolbox/
+sudo chmod 777 -R /opt
+
 grep -q JAVA_HOME /etc/environment || echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"' >> /etc/environment
 . /etc/environment
 echo $JAVA_HOME

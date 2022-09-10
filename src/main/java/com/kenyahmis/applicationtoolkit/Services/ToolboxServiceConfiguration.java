@@ -29,8 +29,8 @@ public class ToolboxServiceConfiguration {
     private URL scriptsurl;
     private String scriptpackageUnzipDir;
     private String apppackageUnzipDir;
-
     private String pathToolkitUpgradeScript;
+    private String pathToOfflineScript;
 
     public ToolboxServiceConfiguration(String userPass, String mysqlPass) {
         this.userPass = userPass;
@@ -160,8 +160,15 @@ public class ToolboxServiceConfiguration {
     public String getPathToolkitUpgradeScript() {
         return pathToolkitUpgradeScript;
     }
-
     public void setPathToolkitUpgradeScript(String pathToolkitUpgradeScript) {
         this.pathToolkitUpgradeScript = pathToolkitUpgradeScript;
+    }
+
+    public String getPathToOfflineScript() {
+        return pathToOfflineScript;
+    }
+
+    public void setPathToOfflineScript(String pathToOfflineScript) {
+        this.pathToOfflineScript = pathToOfflineScript;
     }
 }
