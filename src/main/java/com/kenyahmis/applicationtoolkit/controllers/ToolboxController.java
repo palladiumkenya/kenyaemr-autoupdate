@@ -103,6 +103,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
    //Add here
