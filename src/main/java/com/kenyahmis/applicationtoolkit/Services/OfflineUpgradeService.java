@@ -26,7 +26,6 @@ public class OfflineUpgradeService extends Service {
         System.out.println("Initializing a background download task");
         return new OfflineUpgradeTask(controller, configuration);
     }
-
     public ToolboxServiceConfiguration getConfiguration() {
         return configuration;
     }

@@ -1,5 +1,6 @@
 package com.kenyahmis.applicationtoolkit.Task;
 
+import com.kenyahmis.applicationtoolkit.Services.AppUpdateService;
 import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import com.kenyahmis.applicationtoolkit.Services.UpgradeToolkitService;
@@ -13,10 +14,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
 public class AppUpdateTask extends Task {
-
     private ToolboxServiceConfiguration configuration;
-
-
     private final ToolboxController controller;
     public AppUpdateTask(ToolboxController controller) {
         this.controller = controller;
@@ -57,6 +55,7 @@ public class AppUpdateTask extends Task {
         //Update the file
         UpgradeToolkitService service = new UpgradeToolkitService(controller, configuration);
         service.start();
+        //Delay Restarts
         System.exit(1);
         //End of Update the file
 

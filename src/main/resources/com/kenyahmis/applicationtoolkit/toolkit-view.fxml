@@ -89,6 +89,10 @@
                                   <Label />
                                   <Hyperlink onAction="#offliceupgrade" text="Upload"/>
                                   <Separator />
+                                 <!-- <Separator />
+                                  <Label />
+                                  <Hyperlink onAction="#appupdate" text="appupdate"/>
+                                  <Separator />-->
                             </HBox>
                         </children>
 

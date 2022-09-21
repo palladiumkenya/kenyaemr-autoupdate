@@ -30,7 +30,6 @@ public class UpgradeToolkitTask extends Task {
         // Run a shell command
         List<String> cmdList = new ArrayList<String>();
         // adding command and args to the list
-
         System.out.println("My path is this one "+configuration.getPathToolkitUpgradeScript());
         cmdList.add("sh");
         cmdList.add(configuration.getPathToolkitUpgradeScript());
