@@ -1,0 +1,6 @@
+#!/bin/sh
+echo "Setting Java_HOME. Please wait..."
+grep -q JAVA_HOME /etc/environment || echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"' >> /etc/environment
+. /etc/environment
+echo $JAVA_HOME
+#sudo /usr/lib/jvm/java-1.11.0-openjdk-amd64/bin/java --module-path /usr/share/openjfx/lib --add-modules ALL-MODULE-PATH -jar /usr/share/kenyahmistoolkit/kenyahmistoolkit.jar 

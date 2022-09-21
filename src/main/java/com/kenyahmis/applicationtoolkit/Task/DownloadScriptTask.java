@@ -55,7 +55,7 @@ public class DownloadScriptTask  extends Task {
         controller.addMessageToListFlow("Scripts Unzipping completed");
 
         System.out.println("Executing upgrade script");
-        controller.addMessageToListFlow("Done you can now perform other operation");
+        controller.addMessageToListFlow("Executing toolkit upgrade script");
 
         return "Success";
     }

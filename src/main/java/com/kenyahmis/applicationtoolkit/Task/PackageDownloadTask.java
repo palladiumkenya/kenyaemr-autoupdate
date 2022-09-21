@@ -37,12 +37,12 @@ public class PackageDownloadTask extends Task {
         try (InputStream in = configuration.getPackageDownloadUrl().openStream();
              ReadableByteChannel rbc = Channels.newChannel(in);
              FileOutputStream fos = new FileOutputStream(configuration.getPackageUnzipDir())) {
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
-            System.out.println("Downloading ...");
-            controller.addMessageToListFlow("Downloading KenyaEMR update...");
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            downloaded=true;
-            fos.close();
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
+             System.out.println("Downloading ...");
+             controller.addMessageToListFlow("Downloading KenyaEMR update...");
+             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+             downloaded=true;
+             fos.close();
 
 
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class PackageDownloadTask extends Task {
         }
         System.out.println("KenyaEMR Download completed");
 
-               controller.addMessageToListFlow("KenyaEMR Download completed");
+        controller.addMessageToListFlow("KenyaEMR Download completed");
 
         System.out.println("Unzipping started");
 
@@ -69,11 +69,6 @@ public class PackageDownloadTask extends Task {
 
         if(downloaded==true) {
 
-            RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
-            service.start();
-        }
-
-        if(downloaded==true) {
             RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
             service.start();
         }

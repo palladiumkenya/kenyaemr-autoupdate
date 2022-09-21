@@ -1,12 +1,15 @@
 package com.kenyahmis.applicationtoolkit.controllers;
 
+
 import com.kenyahmis.applicationtoolkit.Services.AppUpdateService;
 import com.kenyahmis.applicationtoolkit.Services.DownloadScriptService;
+import com.kenyahmis.applicationtoolkit.Services.OfflineUpgradeService;
 import com.kenyahmis.applicationtoolkit.Services.PackageBackupService;
 import com.kenyahmis.applicationtoolkit.Services.PackageDownloadService;
 import com.kenyahmis.applicationtoolkit.Services.RunRollBackService;
 import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.Services.UpgradeToolkitService;
 import com.kenyahmis.applicationtoolkit.utils.InfoAlerts;
 import com.kenyahmis.applicationtoolkit.utils.PasswordDialog;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
@@ -16,11 +19,20 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,9 +50,6 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 
 /**
  * Handles toolbox events
@@ -94,6 +103,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void downloadEmrUpgrade(ActionEvent actionEvent) throws IOException {
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
    //Add here
@@ -106,7 +116,6 @@ public class ToolboxController implements Initializable {
         Path fileName = Paths.get(downloadUrl);
         String downloadedFileName = fileName.getFileName().toString() ;
         String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
-
         // user pass
         String token = "";
         PasswordDialog dialog = new PasswordDialog();
@@ -145,7 +154,6 @@ public class ToolboxController implements Initializable {
                 configuration.setPathToBackupScript(openmrsBackup);
                 final PackageBackupService backupService = new PackageBackupService(this, configuration);
                 backupService.start();
-
             //Do Upgrade
             configuration.setPathToSetupScript(baseDir + fileNameWithoutExtension + "/toolkit_setup_script.sh");
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
@@ -164,7 +172,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void backupEMR(ActionEvent actionEvent) throws IOException {
-
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
         // user pass
@@ -206,7 +214,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void rollbackEMR(ActionEvent actionEvent) throws IOException {
-
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
         // user pass
@@ -247,8 +255,50 @@ public class ToolboxController implements Initializable {
         }
     }
     @FXML
-    protected void upgradeEMR(ActionEvent actionEvent) throws IOException {
+    protected void appupdate(ActionEvent actionEvent) throws IOException {
+        listMsgs.getItems().clear();
+        addMessageToListFlow("Prompting for user authentication");
+        String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+        // user pass
+        String token = "";
+        PasswordDialog dialog = new PasswordDialog();
 
+        dialog.setTitle("Admin password");
+        dialog.setHeaderText("Enter admin password:");
+        dialog.setContentText("Password:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            token = dialog.getPasswordField().getText();
+        }
+
+        String mysqlPass = "";
+        PasswordDialog mysqlDialog = new PasswordDialog();
+
+        mysqlDialog.setTitle("Mysql password");
+        mysqlDialog.setHeaderText("Enter MySQL password:");
+        mysqlDialog.setContentText("Password:");
+
+        Optional<String> mysqlResult = mysqlDialog.showAndWait();
+        if (mysqlResult.isPresent()) {
+            mysqlPass = mysqlDialog.getPasswordField().getText();
+        }
+        if ("".equals(token) || "".equals(mysqlPass)) {
+            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+            System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+        } else {
+            String toolupgradesripts = "/opt/kehmisApplicationToolbox/Downloads/Scripts/toolkit/upgrade.sh";
+            ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
+            configuration.setPathToolkitUpgradeScript(toolupgradesripts);
+            final UpgradeToolkitService appUpdateService = new UpgradeToolkitService(this, configuration);
+            appUpdateService.start();
+
+        }
+    }
+    @FXML
+    protected void upgradeEMR(ActionEvent actionEvent) throws IOException {
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
         // user pass
@@ -288,6 +338,60 @@ public class ToolboxController implements Initializable {
 
         }
     }
+    @FXML
+    protected void offliceupgrade(){
+        listMsgs.getItems().clear();
+        String token = "";
+        PasswordDialog dialog = new PasswordDialog();
+
+        dialog.setTitle("Admin password");
+        dialog.setHeaderText("Enter admin password:");
+        dialog.setContentText("Password:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            token = dialog.getPasswordField().getText();
+        }
+        String mysqlPass = "";
+        PasswordDialog mysqlDialog = new PasswordDialog();
+        mysqlDialog.setTitle("Mysql password");
+        mysqlDialog.setHeaderText("Enter MySQL password:");
+        mysqlDialog.setContentText("Password:");
+
+        Optional<String> mysqlResult = mysqlDialog.showAndWait();
+        if (mysqlResult.isPresent()) {
+            mysqlPass = mysqlDialog.getPasswordField().getText();
+        }
+        if ("".equals(token) || "".equals(mysqlPass)) {
+            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+            System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+        } else {
+            final FileChooser fc = new FileChooser();
+            Stage stage = new Stage();
+            //stage.setTitle("File Chooser Sample");
+
+            File file = fc.showOpenDialog(stage);
+            if (file != null) {
+                // openFile(file);
+                String fpath = file.getAbsolutePath();
+                String fname = file.getName();
+                System.out.println("File name " + fpath);
+                System.out.println("File name " + fname);
+                ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
+                configuration.setPathToOfflineScript(fpath);
+                //configuration.setPackageUnzipDir("/opt/kehmisApplicationToolbox/Downloads/"+fname);
+                configuration.setBaseDir("/opt/kehmisApplicationToolbox/Downloads/");
+                String fileNameWithoutExtension = fname.substring(0, fname.lastIndexOf('.'));
+                configuration.setPathToSetupScript(configuration.getBaseDir() + fileNameWithoutExtension + "/toolkit_setup_script.sh"); //toolkit_setup_script
+                // configuration.setPathToSetupScript();
+                final OfflineUpgradeService offlineUpgradeService = new OfflineUpgradeService(this, configuration);
+                offlineUpgradeService.start();
+
+            }
+        }
+
+    }
 
     /**
      *
@@ -319,7 +423,7 @@ public class ToolboxController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        listMsgs.getItems().clear();
         File ntheDirs = new File("/opt/kehmisApplicationToolbox");
         File ntheDird = new File("/opt/kehmisApplicationToolbox/Downloads");
         if (!ntheDirs.exists()){
@@ -328,7 +432,6 @@ public class ToolboxController implements Initializable {
         if (!ntheDird.exists()){
             ntheDird.mkdirs();
         }
-
         ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration("","");
         URL propresources = getClass().getClassLoader().getResource("application.properties");
         Properties prop=new Properties();
@@ -377,7 +480,6 @@ public class ToolboxController implements Initializable {
             appversion=remoteprop.getProperty("toolkit.version");
             remotescriptversion=remoteprop.getProperty("toolkit.scriptversion");
             remoteseripturl=remoteprop.getProperty("toolkit.scriptsurl");
-
         }
         File f = new File(deploymentdir);
         if(f.exists() && f.isFile()) {
@@ -387,8 +489,7 @@ public class ToolboxController implements Initializable {
             if (!theDir.exists()){
                 theDir.mkdirs();
             }
-            else{
-                File propsfile = new File(localproperties);
+            File propsfile = new File(localproperties);
                 if (!propsfile.exists()){
                     OutputStream output = null;
                     try {
@@ -422,20 +523,17 @@ public class ToolboxController implements Initializable {
                         throw new RuntimeException(e);
                     }
                 }
-            }
         msgData = FXCollections.observableArrayList();
         listMsgs.setItems(msgData);
         lblFooter.setText("Copyright 2022 KenyaHMIS ToolKit Version "+ tookitversion);
         lblEMR.setText("KenyaEMR Version ("+ emrversion +")");
-
             String[] localV = emrversion.split("[.]");
             String[] remoteV = remoteemrversion.split("[.]");
              Double local = Double.parseDouble(localV[1]+"."+localV[2]);
              Double remote = Double.parseDouble(remoteV[1]+"."+remoteV[2]);
 
             for (String a : localV)
-                System.out.println(a);
-
+               // System.out.println(a);
          //Main version
            if(Integer.parseInt(remoteV[0])>Integer.parseInt(localV[0])){
                lblUpdates.setText("KenyaEMR "+ remoteemrversion +" is Available !!!");
@@ -461,21 +559,20 @@ public class ToolboxController implements Initializable {
                }
            }
 
-            //Check application version
-            if(Double.parseDouble(appversion) > Double.parseDouble(localappversion)){
+            // Download Scripts
+            if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
 
                 String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-                URL apdurl = null;
+                URL remotescrp = null;
                 try {
-                    apdurl = new URL(appurl);
+                    remotescrp = new URL(remoteseripturl);
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-                configuration.setAppulr(apdurl);
-                Path fileName = Paths.get(appurl);
+                Path fileName = Paths.get(remoteseripturl);
                 String downloadedFileName = fileName.getFileName().toString() ;
-                configuration.setAppulr(apdurl);
-                configuration.setApppackageUnzipDir(baseDir + downloadedFileName);
+                configuration.setScriptsurl(remotescrp);
+                configuration.setScriptpackageUnzipDir(baseDir + downloadedFileName);
                 configuration.setBaseDir(baseDir);
                 File theDirs = new File("/opt/kehmisApplicationToolbox");
                 File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
@@ -485,14 +582,82 @@ public class ToolboxController implements Initializable {
                 if (!theDird.exists()){
                     theDird.mkdirs();
                 }
-                final AppUpdateService appUpdateService = new AppUpdateService(this, configuration);
+                final DownloadScriptService service = new DownloadScriptService(this, configuration);
+                service.start();
+                PropertiesConfiguration wdirprop = null;
+                try {
+                    wdirprop = new PropertiesConfiguration(localproperties);
+                    wdirprop.setProperty("toolkit.scriptversion",remotescriptversion);
+                    wdirprop.save();
+                } catch (ConfigurationException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+            // end Download Scrips
+
+            //Check application version
+            if(Double.parseDouble(appversion) > Double.parseDouble(localappversion)){
+
+                String token = "";
+                PasswordDialog dialog = new PasswordDialog();
+                dialog.setTitle("Admin password");
+                dialog.setHeaderText("Enter admin password:");
+                dialog.setContentText("Password:");
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()) {
+                    token = dialog.getPasswordField().getText();
+                }
+                String mysqlPass = "";
+                PasswordDialog mysqlDialog = new PasswordDialog();
+                mysqlDialog.setTitle("Mysql password");
+                mysqlDialog.setHeaderText("Enter MySQL password:");
+                mysqlDialog.setContentText("Password:");
+
+                Optional<String> mysqlResult = mysqlDialog.showAndWait();
+                if (mysqlResult.isPresent()) {
+                    mysqlPass = mysqlDialog.getPasswordField().getText();
+                }
+                if ("".equals(token) || "".equals(mysqlPass)) {
+                    addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+                    System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+                }
+                ToolboxServiceConfiguration config = new ToolboxServiceConfiguration(token,mysqlPass);
+
+                String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+                URL apdurl = null;
+                try {
+                    apdurl = new URL(appurl);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+                config.setAppulr(apdurl);
+                Path fileName = Paths.get(appurl);
+                String downloadedFileName = fileName.getFileName().toString() ;
+                config.setAppulr(apdurl);
+                config.setApppackageUnzipDir(baseDir + downloadedFileName);
+                config.setBaseDir(baseDir);
+                String toolupgradesripts = "/opt/kehmisApplicationToolbox/Downloads/Scripts/toolkit/upgrade.sh";
+                config.setPathToolkitUpgradeScript(toolupgradesripts);
+                File theDirs = new File("/opt/kehmisApplicationToolbox");
+                File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
+                if (!theDirs.exists()){
+                    theDirs.mkdirs();
+                }
+                if (!theDird.exists()){
+                    theDird.mkdirs();
+                }
+
+                final AppUpdateService appUpdateService = new AppUpdateService(this, config);
                 appUpdateService.start();
+
                 Path sour = Paths.get("/opt/kehmisApplicationToolbox/Downloads/kenyahmistoolkit.jar");
                 Path Dest = Paths.get("/usr/share/kenyahmistoolkit/kenyahmistoolkit.jar");
                 System.out.println("Updating Toolkit package");
                 try {
                     SeekableByteChannel destFileChannel = Files.newByteChannel(Dest);
-                    destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
+                    // destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
                     // Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
                       PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
                       wdirprop.setProperty("toolkit.version",appversion);
@@ -503,40 +668,7 @@ public class ToolboxController implements Initializable {
                 }
             }
 
-           if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
 
-               String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-               URL remotescrp = null;
-               try {
-                   remotescrp = new URL(remoteseripturl);
-               } catch (MalformedURLException e) {
-                   throw new RuntimeException(e);
-               }
-               Path fileName = Paths.get(remoteseripturl);
-               String downloadedFileName = fileName.getFileName().toString() ;
-               configuration.setScriptsurl(remotescrp);
-               configuration.setScriptpackageUnzipDir(baseDir + downloadedFileName);
-               configuration.setBaseDir(baseDir);
-               File theDirs = new File("/opt/kehmisApplicationToolbox");
-               File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
-               if (!theDirs.exists()){
-                   theDirs.mkdirs();
-               }
-               if (!theDird.exists()){
-                   theDird.mkdirs();
-               }
-               final DownloadScriptService service = new DownloadScriptService(this, configuration);
-               service.start();
-               PropertiesConfiguration wdirprop = null;
-               try {
-                   wdirprop = new PropertiesConfiguration(localproperties);
-                   wdirprop.setProperty("toolkit.scriptversion",remotescriptversion);
-                   wdirprop.save();
-               } catch (ConfigurationException e) {
-                   throw new RuntimeException(e);
-               }
-
-           }
 
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
         if (folder.exists() && folder.isDirectory()) {
