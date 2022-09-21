@@ -9,6 +9,7 @@ import com.kenyahmis.applicationtoolkit.Services.PackageDownloadService;
 import com.kenyahmis.applicationtoolkit.Services.RunRollBackService;
 import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
+import com.kenyahmis.applicationtoolkit.Services.UpgradeToolkitService;
 import com.kenyahmis.applicationtoolkit.utils.InfoAlerts;
 import com.kenyahmis.applicationtoolkit.utils.PasswordDialog;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
@@ -170,7 +171,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void backupEMR(ActionEvent actionEvent) throws IOException {
-
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
         // user pass
@@ -212,7 +213,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void rollbackEMR(ActionEvent actionEvent) throws IOException {
-
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
         // user pass
@@ -254,7 +255,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void appupdate(ActionEvent actionEvent) throws IOException {
-
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
         // user pass
@@ -289,14 +290,14 @@ public class ToolboxController implements Initializable {
             String toolupgradesripts = "/opt/kehmisApplicationToolbox/Downloads/Scripts/toolkit/upgrade.sh";
             ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
             configuration.setPathToolkitUpgradeScript(toolupgradesripts);
-            final AppUpdateService appUpdateService = new AppUpdateService(this, configuration);
+            final UpgradeToolkitService appUpdateService = new UpgradeToolkitService(this, configuration);
             appUpdateService.start();
 
         }
     }
     @FXML
     protected void upgradeEMR(ActionEvent actionEvent) throws IOException {
-
+        listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
         // user pass
@@ -338,6 +339,7 @@ public class ToolboxController implements Initializable {
     }
     @FXML
     protected void offliceupgrade(){
+        listMsgs.getItems().clear();
         String token = "";
         PasswordDialog dialog = new PasswordDialog();
 
@@ -420,7 +422,7 @@ public class ToolboxController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        listMsgs.getItems().clear();
         File ntheDirs = new File("/opt/kehmisApplicationToolbox");
         File ntheDird = new File("/opt/kehmisApplicationToolbox/Downloads");
         if (!ntheDirs.exists()){

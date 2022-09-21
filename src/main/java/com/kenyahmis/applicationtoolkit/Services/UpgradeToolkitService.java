@@ -22,7 +22,7 @@ public class UpgradeToolkitService extends Service {
     @Override
     protected Task createTask() {
         System.out.println("running upgrade service");
-        controller.addMessageToListFlow("running upgrade service");
+         controller.addMessageToListFlow("running upgrade service");
         return new UpgradeToolkitTask(controller, configuration);
     }
     public ToolboxServiceConfiguration getConfiguration() {
