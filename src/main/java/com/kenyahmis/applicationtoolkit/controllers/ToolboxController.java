@@ -77,8 +77,6 @@ public class ToolboxController implements Initializable {
     private Hyperlink cmdupgrade;
     @FXML
     private Hyperlink cmdrollback;
-
-
     String deploymentdir ="";
     String localproperties ="";
     String tookitversion="";
@@ -88,11 +86,9 @@ public class ToolboxController implements Initializable {
     String appversion="";
     String localappversion="";
     String appurl="";
-
     String appdir="";
     String scriptversion="";
     String remotescriptversion="";
-
     String remoteseripturl="";
 
     ClassLoader resource = getClass().getClassLoader();
@@ -339,8 +335,11 @@ public class ToolboxController implements Initializable {
         }
     }
     @FXML
-    protected void offliceupgrade(){
+    protected void offliceupgrade() throws FileNotFoundException {
+
         listMsgs.getItems().clear();
+        addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+
         String token = "";
         PasswordDialog dialog = new PasswordDialog();
 
@@ -370,6 +369,7 @@ public class ToolboxController implements Initializable {
             final FileChooser fc = new FileChooser();
             Stage stage = new Stage();
             //stage.setTitle("File Chooser Sample");
+            addMessageToListFlow("Uploading Package Please Wait ...");
 
             File file = fc.showOpenDialog(stage);
             if (file != null) {
@@ -384,7 +384,7 @@ public class ToolboxController implements Initializable {
                 configuration.setBaseDir("/opt/kehmisApplicationToolbox/Downloads/");
                 String fileNameWithoutExtension = fname.substring(0, fname.lastIndexOf('.'));
                 configuration.setPathToSetupScript(configuration.getBaseDir() + fileNameWithoutExtension + "/toolkit_setup_script.sh"); //toolkit_setup_script
-                // configuration.setPathToSetupScript();
+                configuration.setPathToOfflineApplicationProperties(configuration.getBaseDir() + fileNameWithoutExtension + "/application.properties");
                 final OfflineUpgradeService offlineUpgradeService = new OfflineUpgradeService(this, configuration);
                 offlineUpgradeService.start();
 
@@ -450,6 +450,7 @@ public class ToolboxController implements Initializable {
         scriptversion=prop.getProperty("toolkit.scriptversion");
         remoteseripturl=prop.getProperty("toolkit.scriptsurl");
         configuration.setRemoteproperties(prop.getProperty("toolkit.remoteproperties"));
+        configuration.setPathToLocalApplicationProperties(localproperties);
 
         String propFileName = configuration.getRemoteproperties();
         System.out.println("Remote props "+propFileName);
