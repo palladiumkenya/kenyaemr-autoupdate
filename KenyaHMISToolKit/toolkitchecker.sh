@@ -16,5 +16,4 @@ getProperty ${key}
 echo "Key = ${key} ; Value = " ${prop_value}
 
 # Remote
-FILE_NAME= curl https://raw.githubusercontent.com/palladiumkenya/kenyaemr-autoupdate/kenyahmis-toolbox/src/main/resources/application.properties | jq '.[0]'
-
+FILE_NAME= curl https://raw.githubusercontent.com/palladiumkenya/kenyaemr-autoupdate/kenyahmis-toolbox/src/main/resources/properties.json
