@@ -27,6 +27,7 @@ public class DownloadScriptService extends Service {
         return new DownloadScriptTask(controller, configuration);
     }
 
+
     public ToolboxServiceConfiguration getConfiguration() {
         return configuration;
     }
