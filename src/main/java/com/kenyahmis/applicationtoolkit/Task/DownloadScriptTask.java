@@ -56,6 +56,7 @@ public class DownloadScriptTask  extends Task {
 
         System.out.println("Executing upgrade script");
         controller.addMessageToListFlow("Executing toolkit upgrade script");
+        controller.addMessageToListFlow("Done Executing toolkit upgrade script");
 
         return "Success";
     }

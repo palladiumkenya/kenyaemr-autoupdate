@@ -8,3 +8,6 @@ sudo apt -f install
 echo $JAVA_HOME
 
 sudo update-alternatives --config java
+
+select java8 options as default
+
