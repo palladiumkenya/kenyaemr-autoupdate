@@ -1,5 +1,6 @@
 package com.kenyahmis.applicationtoolkit.Task;
 
+import com.kenyahmis.applicationtoolkit.Services.PackageBackupService;
 import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
 import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
@@ -68,6 +69,9 @@ public class PackageDownloadTask extends Task {
 
 
         if(downloaded==true) {
+
+            PackageBackupService packageBackupService = new PackageBackupService(controller,configuration);
+            packageBackupService.start();
 
             RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
             service.start();

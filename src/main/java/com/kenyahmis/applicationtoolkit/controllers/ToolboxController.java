@@ -155,6 +155,8 @@ public class ToolboxController implements Initializable {
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
             service.start();
 
+
+
             PropertiesConfiguration wdirprop = null;
             try {
                 wdirprop = new PropertiesConfiguration(localproperties);
@@ -163,6 +165,8 @@ public class ToolboxController implements Initializable {
             } catch (ConfigurationException e) {
                 throw new RuntimeException(e);
             }
+
+
 
         }
     }
@@ -668,8 +672,6 @@ public class ToolboxController implements Initializable {
                     throw new RuntimeException(e);
                 }
             }
-
-
 
         File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
         if (folder.exists() && folder.isDirectory()) {
