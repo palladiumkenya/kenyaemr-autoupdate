@@ -44,9 +44,8 @@ echo "Stopping tomcat..."
 echo
 echo ${authorization} | sudo -S service tomcat9 stop
 
-
 echo "upgrading Concept Dictionary to the latest"
-mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/dictionary/kenyaemr_2x_concepts_dump-2022-05-27.sql" 
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/dictionary/kenyaemr_2x_concepts_dump-2022-10-10.sql" 
 echo
 
 if [ "$?" -gt 0 ]; then
@@ -58,57 +57,33 @@ fi
 
 echo "Deleting liquibase entries for ETL modules updates"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like 'kenyaemrChart%';"
+
+echo "Deleting draft manifest"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM kenyaemr_order_entry_lab_manifest_order where status = 'Draft';"
 echo
 
-echo "Truncating old drugs order_set and order_set_members"
-  mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/update_drugs.sql" 
-
-echo "upgrading drug table to the latest"
-mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/drugs/drug_2x_27_05_2022.sql" 
-echo
-
-
-if [ "$?" -gt 0 ]; then
-  echo "MYSQL encountered a problem while processing KenyaEMR drugs."
-  exit 1
-else
-  echo "Successfully updated drugs .........................."
-fi
-
+echo "Truncating ML and Location Tables"
+ mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/ml.sql"
+  
+echo "Updating registry endpoints"
+  mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/update_registry_endpoints.sql"  
 
 echo "Deleting old .omod files."
 echo
-
 echo ${authorization} | sudo -S rm -R ${modules_dir}/*.omod
-
-
 echo "Finished deleting old .omod files."
-echo
-
-echo "Deleting old war file."
-echo ${authorization} | sudo -S rm -R ${tomcat_dir}/openmrs*
-echo "Copying new war file."
-echo
-echo ${authorization} | sudo -S cp ${script_dir}/webapps/*.war ${tomcat_dir}/
-echo ${current_dir}
-echo ${tomcat_dir}/
-
 echo "Copying new .omod files."
 echo
-
 echo ${authorization} | sudo -S cp ${script_dir}/modules/*.omod ${modules_dir}/
 
 echo "Finished copying new .omod files."
 echo
-
-
 echo "Granting read permission to the modules directory: ${modules_dir}."
 echo ${authorization} | sudo -S chmod --recursive +r ${modules_dir}/*.omod
 echo ${authorization} | sudo -S chown tomcat:tomcat  --recursive ${modules_dir}/*.omod
-
 echo
-echo "Starting tomcat...."
-
+echo "Starting tomcat..."
+echo
 
 echo ${authorization} | sudo -S service tomcat9 start
 
