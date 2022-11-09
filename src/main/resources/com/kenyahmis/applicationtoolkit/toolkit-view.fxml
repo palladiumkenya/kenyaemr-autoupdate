@@ -49,6 +49,7 @@
     <center>
         <ScrollPane fx:id="sasd">
         <VBox styleClass="content-section">
+            <HBox>
                     <VBox maxWidth="390">
                         <children>
                             <ImageView fitHeight="70" fitWidth="170" pickOnBounds="true" preserveRatio="true">
@@ -97,6 +98,8 @@
                         </children>
 
                         </VBox>
+
+            </HBox>
 
                         <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" />
             <!--<TextFlow  fx:id="upgradeProgress"></TextFlow>-->

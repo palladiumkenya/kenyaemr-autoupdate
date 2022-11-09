@@ -13,8 +13,13 @@ This initial version still supports downloading and deployment of KenyaEMR with 
 1. Clone the project into a directory of choice
 2. Navigate to the project's root directory
 3. Build using maven by running *mvn package* in the terminal
+4. Copy the applicationtoolkit-1.0-SNAPSHOT-jar-with-dependencies.jar file from target to kenyaemr-autoupdate/KenyaHMISToolKit 
+5. Rename the file to kenyahmistoolkit.jar
+6. Open the packagedeb.sh using an editor
+7. Change PACKAGE_VERSION="x.x" in line 4 to represent the version you are building. 
 
 This process uses maven shade plugin that provides a fat jar file that can be deployed. 
+
 
 ### Deployment
 
@@ -37,5 +42,6 @@ Useful resources
 - https://maven.apache.org/plugins/maven-shade-plugin/
 - https://stackoverflow.com/questions/52130548/how-do-i-fix-javafx-runtime-components-are-missing
 - https://openjfx.io/openjfx-docs/
+
 
 
