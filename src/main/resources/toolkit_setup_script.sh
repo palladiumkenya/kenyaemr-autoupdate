@@ -62,11 +62,27 @@ echo "Deleting draft manifest"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM kenyaemr_order_entry_lab_manifest_order where status = 'Draft';"
 echo
 
-echo "Truncating ML and Location Tables"
- mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/ml.sql"
+echo "Truncating ML Tables"
+  mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/ml.sql"
   
 echo "Updating registry endpoints"
   mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/update_registry_endpoints.sql"  
+
+echo "Updating location_id in visit entries"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "update visit set location_id =  (select property_value from global_property where property='kenyaemr.defaultLocation');"
+echo
+
+echo "Updating location_id in encounter entries"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "update encounter set location_id =  (select property_value from global_property where property='kenyaemr.defaultLocation');"
+echo
+
+echo "Updating identifier entries"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "update patient_identifier set location_id =  (select property_value from global_property where property='kenyaemr.defaultLocation');"
+echo
+
+echo "Updating location_id in obs entries"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "update obs set location_id =  (select property_value from global_property where property='kenyaemr.defaultLocation');"
+echo
 
 echo "Deleting old .omod files."
 echo
