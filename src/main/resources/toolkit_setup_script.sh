@@ -44,24 +44,8 @@ echo "Stopping tomcat..."
 echo
 echo ${authorization} | sudo -S service tomcat9 stop
 
-echo "upgrading Concept Dictionary to the latest"
-mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/dictionary/kenyaemr_buffered_concepts_dump-2023-02-21.sql" 
-echo
-
-if [ "$?" -gt 0 ]; then
-  echo "MYSQL encountered a problem while processing KenyaEMR concepts."
-  exit 1
-else
-  echo "Successfully updated concept dictionary .........................."
-fi
-
 echo "Deleting liquibase entries for ETL modules updates"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like 'kenyaemrChart%';"
-
-echo "Deleting Duplicate Manifests"
-mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM kenyaemr_order_entry_lab_manifest_order WHERE id NOT IN (
-select * from (SELECT MIN(id) FROM kenyaemr_order_entry_lab_manifest_order GROUP BY manifest_id, order_id) as x);"
-echo
 
 echo "Truncating ML Tables"
   mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/ml.sql"
@@ -80,48 +64,6 @@ echo
 echo "Granting read permission to the modules directory: ${modules_dir}."
 echo ${authorization} | sudo -S chmod --recursive +r ${modules_dir}/*.omod
 echo ${authorization} | sudo -S chown tomcat:tomcat  --recursive ${modules_dir}/*.omod
-echo
-
-echo
-sudo ${authorization} | sudo -S rm -R ${frontend_dir}/
-sudo ${authorization} | sudo -S mkdir ${frontend_dir}
-echo "Finished creating frontend directory"
-echo
-
-echo
-sudo ${authorization} | sudo -S rm -R ${configuration_dir}/
-sudo ${authorization} | sudo -S mkdir ${configuration_dir}
-echo "Finished creating configuration directory"
-echo
-
-echo "Copying frontend assets."
-echo
-
-sudo ${authorization} | sudo -S cp -R ${current_dir}/frontend/* ${frontend_dir}/
-
-echo "Finished copying frontend assets."
-echo
-
-echo "Copying configuration assets."
-echo
-sudo ${authorization} | sudo -S cp  -R "${current_dir}"/configuration/* ${configuration_dir}/
-echo "Finished copying configuration assets."
-echo
-
-
-echo "Granting read permission to the modules directory: ${modules_dir}."
-sudo ${authorization} | sudo -S chmod --recursive +r ${modules_dir}/*.omod
-sudo ${authorization} | sudo -S chown tomcat:tomcat  --recursive ${modules_dir}/*.omod
-
-echo "Granting read permission to the frontend directory: ${frontend_dir}."
-sudo ${authorization} | sudo -S chmod --recursive +rw ${frontend_dir}/*
-sudo ${authorization} | sudo -S chown tomcat:tomcat  --recursive ${frontend_dir}/*
-
-echo "Granting read permission to the configuration directory: ${configuration_dir}."
-sudo ${authorization} | sudo -S chmod --recursive 777 ${configuration_dir}/*
-sudo ${authorization} | sudo -S chown tomcat:tomcat  --recursive ${configuration_dir}/*
-
-
 echo
 echo "Starting tomcat..."
 echo
