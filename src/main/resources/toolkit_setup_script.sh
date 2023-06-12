@@ -47,6 +47,9 @@ echo ${authorization} | sudo -S service tomcat9 stop
 echo "Deleting liquibase entries for ETL modules updates"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like 'kenyaemrChart%';"
 
+echo "Deleting liquibase entries for ML modules updates"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like '%kenyaemr-ML%';"
+echo
 
 echo "Deleting old .omod files."
 echo
