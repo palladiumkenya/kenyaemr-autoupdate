@@ -47,6 +47,17 @@ echo "Stopping tomcat..."
 echo
 echo ${authorization} | sudo -S service tomcat9 stop
 
+echo "upgrading Concept Dictionary to the latest"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/dictionary/kenyaemr_concepts_buffered-2023-07-04.sql" 
+echo
+
+if [ "$?" -gt 0 ]; then
+  echo "MYSQL encountered a problem while processing KenyaEMR concepts."
+  exit 1
+else
+  echo "Successfully updated concept dictionary .........................."
+fi
+
 echo "Deleting liquibase entries for ETL modules updates"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like 'kenyaemrChart%';"
 
@@ -75,7 +86,7 @@ mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} <
 echo
 
 echo "update drugs"
-mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/drug/drug_2023_05_12.sql" 
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/drug/drug.sql" 
 echo
 
 echo "Set location tag map for login,queues and appointment"
@@ -102,6 +113,10 @@ echo
 
 echo "Create other appointments i.e MCH, PREP, KP and CWC"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/other_appointments/other_appointments.sql" 
+echo
+
+echo "Set ML Global Thresholds"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/ml/ml.sql"
 echo
 
 echo "Finished updating appointments and queues"
