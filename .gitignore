@@ -36,3 +36,23 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### ToolKit ###
+KenyaHMISToolKit/*.zip
+KenyaHMISToolKit/*.deb
+KenyaHMISToolKit/*.tar.gz
+KenyaHMISToolKit/*.jar
+KenyaHMISToolKit/openmrs-backup-tools/*
+KenyaHMISToolKit/rollback-tools/*
+KenyaHMISToolKit/scripts/*
+KenyaHMISToolKit/openmrs-backup-tools/
+KenyaHMISToolKit/rollback-tools/
+KenyaHMISToolKit/scripts/
+KenyaHMISToolKit/openmrs-backup-tools
+KenyaHMISToolKit/rollback-tools
+KenyaHMISToolKit/scripts
+toolbox_setup/*.zip
+toolbox_setup/*.deb
+toolbox_setup/*.tar.gz
+toolbox_setup/*.jar
+

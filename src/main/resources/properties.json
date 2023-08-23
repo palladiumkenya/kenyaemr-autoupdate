@@ -1,9 +1,0 @@
-{
-  "toolkit.emrurl": "https://github.com/palladiumkenya/kenyahmis-releases/releases/download/v51/KenyaEMR_18.2.0.zip",
-  "toolkit.ehtsurl": "test",
-  "toolkit.remoteproperties": "https://github.com/palladiumkenya/kenyaemr-autoupdate/blob/kenyahmis-toolbox/src/main/resources/application.properties",
-  "toolkit.localproperties": "/opt/kehmisApplicationToolbox/application.properties",
-  "toolkit.deploymentdir": "/opt/kehmisApplicationToolbox/",
-  "toolkit.emrversion": "1.8.2",
-  "toolkit.version": "1.0"
-}

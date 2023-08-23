@@ -2,7 +2,7 @@
 Version=1.0
 Name=KenyaHMIS Toolkit
 Comment=Test the terminal running a command inside itt
-Exec=/usr/lib/jvm/java-1.11.0-openjdk-amd64/bin/java --module-path /usr/share/openjfx/lib --add-modules ALL-MODULE-PATH -jar /usr/share/kenyahmistoolkit/kenyahmistoolkit.jar  
+Exec=/opt/java/toolkit/bin/java -Djavafx.autoproxy.disable=true --module-path /opt/openjfx/lib --add-modules ALL-MODULE-PATH -jar /usr/share/kenyahmistoolkit/kenyahmistoolkit.jar  
 Icon=/usr/share/kenyahmistoolkit/kenyahmistoolkit.png
 Terminal=false
 Type=Application

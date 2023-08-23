@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * A background task that executes a shell setup script
  */
-public class RunUpgradeScriptTask extends Task {
+public class RunUpgradeScriptTask extends Task implements ShowProgress {
 
     private final ToolboxController controller;
     private ToolboxServiceConfiguration configuration;
@@ -89,6 +89,19 @@ public class RunUpgradeScriptTask extends Task {
         controller.addMessageToListFlow("Service restarted. Give it a few minutes");
 
         return "success";
+    }
+
+    /** 
+     * Show or hide the progress spinner
+     * @param status - boolean - true: show spinner, false: hide spinner
+    */
+    public void showProgress(boolean status) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.showProgress(status);
+            }
+        });
     }
 
     public ToolboxServiceConfiguration getConfiguration() {

@@ -1,11 +1,16 @@
 #!/bin/sh
-set -e
-echo "Installing Dependecies please wait"
-sudo mkdir /opt/kehmisApplicationToolbox/
-sudo mkdir /opt/kehmisApplicationToolbox/Downloads
+# set -e
+# echo "Installing Dependecies please wait"
+echo "Setting up the environment"
+sudo mkdir -p /opt/kehmisApplicationToolbox/
+sudo mkdir -p  /opt/kehmisApplicationToolbox/Downloads
+sudo mkdir -p /var/backups/KenyaEMR
 sudo chmod 777 -R /opt/kehmisApplicationToolbox/
 sudo chmod 777 -R /opt
+sudo chmod 777 -R /var/lib/OpenMRS/openmrs-runtime.properties
+sudo chmod 777 -R /var/backups/KenyaEMR
 
-grep -q JAVA_HOME /etc/environment || echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"' >> /etc/environment
-. /etc/environment
-echo $JAVA_HOME
+## NB: We don't need to touch the installed jdk -- we have bundled it
+# grep -q JAVA_HOME /etc/environment || echo 'JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64/"' >> /etc/environment
+# . /etc/environment
+# echo $JAVA_HOME

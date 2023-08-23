@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RunBackupScriptTask extends Task {
+public class RunBackupScriptTask extends Task implements ShowProgress {
 
     private final ToolboxController controller;
     private ToolboxServiceConfiguration configuration;
@@ -27,6 +27,8 @@ public class RunBackupScriptTask extends Task {
     @Override
     protected Object call() throws Exception {
 
+        showProgress(true);
+
         List<String> cmdList = new ArrayList<String>();
         cmdList.add("bash");
         cmdList.add(configuration.getPathToBackupScript());
@@ -38,8 +40,7 @@ public class RunBackupScriptTask extends Task {
         try {
 
             Process process = processBuilder.start();
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
             Platform.runLater(new Runnable() {
                 @Override
@@ -84,9 +85,25 @@ public class RunBackupScriptTask extends Task {
         }
 
         System.out.println("Completed executing Backup script");
-        controller.addMessageToListFlow("Give it a few minutes. Downloading Upgrade packages");
+        // controller.addMessageToListFlow("Give it a few minutes. Downloading Upgrade packages");
+        controller.addMessageToListFlow("Completed executing Backup script");
+
+        showProgress(false);
 
         return "success";
+    }
+
+    /** 
+     * Show or hide the progress spinner
+     * @param status - boolean - true: show spinner, false: hide spinner
+    */
+    public void showProgress(boolean status) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.showProgress(status);
+            }
+        });
     }
 
     public ToolboxServiceConfiguration getConfiguration() {

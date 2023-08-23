@@ -5,6 +5,8 @@ import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
 import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
+
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.io.BufferedInputStream;
@@ -16,7 +18,7 @@ import java.nio.channels.ReadableByteChannel;
 /**
  * Download task.
  */
-public class PackageDownloadTask extends Task {
+public class PackageDownloadTask extends Task implements ShowProgress {
 
     private ToolboxServiceConfiguration configuration;
 
@@ -78,6 +80,19 @@ public class PackageDownloadTask extends Task {
         }
 
         return "Success";
+    }
+
+    /** 
+     * Show or hide the progress spinner
+     * @param status - boolean - true: show spinner, false: hide spinner
+    */
+    public void showProgress(boolean status) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.showProgress(status);
+            }
+        });
     }
 
     public ToolboxServiceConfiguration getConfiguration() {

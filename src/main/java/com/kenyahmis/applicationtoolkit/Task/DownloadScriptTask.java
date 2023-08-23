@@ -4,6 +4,8 @@ import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
+
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.io.FileOutputStream;
@@ -11,7 +13,7 @@ import java.io.InputStream;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public class DownloadScriptTask  extends Task {
+public class DownloadScriptTask  extends Task implements ShowProgress {
 
     private ToolboxServiceConfiguration configuration;
 
@@ -59,6 +61,19 @@ public class DownloadScriptTask  extends Task {
         controller.addMessageToListFlow("Done Executing toolkit upgrade script");
 
         return "Success";
+    }
+
+    /** 
+     * Show or hide the progress spinner
+     * @param status - boolean - true: show spinner, false: hide spinner
+    */
+    public void showProgress(boolean status) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.showProgress(status);
+            }
+        });
     }
 
     public ToolboxServiceConfiguration getConfiguration() {
