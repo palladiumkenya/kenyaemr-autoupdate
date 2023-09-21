@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="530.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kenyahmis.applicationtoolkit.controllers.ToolboxController">
+   <children>
+      <SplitPane layoutX="14.0" layoutY="130.0" prefHeight="200.0" prefWidth="240.0" />
+      <ImageView fitHeight="70" fitWidth="140" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@kennyahmisnewlogo.png" />
+         </image>
+      </ImageView>
+      <ListView id="listMsgs" layoutX="337.0" layoutY="122.0" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

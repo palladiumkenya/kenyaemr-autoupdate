@@ -34,6 +34,11 @@
 #   MAVEN_SKIP_RC - flag to disable loading of mavenrc files
 # ----------------------------------------------------------------------------
 
+unset JAVA_HOME
+## export JAVA_HOME="/opt/java/jdk-11.0.16.1"
+## export JAVA_HOME="/opt/java/jdk-17.0.4.1"
+export JAVA_HOME="/opt/java/toolkit/"
+
 if [ -z "$MAVEN_SKIP_RC" ] ; then
 
   if [ -f /usr/local/etc/mavenrc ] ; then

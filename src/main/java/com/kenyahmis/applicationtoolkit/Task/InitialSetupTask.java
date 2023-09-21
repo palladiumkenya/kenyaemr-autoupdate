@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InitialSetupTask extends Task {
+public class InitialSetupTask extends Task implements ShowProgress {
 
     private final ToolboxController controller;
     private ToolboxServiceConfiguration configuration;
@@ -88,6 +88,19 @@ public class InitialSetupTask extends Task {
         controller.addMessageToListFlow("Give it a few minutes. Then check your browser");
 
         return "success";
+    }
+
+    /** 
+     * Show or hide the progress spinner
+     * @param status - boolean - true: show spinner, false: hide spinner
+    */
+    public void showProgress(boolean status) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.showProgress(status);
+            }
+        });
     }
 
     public ToolboxServiceConfiguration getConfiguration() {

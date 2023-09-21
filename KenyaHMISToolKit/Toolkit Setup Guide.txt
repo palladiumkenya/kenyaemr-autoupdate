@@ -1,0 +1,5 @@
+sudo apt -y remove kenyahmistoolkit
+sudo rm -rf /opt/kehmisApplicationToolbox
+sudo dpkg -i kenyahmistoolkit-1.2.0.deb
+
+

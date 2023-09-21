@@ -5,45 +5,55 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kenyahmis</groupId>
     <artifactId>applicationtoolkit</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.2</version>
     <name>toolkit</name>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.8.2</junit.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <jacksonVersion>2.15.2</jacksonVersion>
+        <javaFXVersion>17.0.8</javaFXVersion>
+        <githubVersion>1.316</githubVersion>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>${githubVersion}</version>
+        </dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>11.0.2</version>
+            <version>${javaFXVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>11.0.2</version>
+            <version>${javaFXVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
-            <version>11.0.2</version>
+            <version>${javaFXVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-media</artifactId>
-            <version>11.0.2</version>
+            <version>${javaFXVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
-            <version>11.1.1</version>
+            <version>11.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.dlsc.formsfx</groupId>
             <artifactId>formsfx-core</artifactId>
-            <version>11.3.2</version>
+            <version>11.6.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.openjfx</groupId>
@@ -54,7 +64,7 @@
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
-            <version>12.3.0</version>
+            <version>12.3.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.aerse.maven/deb-maven-plugin -->
         <dependency>
@@ -71,7 +81,7 @@
         <dependency>
             <groupId>eu.hansolo</groupId>
             <artifactId>tilesfx</artifactId>
-            <version>11.48</version>
+            <version>17.1.31</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.openjfx</groupId>
@@ -82,7 +92,7 @@
         <dependency>
             <groupId>com.github.almasb</groupId>
             <artifactId>fxgl</artifactId>
-            <version>11.17</version>
+            <version>17.3</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.openjfx</groupId>
@@ -90,39 +100,98 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
             <version>1.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jacksonVersion}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jacksonVersion}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jacksonVersion}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
     <build>
+        <finalName>kenyahmistoolkit</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources-filtered</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources-unfiltered</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+        <testResources>
+			<testResource>
+				<directory>src/main/resources-filtered</directory>
+				<filtering>true</filtering>
+			</testResource>
+            <testResource>
+				<directory>src/main/resources-unfiltered</directory>
+				<filtering>false</filtering>
+			</testResource>
+		</testResources>
         <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.5.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.11.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                   <!-- <excludes>
-                        <exclude>module-info.java</exclude>
-                    </excludes>-->
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2-beta-5</version>
+                <version>3.6.0</version>
                 <configuration>
                     <!-- get all project dependencies -->
                     <descriptorRefs>
@@ -133,6 +202,9 @@
                         <manifest>
                             <mainClass>com.kenyahmis.applicationtoolkit.ToolBoxApplication</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <JavaFX-Feature-Proxy>None</JavaFX-Feature-Proxy>
+                        </manifestEntries>
                     </archive>
                 </configuration>
                 <executions>
@@ -143,6 +215,14 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <!-- remove this in production code -->
+                            <!-- <outputDirectory>/opt/tmp/OS/toolkit</outputDirectory> -->
+                            <!-- <descriptors>
+                                <descriptor>src/assembly/copy-files.xml</descriptor>
+                            </descriptors> -->
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -150,27 +230,60 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
+                <version>3.3.0</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <mainClass>com.kenyahmis.applicationtoolkit.ToolBoxApplication</mainClass>
                         </manifest>
+                        <manifestEntries>
+                            <JavaFX-Feature-Proxy>None</JavaFX-Feature-Proxy>
+                        </manifestEntries>
                     </archive>
                 </configuration>
-
             </plugin>
+
             <plugin>
-                <groupId>com.github.fracpete</groupId>
-                <artifactId>debian-maven-plugin</artifactId>
-                <version>1.0.20</version>
-                <configuration>
-
-                    <packageName>my-package</packageName>
-                    <packageVersion>1.0.0</packageVersion>
-
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy todir="/opt/tmp/OS/toolkit/">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="*.jar" />
+                                    </fileset>
+                                </copy>
+                                <copy todir="KenyaHMISToolKit">
+                                    <fileset dir="${project.build.directory}">
+                                        <include name="*.jar" />
+                                    </fileset>
+                                </copy>
+                                <copy todir="KenyaHMISToolKit">
+                                    <fileset dir="${project.build.directory}/classes/">
+                                        <include name="copyright" />
+                                        <include name="packagedeb.sh" />
+                                    </fileset>
+                                </copy>
+                                <delete file="KenyaHMISToolKit/openmrs-backup-tools.zip"/>
+                                <zip destfile="KenyaHMISToolKit/openmrs-backup-tools.zip" basedir="KenyaHMISToolKit/openmrs-backup-tools"/>
+                                <delete file="KenyaHMISToolKit/rollback-tools.zip"/>
+                                <zip destfile="KenyaHMISToolKit/rollback-tools.zip" basedir="KenyaHMISToolKit/rollback-tools"/>
+                                <delete file="KenyaHMISToolKit/scripts.zip"/>
+                                <zip destfile="KenyaHMISToolKit/scripts.zip" basedir="KenyaHMISToolKit/scripts"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>

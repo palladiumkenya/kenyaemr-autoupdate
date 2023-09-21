@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.control.Hyperlink?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx" fx:controller="com.kenyahmis.applicationtoolkit.controllers.ToolboxController">
+    <top>
+        <BorderPane styleClass="header-section">
+            <left>
+                <Label id="header-text" text="Application Header" />
+                    <ImageView fitHeight="70" fitWidth="170" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@KeHMIS_Logo.png" />
+                        </image>
+                    </ImageView>
+            </left>
+        </BorderPane>
+    </top>
+
+    <center>
+        <ScrollPane fx:id="sasd">
+        <VBox styleClass="content-section">
+            <HBox fx:id="topHeader">
+                <VBox maxWidth="390">
+                    <children>
+                        <ImageView fitHeight="70" fitWidth="170" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@kenyaemr.png" />
+                            </image>
+                        </ImageView>
+                        <Label id="content-header" text="KenyaEMR Version (1.8.2)"  fx:id="lblEMR"/>
+                        <Separator />
+                            <Label id="content" fx:id="txtdes" wrapText="true">
+                                <text >
+                                    KenyaEMR is an open-source EMR system used for patient management
+                                </text>
+                            </Label>
+                        <Separator />
+                        <Separator />
+                            <Label fx:id="lblUpdates" text="KenayEMR 18.2.2 is Available !!!" alignment="CENTER"/>
+                        <Separator />
+                        <Separator />
+                        <HBox fx:id="topCommands">
+                            <Separator />
+                                <Label />
+                                <Hyperlink fx:id="cmdbackup" onAction="#backupEMR" text="Backup"/>
+                            <Separator />
+                            <Separator />
+                                <Label />
+                                <Hyperlink  fx:id="cmdupgrade" onAction="#downloadEmrUpgrade" text="Upgrade" />
+                            <Separator />
+                            <Separator />
+                                <Label />
+                                <Hyperlink fx:id="cmdrollback" onAction="#rollbackEMR" text="RollBack"/>
+                            <Separator />
+                            <Separator />
+                                <Label />
+                                <Hyperlink onAction="#offliceupgrade" text="Upload"/>
+                            <Separator />
+                        </HBox>
+                    </children>
+                </VBox>
+            </HBox>
+
+            <StackPane fx:id="feedbackPane">
+                <ListView fx:id="listMsgs" layoutX="25.0" layoutY="67.0" prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: powderblue;" />
+                <ProgressIndicator fx:id="showWait" visible="false" />
+            </StackPane>
+        </VBox>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox id="footer-section">
+            <children>
+                <Label text="Copyright 2022 KenyaHMIS ToolKit Version 1.0" fx:id="lblFooter" />
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>

@@ -4,13 +4,15 @@ import com.kenyahmis.applicationtoolkit.Services.RunUpgradeScriptService;
 import com.kenyahmis.applicationtoolkit.Services.ToolboxServiceConfiguration;
 import com.kenyahmis.applicationtoolkit.controllers.ToolboxController;
 import com.kenyahmis.applicationtoolkit.utils.ToolkitUtils;
+
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
-public class OfflineUpgradeTask extends Task {
+public class OfflineUpgradeTask extends Task implements ShowProgress {
 
     private ToolboxServiceConfiguration configuration;
 
@@ -76,6 +78,20 @@ public class OfflineUpgradeTask extends Task {
        controller.addMessageToListFlow("Local offline Application Props "+props.getProperty("toolkit.emrversion"));
         return "Success";
     }
+
+    /** 
+     * Show or hide the progress spinner
+     * @param status - boolean - true: show spinner, false: hide spinner
+    */
+    public void showProgress(boolean status) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.showProgress(status);
+            }
+        });
+    }
+
     public ToolboxServiceConfiguration getConfiguration() {
         return configuration;
     }

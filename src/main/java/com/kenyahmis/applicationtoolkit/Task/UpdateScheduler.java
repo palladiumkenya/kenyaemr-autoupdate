@@ -16,7 +16,7 @@ import java.util.Properties;
 import java.util.Scanner;
 import java.util.TimerTask;
 
-public class UpdateScheduler extends TimerTask {
+public class UpdateScheduler extends TimerTask implements ShowProgress {
 
     String localversion="";
     String remoteVersion="";
@@ -60,6 +60,20 @@ public class UpdateScheduler extends TimerTask {
             });
         }
     }
+
+    /** 
+     * Show or hide the progress spinner
+     * @param status - boolean - true: show spinner, false: hide spinner
+    */
+    public void showProgress(boolean status) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                // controller.showProgress(status);
+            }
+        });
+    }
+
     @Override
     public void run() {
         /*Platform.runLater(new Runnable() {

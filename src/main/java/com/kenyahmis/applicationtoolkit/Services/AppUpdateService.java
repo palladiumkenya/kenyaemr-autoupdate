@@ -23,6 +23,7 @@ public class AppUpdateService extends Service {
 
     @Override
     protected Task createTask() {
+        controller.showProgress(true);
         controller.addMessageToListFlow("Initializing a background App update task");
         System.out.println("Initializing a background app update task");
         return new AppUpdateTask(controller, configuration);
