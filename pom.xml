@@ -268,6 +268,7 @@
                                     <fileset dir="${project.build.directory}/classes/">
                                         <include name="copyright" />
                                         <include name="packagedeb.sh" />
+                                        <include name="application.properties" />
                                     </fileset>
                                 </copy>
                                 <mkdir dir="KenyaHMISToolKit/openmrs-backup-tools"/>
