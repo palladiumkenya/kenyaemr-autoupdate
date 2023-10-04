@@ -45,9 +45,11 @@ KenyaHMISToolKit/*.jar
 KenyaHMISToolKit/openmrs-backup-tools/*
 KenyaHMISToolKit/rollback-tools/*
 KenyaHMISToolKit/scripts/*
+KenyaHMISToolKit/Scripts/*
 KenyaHMISToolKit/openmrs-backup-tools/
 KenyaHMISToolKit/rollback-tools/
 KenyaHMISToolKit/scripts/
+KenyaHMISToolKit/Scripts/
 KenyaHMISToolKit/openmrs-backup-tools
 KenyaHMISToolKit/rollback-tools
 KenyaHMISToolKit/scripts

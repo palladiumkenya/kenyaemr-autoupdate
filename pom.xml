@@ -283,8 +283,8 @@
                                         <include name="rollback_script.sh" />
                                     </fileset>
                                 </copy>
-                                <mkdir dir="KenyaHMISToolKit/scripts"/>
-                                <copy todir="KenyaHMISToolKit/scripts">
+                                <mkdir dir="KenyaHMISToolKit/Scripts"/>
+                                <copy todir="KenyaHMISToolKit/Scripts">
                                     <fileset dir="${project.build.directory}/classes/">
                                         <include name="openmrs-backup-tools/*" />
                                         <include name="rollback-tools/*" />
@@ -299,8 +299,8 @@
                                 <zip destfile="KenyaHMISToolKit/openmrs-backup-tools.zip" basedir="KenyaHMISToolKit/openmrs-backup-tools"/>
                                 <delete file="KenyaHMISToolKit/rollback-tools.zip"/>
                                 <zip destfile="KenyaHMISToolKit/rollback-tools.zip" basedir="KenyaHMISToolKit/rollback-tools"/>
-                                <delete file="KenyaHMISToolKit/scripts.zip"/>
-                                <zip destfile="KenyaHMISToolKit/scripts.zip" basedir="KenyaHMISToolKit/scripts"/>
+                                <delete file="KenyaHMISToolKit/Scripts.zip"/>
+                                <zip destfile="KenyaHMISToolKit/Scripts.zip" basedir="KenyaHMISToolKit/Scripts"/>
                             </target>
                         </configuration>
                     </execution>

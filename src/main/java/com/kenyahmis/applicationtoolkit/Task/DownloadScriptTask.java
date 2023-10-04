@@ -35,13 +35,11 @@ public class DownloadScriptTask  extends Task implements ShowProgress {
              FileOutputStream fos = new FileOutputStream(configuration.getScriptpackageUnzipDir())) {
             System.out.println("Downloading ...");
             controller.addMessageToListFlow("Downloading Scripts ...");
-             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
         } catch (Exception e) {
-
             System.out.println("An error occurred. " + e.getCause());
             controller.addMessageToListFlow("An error occurred. " + e.getCause());
             e.printStackTrace();
-
         }
 
         System.out.println("Scripts Download completed");
