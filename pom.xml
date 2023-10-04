@@ -271,20 +271,23 @@
                                         <include name="application.properties" />
                                     </fileset>
                                 </copy>
-                                <mkdir dir="KenyaHMISToolKit/openmrs-backup-tools"/>
-                                <copy todir="KenyaHMISToolKit/openmrs-backup-tools">
+                                <delete dir="KenyaHMISToolKit/openmrs-backup-tools" />
+                                <mkdir dir="KenyaHMISToolKit/openmrs-backup-tools/openmrs-backup-tools"/>
+                                <copy todir="KenyaHMISToolKit/openmrs-backup-tools/openmrs-backup-tools">
                                     <fileset dir="${project.build.directory}/classes/openmrs-backup-tools/">
                                         <include name="*" />
                                     </fileset>
                                 </copy>
-                                <mkdir dir="KenyaHMISToolKit/rollback-tools"/>
-                                <copy todir="KenyaHMISToolKit/rollback-tools">
+                                <delete dir="KenyaHMISToolKit/rollback-tools" />
+                                <mkdir dir="KenyaHMISToolKit/rollback-tools/rollback-tools"/>
+                                <copy todir="KenyaHMISToolKit/rollback-tools/rollback-tools">
                                     <fileset dir="${project.build.directory}/classes/rollback-tools/">
                                         <include name="rollback_script.sh" />
                                     </fileset>
                                 </copy>
-                                <mkdir dir="KenyaHMISToolKit/Scripts"/>
-                                <copy todir="KenyaHMISToolKit/Scripts">
+                                <delete dir="KenyaHMISToolKit/Scripts" />
+                                <mkdir dir="KenyaHMISToolKit/Scripts/Scripts"/>
+                                <copy todir="KenyaHMISToolKit/Scripts/Scripts">
                                     <fileset dir="${project.build.directory}/classes/">
                                         <include name="openmrs-backup-tools/*" />
                                         <include name="rollback-tools/*" />
