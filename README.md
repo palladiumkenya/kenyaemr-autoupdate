@@ -18,7 +18,7 @@ This initial version still supports downloading and deployment of KenyaEMR with 
 6. Build using maven by running <./mvnw clean package> in the terminal
 7. Navigate to the KenyaHMISToolKit directory
 8. There is the kenyahmistoolkit.jar file. This needs to be uploaded for the release.
-8. Run the packagedeb.sh to build the .deb package. This can be used to deploy the toolkit on debian/ubuntu systems 
+8. Run the packagedeb.sh <sudo ./packagedeb.sh> to build the .deb package. This can be used to deploy the toolkit on debian/ubuntu systems 
     NB: this gives you the kenyahmistoolkit-x.x.x.deb for the release. This needs to be uploaded for the release.
 9. The build process also creates the following zipped files in the KenyaHMISToolKit directory:
         |-- openmrs-backup-tools.zip

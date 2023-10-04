@@ -1139,6 +1139,7 @@ public class ToolboxController implements Initializable {
                     String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
                     URL remotescrp = null;
                     try {
+                        System.out.println("Script URL is: " + remoteseripturl);
                         remotescrp = new URL(remoteseripturl);
                     } catch (MalformedURLException e) {
                         throw new RuntimeException(e);

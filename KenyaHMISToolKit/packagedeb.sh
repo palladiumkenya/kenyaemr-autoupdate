@@ -13,6 +13,9 @@ mkdir -p $TEMP_DIR/debian/usr/share/$PACKAGE_NAME
 mkdir -p $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME
 mkdir -p $TEMP_DIR/debian/usr/share/common-licenses/$PACKAGE_NAME
 
+mkdir -p $TEMP_DIR/debian/opt/kehmisApplicationToolbox/Downloads/Scripts
+mkdir -p $TEMP_DIR/debian/opt/kehmisApplicationToolbox/rollback
+
 ### Download and Inject the JDK
 rm -rf $TEMP_DIR/debian/opt/java/toolkit/
 mkdir -p $TEMP_DIR/debian/opt/java/toolkit/
@@ -85,7 +88,6 @@ else
 fi
 
 echo "SUCCESS: JavaFX Setup Complete"
-
  
 echo "Package: $PACKAGE_NAME" > $TEMP_DIR/debian/DEBIAN/control
 echo "Version: $PACKAGE_VERSION" >> $TEMP_DIR/debian/DEBIAN/control
@@ -97,10 +99,14 @@ cp *.desktop $TEMP_DIR/debian/usr/share/applications/
 cp copyright $TEMP_DIR/debian/usr/share/common-licenses/$PACKAGE_NAME/ # results in no copyright warning
 cp copyright $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/ # results in obsolete location warning
 
+cp -rR Scripts/Scripts/* $TEMP_DIR/debian/opt/kehmisApplicationToolbox/Downloads/Scripts/
+
 chmod 0644 $TEMP_DIR/debian/usr/share/doc/$PACKAGE_NAME/
 chmod 0644 $TEMP_DIR/debian/usr/share/common-licenses/$PACKAGE_NAME/
 chmod 0775 $TEMP_DIR/debian/DEBIAN/preinst
 chmod 0775 $TEMP_DIR/debian/DEBIAN/postinst
+chmod -R 0775 $TEMP_DIR/debian/DEBIAN
+chmod -R 0775 $TEMP_DIR/debian/opt/kehmisApplicationToolbox
  
 cp *.jar $TEMP_DIR/debian/usr/share/$PACKAGE_NAME/
 cp $PACKAGE_NAME $TEMP_DIR/debian/usr/games/
@@ -126,3 +132,5 @@ cd $TEMP_DIR/
 dpkg --build debian
 mv debian.deb $SOURCE_DIR/$PACKAGE_NAME-$PACKAGE_VERSION.deb
 rm -rf $TEMP_DIR/debian
+
+
