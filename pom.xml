@@ -217,11 +217,6 @@
                         </goals>
                         <configuration>
                             <appendAssemblyId>false</appendAssemblyId>
-                            <!-- remove this in production code -->
-                            <!-- <outputDirectory>/opt/tmp/OS/toolkit</outputDirectory> -->
-                            <!-- <descriptors>
-                                <descriptor>src/assembly/copy-files.xml</descriptor>
-                            </descriptors> -->
                         </configuration>
                     </execution>
                 </executions>
@@ -256,11 +251,14 @@
                         </goals>
                         <configuration>
                             <target>
+                                <!-- start: remove/comment this in production code -->
+                                <mkdir dir="/opt/tmp/OS/toolkit/"/>
                                 <copy todir="/opt/tmp/OS/toolkit/">
                                     <fileset dir="${project.build.directory}">
                                         <include name="*.jar" />
                                     </fileset>
                                 </copy>
+                                <!-- end: remove/comment this in production code -->
                                 <copy todir="KenyaHMISToolKit">
                                     <fileset dir="${project.build.directory}">
                                         <include name="*.jar" />
@@ -272,6 +270,30 @@
                                         <include name="packagedeb.sh" />
                                     </fileset>
                                 </copy>
+                                <mkdir dir="KenyaHMISToolKit/openmrs-backup-tools"/>
+                                <copy todir="KenyaHMISToolKit/openmrs-backup-tools">
+                                    <fileset dir="${project.build.directory}/classes/openmrs-backup-tools/">
+                                        <include name="*" />
+                                    </fileset>
+                                </copy>
+                                <mkdir dir="KenyaHMISToolKit/rollback-tools"/>
+                                <copy todir="KenyaHMISToolKit/rollback-tools">
+                                    <fileset dir="${project.build.directory}/classes/rollback-tools/">
+                                        <include name="rollback_script.sh" />
+                                    </fileset>
+                                </copy>
+                                <mkdir dir="KenyaHMISToolKit/scripts"/>
+                                <copy todir="KenyaHMISToolKit/scripts">
+                                    <fileset dir="${project.build.directory}/classes/">
+                                        <include name="openmrs-backup-tools/*" />
+                                        <include name="rollback-tools/*" />
+                                        <include name="toolkit/*" />
+                                    </fileset>
+                                </copy>
+                                <delete file="KenyaHMISToolKit/kenyahmistoolkit.zip"/>
+                                <zip destfile="KenyaHMISToolKit/kenyahmistoolkit.zip">
+                                    <fileset file="KenyaHMISToolKit/kenyahmistoolkit.jar"/>
+                                </zip>
                                 <delete file="KenyaHMISToolKit/openmrs-backup-tools.zip"/>
                                 <zip destfile="KenyaHMISToolKit/openmrs-backup-tools.zip" basedir="KenyaHMISToolKit/openmrs-backup-tools"/>
                                 <delete file="KenyaHMISToolKit/rollback-tools.zip"/>

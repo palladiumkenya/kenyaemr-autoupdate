@@ -990,8 +990,8 @@ public class ToolboxController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Current EMR version is: " + getInstalledKenyaEMRVersion());
-        System.out.println("Latest EMR version is: " + getLatestKenyaEMRVersion());
+        // System.out.println("Current EMR version is: " + getInstalledKenyaEMRVersion());
+        // System.out.println("Latest EMR version is: " + getLatestKenyaEMRVersion());
 
         listMsgs.getItems().clear();
         File ntheDirs = new File("/opt/kehmisApplicationToolbox");
@@ -1023,23 +1023,24 @@ public class ToolboxController implements Initializable {
         configuration.setPathToLocalApplicationProperties(localproperties);
 
         String propFileName = configuration.getRemoteproperties();
-        System.out.println("Remote props "+propFileName);
+        System.out.println("Remote props " + propFileName);
         URL u = null;
         try {
             u = new URL(propFileName);
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+
         InputStream inputStream = null;
         try {
             inputStream = u.openStream();
         } catch (IOException e) {
-
-              InfoAlerts infoAlerts = new InfoAlerts(Alert.AlertType.INFORMATION,"Updates Available", ButtonType.APPLY);
-              infoAlerts.NoConnection(e.getMessage());
+            InfoAlerts infoAlerts = new InfoAlerts(Alert.AlertType.INFORMATION,"Updates Available", ButtonType.APPLY);
+            infoAlerts.NoConnection(e.getMessage());
            // throw new RuntimeException(e);
         }
-        Properties remoteprop=new Properties();
+
+        Properties remoteprop = new Properties();
         if (inputStream != null) {
             try {
                 remoteprop.load(inputStream);
