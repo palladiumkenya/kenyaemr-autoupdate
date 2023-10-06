@@ -3,15 +3,15 @@
 authorization=$1
 mysql_password=$2
 modules_dir=/var/lib/OpenMRS/modules
+frontend_dir=/var/lib/OpenMRS/frontend
 tomcat_dir=/var/lib/tomcat9/webapps/
 
 #script directory
 current_dir=$(pwd)
 script_dir=$(dirname $0)
 
-if [ $script_dir = '.' ]
-then
-script_dir="$current_dir"
+if [ $script_dir = '.' ] then
+  script_dir="$current_dir"
 fi
 echo script_directory: ${script_dir}
 
@@ -63,6 +63,7 @@ else
   echo "Successfully restored the rollback database .........................."
 fi
 
+# Start Modules Directory
 echo "Deleting .omod files from the new release."
 echo
 
@@ -85,6 +86,33 @@ echo ${authorization} | sudo -S chmod --recursive +r ${modules_dir}/*.omod
 
 echo ${authorization} | sudo -S chown tomcat9:tomcat9  --recursive ${tomcat_dir}/
 echo ${authorization} | sudo -S chown tomcat9:tomcat9  --recursive ${modules_dir}/*.omod
+# End Modules Directory
+
+# Start Frontend Directory
+echo "Deleting frontend files from the new release."
+echo
+
+echo ${authorization} | sudo -S rm -R ${frontend_dir}/*
+
+
+echo "Finished deleting new release frontend files."
+echo
+
+echo "Restoring old frontend files."
+echo
+
+echo ${authorization} | sudo -S cp -rR /opt/kehmisApplicationToolbox/rollback/frontend/* ${frontend_dir}/
+
+echo "Finished restoring old frontend files."
+echo
+
+echo "Granting read permission to the frontend directory: ${frontend_dir}."
+echo ${authorization} | sudo -S chmod --recursive +r ${frontend_dir}/*
+
+echo ${authorization} | sudo -S chown tomcat9:tomcat9  --recursive ${tomcat_dir}/
+echo ${authorization} | sudo -S chown tomcat9:tomcat9  --recursive ${frontend_dir}/*
+# End Frontend Directory
+
 echo "Deleting liquibase entries for ETL module"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like 'kenyaemrChart%';"
 echo
