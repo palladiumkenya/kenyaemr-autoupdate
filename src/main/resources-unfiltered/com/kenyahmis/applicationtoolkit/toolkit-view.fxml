@@ -43,7 +43,7 @@
                                 <Image url="@kenyaemr.png" />
                             </image>
                         </ImageView>
-                        <Label id="content-header" text="KenyaEMR Version (1.8.2)"  fx:id="lblEMR"/>
+                        <Label id="content-header" text="KenyaEMR Version (18.6.4)"  fx:id="lblEMR"/>
                         <Separator />
                             <Label id="content" fx:id="txtdes" wrapText="true">
                                 <text >
@@ -52,7 +52,7 @@
                             </Label>
                         <Separator />
                         <Separator />
-                            <Label fx:id="lblUpdates" text="KenayEMR 18.2.2 is Available !!!" alignment="CENTER"/>
+                            <Label fx:id="lblUpdates" text="KenayEMR 18.6.6 is Available !!!" alignment="CENTER"/>
                         <Separator />
                         <Separator />
                         <HBox fx:id="topCommands">

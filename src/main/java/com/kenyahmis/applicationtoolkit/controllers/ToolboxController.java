@@ -244,7 +244,6 @@ public class ToolboxController implements Initializable {
         listMsgs.getItems().clear();
         addMessageToListFlow("Prompting for user authentication");
         String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-   //Add here
         String downloadUrl = remoteurl;
 
         if (baseDir.equals("") || downloadUrl.equals("")) {
@@ -254,10 +253,10 @@ public class ToolboxController implements Initializable {
         Path fileName = Paths.get(downloadUrl);
         String downloadedFileName = fileName.getFileName().toString() ;
         String fileNameWithoutExtension = downloadedFileName.substring(0, downloadedFileName.lastIndexOf('.'));
-        // user pass
+        
+        // Get current LINUX sudo user password
         String token = "";
         PasswordDialog dialog = new PasswordDialog();
-
         dialog.setTitle("Admin password");
         dialog.setHeaderText("Enter admin password:");
         dialog.setContentText("Password:");
@@ -266,11 +265,13 @@ public class ToolboxController implements Initializable {
         if (result.isPresent()) {
             token = dialog.getPasswordField().getText();
         }
+        System.out.println("Current Linux Sudo User Password is: " + token);
 
+        // Get current mysql root user password
         String mysqlPass = "";
         PasswordDialog mysqlDialog = new PasswordDialog();
 
-        mysqlDialog.setTitle("Mysql password");
+        mysqlDialog.setTitle("MySQL password");
         mysqlDialog.setHeaderText("Enter MySQL password:");
         mysqlDialog.setContentText("Password:");
 
@@ -278,29 +279,36 @@ public class ToolboxController implements Initializable {
         if (mysqlResult.isPresent()) {
             mysqlPass = mysqlDialog.getPasswordField().getText();
         }
-        if ("".equals(token) || "".equals(mysqlPass)) {
-            addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
-            System.out.println("Authorization required to proceed. Please provide details to proceed ");
+        System.out.println("Current MySQL root User Password is: " + mysqlPass);
 
+        if ("".equals(token) || "".equals(mysqlPass)) {
+            addMessageToListFlow("Authorization required to proceed. Please provide sudo password and mysql password to proceed ");
+            System.out.println("Authorization required to proceed. Please provide sudo password and mysql password to proceed ");
         } else {
             ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
             configuration.setPackageDownloadUrl(url);
             configuration.setPackageUnzipDir(baseDir + downloadedFileName);
             configuration.setBaseDir(baseDir);
-            //Do Backup
-            String openmrsBackup = "/opt/kehmisApplicationToolbox/Downloads/Scripts/openmrs-backup-tools/openmrs_backup.sh";
-                configuration.setPathToBackupScript(openmrsBackup);
-                final PackageBackupService backupService = new PackageBackupService(this, configuration);
-                backupService.start();
+            // Check if we have done a backup and if not, Do Backup
+            // System.out.println("We need to do a backup first");
+            // String openmrsBackup = "/opt/kehmisApplicationToolbox/Downloads/Scripts/openmrs-backup-tools/openmrs_backup.sh";
+            // configuration.setPathToBackupScript(openmrsBackup);
+            // final PackageBackupService backupService = new PackageBackupService(this, configuration);
+            // backupService.start();
             //Do Upgrade
+            System.out.println("Now we can upgrade");
             configuration.setPathToSetupScript(baseDir + fileNameWithoutExtension + "/toolkit_setup_script.sh");
             final PackageDownloadService service = new PackageDownloadService(this, configuration);
             service.start();
 
+            //Update EMR version display
+            System.out.println("KenyaEMR version is now at: " + remoteemrversion);
+            updateVersionDisplay(remoteemrversion);
+
             PropertiesConfiguration wdirprop = null;
             try {
                 wdirprop = new PropertiesConfiguration(localproperties);
-                wdirprop.setProperty("toolkit.emrversion",remoteemrversion);
+                wdirprop.setProperty("toolkit.emrversion", remoteemrversion);
                 wdirprop.save();
             } catch (ConfigurationException e) {
                 throw new RuntimeException(e);
@@ -476,7 +484,6 @@ public class ToolboxController implements Initializable {
         if ("".equals(token) || "".equals(mysqlPass)) {
             addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
             System.out.println("Authorization required to proceed. Please provide details to proceed ");
-
         } else {
             ToolboxServiceConfiguration configuration = new ToolboxServiceConfiguration(token, mysqlPass);
             String rollbacksurl = "/opt/kehmisApplicationToolbox/Downloads/Scripts/rollback-tools/rollback_script.sh";
@@ -988,6 +995,14 @@ public class ToolboxController implements Initializable {
         } catch(Exception ex) {}
     }
 
+    /**
+     * Update the version displayed on screen
+     * @param version
+     */
+    public void updateVersionDisplay(String version) {
+        lblEMR.setText("KenyaEMR Version ("+ version +")");
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // System.out.println("Current EMR version is: " + getInstalledKenyaEMRVersion());
@@ -1099,150 +1114,143 @@ public class ToolboxController implements Initializable {
             listMsgs.setItems(msgData);
             lblFooter.setText("Copyright " + Calendar.getInstance().get(Calendar.YEAR) + " KenyaHMIS ToolKit Version: " + tookitversion);
             lblEMR.setText("KenyaEMR Version ("+ emrversion +")");
-                String[] localV = emrversion.split("[.]");
-                String[] remoteV = remoteemrversion.split("[.]");
-                Double local = Double.parseDouble(localV[1]+"."+localV[2]);
-                Double remote = Double.parseDouble(remoteV[1]+"."+remoteV[2]);
+            String[] localV = emrversion.split("[.]");
+            String[] remoteV = remoteemrversion.split("[.]");
+            Double local = Double.parseDouble(localV[1]+"."+localV[2]);
+            Double remote = Double.parseDouble(remoteV[1]+"."+remoteV[2]);
 
-                for (String a : localV)
-                // System.out.println(a);
-            //Main version
-            if(Integer.parseInt(remoteV[0])>Integer.parseInt(localV[0])){
+            // for (String a : localV)
+            // // System.out.println(a);
+            
+            // If remote version is greater than local version
+            // if(Integer.parseInt(remoteV[0]) > Integer.parseInt(localV[0])){
+            if(compareVersions(remoteemrversion, emrversion)) {
                 lblUpdates.setText("KenyaEMR "+ remoteemrversion +" is Available !!!");
                 lblUpdates.setTextFill(Color.web("#5c0617"));
                 final double MAX_FONT_SIZE = 18.0; // define max font size you need
                 lblUpdates.setFont(new Font(MAX_FONT_SIZE));
 
-            }else{
-                //sub version
-                if(remote>local){
-                    lblUpdates.setText("KenyaEMR "+ remoteemrversion +" is Available !!!");
-                    lblUpdates.setTextFill(Color.web("#5c0617"));
-                    final double MAX_FONT_SIZE = 18.0; // define max font size you need
-                    lblUpdates.setFont(new Font(MAX_FONT_SIZE));
-                }
-                else{
-                    lblUpdates.setText("No Update Available !!!");
-                    lblUpdates.setTextFill(Color.web("#5c0617"));
-                    final double MAX_FONT_SIZE = 18.0; // define max font size you need
-                    lblUpdates.setFont(new Font(MAX_FONT_SIZE));
-                    cmdupgrade.setDisable(true);
-                    cmdrollback.setDisable(true);
-                }
+            } else {
+                lblUpdates.setText("No Update Available !!!");
+                lblUpdates.setTextFill(Color.web("#5c0617"));
+                final double MAX_FONT_SIZE = 18.0; // define max font size you need
+                lblUpdates.setFont(new Font(MAX_FONT_SIZE));
+                cmdupgrade.setDisable(true);
+                cmdrollback.setDisable(true);
             }
 
-                // Download Scripts
-                // Check if the scripts version is higher than the local scripte version
-                // if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
-                if(compareVersions(remotescriptversion, scriptversion)) {
+            // Download Scripts
+            // Check if the scripts version is higher than the local scripte version
+            // if(Double.parseDouble(remotescriptversion) > Double.parseDouble(scriptversion)){
+            if(compareVersions(remotescriptversion, scriptversion)) {
 
-                    String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-                    URL remotescrp = null;
-                    try {
-                        System.out.println("Script URL is: " + remoteseripturl);
-                        remotescrp = new URL(remoteseripturl);
-                    } catch (MalformedURLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    Path fileName = Paths.get(remoteseripturl);
-                    String downloadedFileName = fileName.getFileName().toString() ;
-                    configuration.setScriptsurl(remotescrp);
-                    configuration.setScriptpackageUnzipDir(baseDir + downloadedFileName);
-                    configuration.setBaseDir(baseDir);
-                    File theDirs = new File("/opt/kehmisApplicationToolbox");
-                    File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
-                    if (!theDirs.exists()){
-                        theDirs.mkdirs();
-                    }
-                    if (!theDird.exists()){
-                        theDird.mkdirs();
-                    }
-                    final DownloadScriptService service = new DownloadScriptService(this, configuration);
-                    service.start();
-                    PropertiesConfiguration wdirprop = null;
-                    try {
-                        wdirprop = new PropertiesConfiguration(localproperties);
-                        wdirprop.setProperty("toolkit.scriptversion",remotescriptversion);
-                        wdirprop.save();
-                    } catch (ConfigurationException e) {
-                        throw new RuntimeException(e);
-                    }
+                String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+                URL remotescrp = null;
+                try {
+                    System.out.println("Script URL is: " + remoteseripturl);
+                    remotescrp = new URL(remoteseripturl);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
                 }
-                // end Download Scrips
-
-                // Check if the application version is higher than the local installed version
-                // if(Double.parseDouble(appversion) > Double.parseDouble(localappversion)){
-                if(compareVersions(appversion, localappversion)) {
-                    String token = "";
-                    PasswordDialog dialog = new PasswordDialog();
-                    dialog.setTitle("Admin password");
-                    dialog.setHeaderText("Enter admin password:");
-                    dialog.setContentText("Password:");
-                    Optional<String> result = dialog.showAndWait();
-                    if (result.isPresent()) {
-                        token = dialog.getPasswordField().getText();
-                    }
-                    String mysqlPass = "";
-                    PasswordDialog mysqlDialog = new PasswordDialog();
-                    mysqlDialog.setTitle("Mysql password");
-                    mysqlDialog.setHeaderText("Enter MySQL password:");
-                    mysqlDialog.setContentText("Password:");
-
-                    Optional<String> mysqlResult = mysqlDialog.showAndWait();
-                    if (mysqlResult.isPresent()) {
-                        mysqlPass = mysqlDialog.getPasswordField().getText();
-                    }
-                    if ("".equals(token) || "".equals(mysqlPass)) {
-                        addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
-                        System.out.println("Authorization required to proceed. Please provide details to proceed ");
-
-                    }
-                    ToolboxServiceConfiguration config = new ToolboxServiceConfiguration(token,mysqlPass);
-
-                    String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
-                    URL apdurl = null;
-                    try {
-                        apdurl = new URL(appurl);
-                    } catch (MalformedURLException e) {
-                        throw new RuntimeException(e);
-                    }
-                    config.setAppulr(apdurl);
-                    Path fileName = Paths.get(appurl);
-                    String downloadedFileName = fileName.getFileName().toString() ;
-                    config.setAppulr(apdurl);
-                    config.setApppackageUnzipDir(baseDir + downloadedFileName);
-                    config.setBaseDir(baseDir);
-                    String toolupgradesripts = "/opt/kehmisApplicationToolbox/Downloads/Scripts/toolkit/upgrade.sh";
-                    config.setPathToolkitUpgradeScript(toolupgradesripts);
-                    File theDirs = new File("/opt/kehmisApplicationToolbox");
-                    File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
-                    if (!theDirs.exists()){
-                        theDirs.mkdirs();
-                    }
-                    if (!theDird.exists()){
-                        theDird.mkdirs();
-                    }
-
-                    final AppUpdateService appUpdateService = new AppUpdateService(this, config);
-                    appUpdateService.start();
-
-                    // NB: Direct copy required sudo. This will most definately fail
-                    Path sour = Paths.get("/opt/kehmisApplicationToolbox/Downloads/kenyahmistoolkit.jar");
-                    Path Dest = Paths.get("/usr/share/kenyahmistoolkit/kenyahmistoolkit.jar");
-                    System.out.println("Updating Toolkit package");
-                    try {
-                        SeekableByteChannel destFileChannel = Files.newByteChannel(Dest);
-                        // destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
-                        // Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
-                        PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
-                        wdirprop.setProperty("toolkit.version",appversion);
-                        wdirprop.save();
-                    } catch (IOException | ConfigurationException e) {
-                        System.err.println("An error occured: " + e.getMessage() );
-                    } catch (Exception fd) {
-                        System.err.println("An error occured: " + fd.getMessage() );
-                    }
+                Path fileName = Paths.get(remoteseripturl);
+                String downloadedFileName = fileName.getFileName().toString() ;
+                configuration.setScriptsurl(remotescrp);
+                configuration.setScriptpackageUnzipDir(baseDir + downloadedFileName);
+                configuration.setBaseDir(baseDir);
+                File theDirs = new File("/opt/kehmisApplicationToolbox");
+                File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
+                if (!theDirs.exists()){
+                    theDirs.mkdirs();
                 }
+                if (!theDird.exists()){
+                    theDird.mkdirs();
+                }
+                final DownloadScriptService service = new DownloadScriptService(this, configuration);
+                service.start();
+                PropertiesConfiguration wdirprop = null;
+                try {
+                    wdirprop = new PropertiesConfiguration(localproperties);
+                    wdirprop.setProperty("toolkit.scriptversion",remotescriptversion);
+                    wdirprop.save();
+                } catch (ConfigurationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            // end Download Scrips
+
+            // Check if the application version is higher than the local installed version
+            // if(Double.parseDouble(appversion) > Double.parseDouble(localappversion)){
+            if(compareVersions(appversion, localappversion)) {
+                String token = "";
+                PasswordDialog dialog = new PasswordDialog();
+                dialog.setTitle("Admin password");
+                dialog.setHeaderText("Enter admin password:");
+                dialog.setContentText("Password:");
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()) {
+                    token = dialog.getPasswordField().getText();
+                }
+                String mysqlPass = "";
+                PasswordDialog mysqlDialog = new PasswordDialog();
+                mysqlDialog.setTitle("Mysql password");
+                mysqlDialog.setHeaderText("Enter MySQL password:");
+                mysqlDialog.setContentText("Password:");
+
+                Optional<String> mysqlResult = mysqlDialog.showAndWait();
+                if (mysqlResult.isPresent()) {
+                    mysqlPass = mysqlDialog.getPasswordField().getText();
+                }
+                if ("".equals(token) || "".equals(mysqlPass)) {
+                    addMessageToListFlow("Authorization required to proceed. Please provide details to proceed ");
+                    System.out.println("Authorization required to proceed. Please provide details to proceed ");
+
+                }
+                ToolboxServiceConfiguration config = new ToolboxServiceConfiguration(token,mysqlPass);
+
+                String baseDir = ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY;
+                URL apdurl = null;
+                try {
+                    apdurl = new URL(appurl);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+                config.setAppulr(apdurl);
+                Path fileName = Paths.get(appurl);
+                String downloadedFileName = fileName.getFileName().toString() ;
+                config.setAppulr(apdurl);
+                config.setApppackageUnzipDir(baseDir + downloadedFileName);
+                config.setBaseDir(baseDir);
+                String toolupgradesripts = "/opt/kehmisApplicationToolbox/Downloads/Scripts/toolkit/upgrade.sh";
+                config.setPathToolkitUpgradeScript(toolupgradesripts);
+                File theDirs = new File("/opt/kehmisApplicationToolbox");
+                File theDird = new File("/opt/kehmisApplicationToolbox/Downloads");
+                if (!theDirs.exists()){
+                    theDirs.mkdirs();
+                }
+                if (!theDird.exists()){
+                    theDird.mkdirs();
+                }
+
+                final AppUpdateService appUpdateService = new AppUpdateService(this, config);
+                appUpdateService.start();
+
+                // NB: Direct copy required sudo. This will most definately fail
+                Path sour = Paths.get("/opt/kehmisApplicationToolbox/Downloads/kenyahmistoolkit.jar");
+                Path Dest = Paths.get("/usr/share/kenyahmistoolkit/kenyahmistoolkit.jar");
+                System.out.println("Updating Toolkit package");
+                try {
+                    SeekableByteChannel destFileChannel = Files.newByteChannel(Dest);
+                    // destFileChannel.close();  //removing this will throw java.nio.file.AccessDeniedException:
+                    // Files.copy(sour, Dest, StandardCopyOption.REPLACE_EXISTING);
+                    PropertiesConfiguration wdirprop = new PropertiesConfiguration(localproperties);
+                    wdirprop.setProperty("toolkit.version",appversion);
+                    wdirprop.save();
+                } catch (IOException | ConfigurationException e) {
+                    System.err.println("An error occured: " + e.getMessage() );
+                } catch (Exception fd) {
+                    System.err.println("An error occured: " + fd.getMessage() );
+                }
+            }
 
             File folder = new File(ToolkitUtils.DEFAULT_APPLICATION_BASE_DIRECTORY + ToolkitUtils.DEFAULT_DOWNLOAD_DIRECTORY);
             if (folder.exists() && folder.isDirectory()) {

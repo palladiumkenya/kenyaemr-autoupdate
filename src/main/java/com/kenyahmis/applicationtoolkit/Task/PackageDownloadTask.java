@@ -22,7 +22,6 @@ public class PackageDownloadTask extends Task implements ShowProgress {
 
     private ToolboxServiceConfiguration configuration;
 
-
     private final ToolboxController controller;
     public PackageDownloadTask(ToolboxController controller) {
         this.controller = controller;
@@ -35,31 +34,28 @@ public class PackageDownloadTask extends Task implements ShowProgress {
 
     @Override
     protected Object call() throws Exception {
-        boolean downloaded =false;
+        boolean downloaded = false;
 
         try (InputStream in = configuration.getPackageDownloadUrl().openStream();
              ReadableByteChannel rbc = Channels.newChannel(in);
              FileOutputStream fos = new FileOutputStream(configuration.getPackageUnzipDir())) {
              BufferedInputStream bufferedInputStream = new BufferedInputStream(in);
-             System.out.println("Downloading ...");
+             System.out.println("Downloading KenyaEMR update ...");
              controller.addMessageToListFlow("Downloading KenyaEMR update...");
              fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-             downloaded=true;
+             downloaded = true;
              fos.close();
-
-
         } catch (Exception e) {
-            System.out.println("An error occurred. " + e.getCause());
-            controller.addMessageToListFlow("An error occurred. " + e.getCause());
+            System.out.println("An error occurred Downloading KenyaEMR update. " + e.getCause());
+            controller.addMessageToListFlow("An error occurred Downloading KenyaEMR update. " + e.getCause());
             e.printStackTrace();
-
+            return "FAIL";
         }
-        System.out.println("KenyaEMR Download completed");
 
+        System.out.println("KenyaEMR Download completed");
         controller.addMessageToListFlow("KenyaEMR Download completed");
 
         System.out.println("Unzipping started");
-
         controller.addMessageToListFlow("Unzipping KenyaEMR started");
         ToolkitUtils.unzip(configuration.getPackageUnzipDir(), configuration.getBaseDir());
 
@@ -68,13 +64,9 @@ public class PackageDownloadTask extends Task implements ShowProgress {
 
         System.out.println("Executing upgrade script");
         controller.addMessageToListFlow("Executing KenyaEMR upgrade script");
-
-
-        if(downloaded==true) {
-
-            PackageBackupService packageBackupService = new PackageBackupService(controller,configuration);
-            packageBackupService.start();
-
+        if(downloaded == true) {
+            // PackageBackupService packageBackupService = new PackageBackupService(controller,configuration);
+            // packageBackupService.start();
             RunUpgradeScriptService service = new RunUpgradeScriptService(controller, configuration);
             service.start();
         }
