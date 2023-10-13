@@ -64,29 +64,27 @@ public class RunUpgradeScriptTask extends Task implements ShowProgress {
             int exitVal = process.waitFor();
 
             if (exitVal == 0) {
-                System.out.println("Successfully executed the setup script");
-                controller.addMessageToListFlow("Successfully executed the setup script");
+                System.out.println("Successfully executed the KenyaEMR setup script");
+                controller.addMessageToListFlow("Successfully executed the KenyaEMR setup script");
             } else {
-                BufferedReader errorReader = new BufferedReader(
-                       new InputStreamReader(process.getErrorStream()));
+                BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 String error;
                 while ((error = errorReader.readLine()) != null) {
-                    System.out.println("An error occured" + error);
+                    System.out.println("An error occured upgrading kenyaEMR: " + error);
                     controller.addMessageToListFlow(error);
                 }
             }
 
         } catch (IOException e) {
-            System.out.println("there was an error");
-            controller.addMessageToListFlow("An error occurred while upgrading");
-
+            System.out.println("An error occurred while upgrading kenyaEMR: " + e.getMessage());
+            controller.addMessageToListFlow("An error occurred while upgrading kenyaEMR: " + e.getMessage());
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        System.out.println("Completed executing script");
-        controller.addMessageToListFlow("Service restarted. Give it a few minutes");
+        System.out.println("Completed executing kenyaEMR upgrade script");
+        controller.addMessageToListFlow("Completed executing kenyaEMR upgrade script");
 
         return "success";
     }
