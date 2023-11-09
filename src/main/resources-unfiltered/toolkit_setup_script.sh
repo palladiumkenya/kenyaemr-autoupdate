@@ -48,7 +48,7 @@ echo
 echo ${authorization} | sudo -S service tomcat9 stop
 
 echo "upgrading Concept Dictionary to the latest"
-mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/dictionary/kenyaemr_concepts_buffered-2023-07-04.sql" 
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/dictionary/kenyaemr_concepts_dump-september_07_2023.sql" 
 echo
 
 if [ "$?" -gt 0 ]; then
@@ -65,6 +65,10 @@ echo "Deleting liquibase entries for ML modules updates"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like '%kenyaemr-ML%';"
 echo
 
+echo "Deleting liquibase entries for IL modules updates"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM liquibasechangelog where id like '%kenyaemrIL%';"
+echo
+
 echo "Deleting address layout format"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM global_property where property like 'layout.address.format%';"
 
@@ -76,10 +80,27 @@ mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -
 
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM global_property where property like 'queue.statusConceptSetName%';"
 
+echo "Deleting existing referral tasks"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM scheduler_task_config WHERE schedulable_class = 'org.openmrs.module.kenyaemrIL.ProgramDiscontinuationTask' And name = 'Program Discontinuation Task';"
+
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM scheduler_task_config WHERE schedulable_class = 'org.openmrs.module.kenyaemrIL.ValidateTransferOutsTasks' And name = 'Validate TransferOut Patients';"
+
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM scheduler_task_config WHERE schedulable_class = 'org.openmrs.module.kenyaemrIL.SyncShrServedPatientsTask' And name = 'SHR Sync Task';"
+
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse"DELETE FROM scheduler_task_config WHERE schedulable_class = 'org.openmrs.module.kenyaemrIL.ProcessEnrollmentTask' And name = 'Enrollment Task';"
+
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM scheduler_task_config WHERE schedulable_class = 'org.openmrs.module.kenyaemrIL.PullExpectedTransferInsTask' And name = 'Expected Transfer Ins Task';"
+
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM scheduler_task_config WHERE schedulable_class = 'org.openmrs.module.kenyaemrIL.UshauriDirectPushTask' And name = 'Push messages to Ushauri server';"
+
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} -Bse "DELETE FROM scheduler_task_config WHERE schedulable_class = 'org.openmrs.module.kenyaemrIL.KenyaEmrInteropDirectPushTask' And name = 'OpenHIM Message Publisher';"
+
+echo "Dropping prior referral messages"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/referral_messages/dropping_referral_messages.sql" 
+echo
+
 echo "Update address template layout format"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/addressTemplate/address_layout_format.sql" 
-
-echo
 
 echo "Truncate patient appontments and queue  tables"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/HIV/patient_appointment.sql" 
@@ -88,9 +109,6 @@ echo
 echo "update drugs"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/drug/drug.sql" 
 echo
-
-echo "Set location tag map for login,queues and appointment"
-mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/location_tag_map/location_tag_map.sql" 
 
 echo
 echo "Create appointment services"
@@ -115,9 +133,14 @@ echo "Create other appointments i.e MCH, PREP, KP and CWC"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/other_appointments/other_appointments.sql" 
 echo
 
+echo "Set location tag map for login,queues and appointment"
+mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/location_tag_map/location_tag_map.sql" 
+echo
+
 echo "Set ML Global Thresholds"
 mysql --user=${mysql_user} --password=${mysql_password} ${mysql_base_database} < "${script_dir}/scripts/ml/ml.sql"
 echo
+
 
 echo "Finished updating appointments and queues"
 echo
